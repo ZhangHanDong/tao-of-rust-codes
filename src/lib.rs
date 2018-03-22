@@ -6,9 +6,12 @@
 //!
 //! 正文从 [第一章: 新时代的语言][ch1] 开始。
 //!
-//! [appendix]: /src/tao_of_rust/appendix/mod.rs.html
-//! [ch1]: /src/tao_of_rust/ch1/mod.rs.html
+//! [appendix]: ../../doc/tao_of_rust/appendix/index.html
+//! [ch1]: ../../doc/tao_of_rust/ch1/index.html
 
+#![doc(html_playground_url = "https://play.rust-lang.org/",
+       test(no_crate_inject, attr(deny(warnings))),
+       test(attr(allow(dead_code, deprecated, unused_variables, unused_mut))))]
 
 pub mod ch1;
 pub mod ch2;
