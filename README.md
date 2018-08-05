@@ -2,7 +2,7 @@
 
 ### 使用说明：
 
-```
+```shell
 $ git clone https://github.com/ZhangHanDong/tao-of-rust-codes.git
 $ cd tao-of-rust
 $ cargo doc
