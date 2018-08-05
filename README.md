@@ -8,3 +8,9 @@ $ cd tao-of-rust-codes
 $ cargo doc
 $ open target/doc/tao_of_rust/index.html
 ```
+
+### 图示
+
+![img1](images/1.png)
+![img2](images/2.png)
+![img3](images/3.png)
