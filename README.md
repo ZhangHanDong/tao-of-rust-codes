@@ -14,3 +14,6 @@ $ open target/doc/tao_of_rust/index.html
 ![img1](images/1.png)
 ![img2](images/2.png)
 ![img3](images/3.png)
+
+点击Run，跳转到[play.rust-lang.org](https://play.rust-lang.org)
+![img4](images/4.png)
