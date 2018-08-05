@@ -1,8 +1,10 @@
-# 《Rust编程之道》源码示例
+# 《Rust编程之道》随书源码示例
 
-安装：
+### 使用说明：
 
 ```
-cargo install tao-of-rust
-
+$ git clone https://github.com/ZhangHanDong/tao-of-rust-codes.git
+$ cd tao-of-rust
+$ cargo doc
+$ open target/doc/tao_of_rust/index.html
 ```
