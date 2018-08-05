@@ -1,6 +1,16 @@
 //! 第三章：类型系统
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第3章：{}", "类型系统");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第3章：{}", "类型系统");
 }

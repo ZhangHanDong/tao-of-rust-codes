@@ -1,6 +1,16 @@
 //! 第七章：结构化编程
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第7章：{}", "结构化编程");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第7章：{}", "结构化编程");
 }

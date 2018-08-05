@@ -1,6 +1,16 @@
 //! 第九章：构建健壮的程序
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第9章：{}", "构建健壮的程序");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第9章：{}", "构建健壮的程序");
 }

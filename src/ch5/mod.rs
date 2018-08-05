@@ -1,6 +1,16 @@
-//! 第五章：所有权机制
+//! 第五章：所有权系统
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第5章：{}", "所有权系统");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第5章：{}", "所有权系统");
 }

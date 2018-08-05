@@ -1,6 +1,16 @@
-//! 第十章：模块化编程
+//! 第十章：模块化开发
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第10章：{}", "模块化开发");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第10章：{}", "模块化开发");
 }

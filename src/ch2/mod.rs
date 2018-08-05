@@ -1,6 +1,16 @@
-//! 第二章：Rust语言精要
+//! 第二章：语言精要
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第2章：{}", "语言精要");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第2章：{}", "语言精要");
 }

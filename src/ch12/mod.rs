@@ -1,6 +1,16 @@
 //! 第十二章：元编程
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第12章：{}", "元编程");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第12章：{}", "元编程");
 }

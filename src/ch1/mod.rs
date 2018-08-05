@@ -7,14 +7,13 @@
 /// Basic usage:
 ///
 /// ```
-/// pub fn ch1(){
-///   println!("新时代的语言：{}", "Rust");
+/// pub fn title(){
+///   println!("第1章：{}", "新时代的语言");
 /// }
-/// ch1();
+/// title();
 /// ```
-
-pub fn ch1(){
-    println!("新时代的语言：{}", "Rust");
+pub fn title(){
+    println!("第1章：{}", "新时代的语言");
 }
 
 

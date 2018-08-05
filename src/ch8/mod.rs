@@ -1,6 +1,16 @@
 //! 第八章：字符串与集合
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第8章：{}", "字符串与集合");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第8章：{}", "字符串与集合");
 }

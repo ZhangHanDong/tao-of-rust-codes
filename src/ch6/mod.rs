@@ -1,6 +1,16 @@
 //!第六章：函数、闭包和迭代器
 //!
 
-fn hello(){
-    println!("新时代的语言：{}", "Rust");
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// pub fn title(){
+///   println!("第6章：{}", "函数、闭包和迭代器");
+/// }
+/// title();
+/// ```
+pub fn title(){
+    println!("第6章：{}", "函数、闭包和迭代器");
 }
