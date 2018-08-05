@@ -2,12 +2,21 @@
 //!
 //!  这里记录本书中涉及的所有示例代码。
 
-//! Rust安装的所有细节可以在 [附录A][appendix] 中找到。
+//! <hr/>
 //!
 //! 正文从 [第一章: 新时代的语言][ch1] 开始。
 //!
+//! Rust安装的所有细节可以在 [附录A][appendix] 中找到。
+//!
 //! [appendix]: ../../doc/tao_of_rust/appendix/index.html
 //! [ch1]: ../../doc/tao_of_rust/ch1/index.html
+//! <hr/>
+//! <div>
+//! <audio id="audio" controls="" preload="none">
+//! <source id="mp3" src="../../../audios/感谢.mp4">
+//! </audio>
+//! </div>
+
 
 #![doc(html_playground_url = "https://play.rust-lang.org/",
        test(no_crate_inject, attr(deny(warnings))),
