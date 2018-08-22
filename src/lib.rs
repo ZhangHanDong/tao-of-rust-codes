@@ -1,4 +1,5 @@
 #![feature(const_fn)]
+#![feature(never_type)]
 //! 《Rust编程之道》
 //!
 //!  作者：张汉东

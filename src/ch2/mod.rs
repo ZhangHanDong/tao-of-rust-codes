@@ -48,3 +48,11 @@ pub fn sum(a: i32, b: i32) -> i32 {
 pub mod binding;
 pub mod function;
 pub mod control_flow;
+pub mod collections;
+pub mod primitives;
+pub mod enums;
+pub mod structs;
+pub mod macros;
+pub mod smart_pointer;
+pub mod generics_trait;
+pub mod errors_handle;
