@@ -81,8 +81,11 @@ pub struct Color(i32, i32, i32);
 ///
 /// ```
 /// struct Integer(u32);
+/// type Int = i32;  // 为i32类型创建别名Int
 /// let int = Integer(10);
 /// assert_eq!(int.0, 10);
+/// let int: Int = 10;
+/// assert_eq!(int, 10);
 /// ```
 pub struct Integer(u32);
 

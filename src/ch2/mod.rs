@@ -52,7 +52,7 @@ pub mod collections;
 pub mod primitives;
 pub mod enums;
 pub mod structs;
-pub mod macros;
 pub mod smart_pointer;
 pub mod generics_trait;
 pub mod errors_handle;
+pub mod annotation;

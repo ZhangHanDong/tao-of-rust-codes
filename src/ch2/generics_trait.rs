@@ -30,61 +30,36 @@ pub enum Option<T>{
 /// Basic usage:
 ///
 /// ```
-/// trait Behavior {
-///     fn hello(&self) -> ();
-///     fn walk(&self) -> ();
+/// pub trait Fly {
+///     fn fly(&self) -> bool;
 /// }
-/// struct Animal;
-/// struct Duck(Animal);
-/// struct Chicken(Animal);
-/// struct Swan(Animal);
-///
-/// impl Behavior for Duck {
-///     fn hello(&self) {
-///         println!("gua gua ");
-///     }
-///
-///     fn walk(&self) {
-///         println!("swing on left and right");
+/// struct Duck;
+/// struct Pig;
+/// impl Fly for Duck {
+///     fn fly(&self) -> bool {
+///         return true;
 ///     }
 /// }
-///
-/// impl Behavior for Chicken {
-///     fn hello(&self) {
-///         println!("ga ga  ");
-///     }
-///
-///     fn walk(&self) {
-///         println!("move on front and back");
+/// impl Fly for Pig {
+///     fn fly(&self) -> bool {
+///         return false;
 ///     }
 /// }
-///
-/// impl Behavior for Swan {
-///     fn hello(&self) {
-///         println!("ke lu ke li ... ");
-///     }
-///
-///     fn walk(&self) {
-///         println!("Gentle walk");
-///     }
+/// fn fly_static<T: Fly>(s: T) -> bool {
+///     s.fly()
 /// }
-///
-/// let duck = Duck(Animal{});
-/// duck.hello();  // gua gua
-/// duck.walk();  // swing on left and right
-///
-/// let chicken = Chicken(Animal{});
-/// chicken.hello(); // ga ga
-/// chicken.walk(); // move on front and back
-///
-/// let swan = Swan(Animal{});
-/// swan.hello(); // ke lu ke li ...
-/// swan.walk(); // Gentle walk
+/// fn fly_dyn(s: &Fly) -> bool {
+///     s.fly()
+/// }
+/// let pig = Pig;
+/// assert_eq!(fly_static::<Pig>(pig), false);
+/// let duck = Duck;
+/// assert_eq!(fly_static::<Duck>(duck), true);
+/// assert_eq!(fly_dyn(&Pig), false);
+/// assert_eq!(fly_dyn(&Duck), true);
 /// ```
-
-pub trait Behavior {
-    fn hello(&self) -> ();
-    fn walk(&self) -> ();
+pub trait Fly {
+    fn fly(&self) -> bool;
 }
 
 /// # impl Debug trait示例
