@@ -48,6 +48,7 @@ pub fn bool_type() {
 /// number_type();
 /// ```
 pub fn number_type() {
+    use std::f32::{INFINITY, NEG_INFINITY, NAN, MIN, MAX};
     let num = 42u32;
     let num: u32 = 42;
     let num = 0x2A;  // 16进制
@@ -59,11 +60,11 @@ pub fn number_type() {
     assert_eq!(-3.14, -3.14f64);
     assert_eq!(2., 2.0f64);
     assert_eq!(2e4, 20000f64);
-    println!("{:?}", std::f32::INFINITY);
-    println!("{:?}", std::f32::NEG_INFINITY);
-    println!("{:?}", std::f32::NAN);
-    println!("{:?}", std::f32::MIN);
-    println!("{:?}", std::f32::MAX);
+    println!("{:?}", INFINITY);
+    println!("{:?}", NEG_INFINITY);
+    println!("{:?}", NAN);
+    println!("{:?}", MIN);
+    println!("{:?}", MAX);
 }
 
 
@@ -132,7 +133,7 @@ pub fn array_type() {
     let init_arr = [0; 10];
     assert_eq!(0, init_arr[5]);
     assert_eq!(10, init_arr.len());
-    println!("{:?}", arr[5]);
+    // println!("{:?}", arr[5]); //error
 }
 
 /// # 基本数据类型：range类型
@@ -159,8 +160,9 @@ pub fn array_type() {
 /// ```
 pub fn range_type(){
     // (3..5)是结构体std::ops::Range的一个实例
-    assert_eq!((1..5), std::ops::Range{ start: 1, end: 5 });
-    assert_eq!((1..=5), std::ops::RangeInclusive::new(1, 5));
+    use std::ops::{Range, RangeInclusive};
+    assert_eq!((1..5), Range{ start: 1, end: 5 });
+    assert_eq!((1..=5), RangeInclusive::new(1, 5));
     assert_eq!(3+4+5, (3..6).sum());
     assert_eq!(3+4+5+6, (3..=6).sum());
 
@@ -228,13 +230,15 @@ pub fn slice_type() {
 /// str_type();
 /// ```
 pub fn str_type(){
+    use std::slice::from_raw_parts;
+    use std::str::from_utf8;
     let truth: &'static str = "Rust是一门优雅的语言";
     let ptr = truth.as_ptr();
     let len = truth.len();
     assert_eq!(28, len);
     let s = unsafe {
-        let slice = std::slice::from_raw_parts(ptr, len);
-        std::str::from_utf8(slice)
+        let slice = from_raw_parts(ptr, len);
+        from_utf8(slice)
     };
     assert_eq!(s, Ok(truth));
 }

@@ -103,7 +103,7 @@ fn is_true() -> bool { true }
 /// fn true_maker() -> fn() -> bool { is_true }
 /// assert_eq!(true_maker()(), true);
 /// ```
-pub fn true_maker() -> fn() -> bool { bool_maker }
+pub fn true_maker() -> fn() -> bool { is_true }
 
 
 /// # CTFE: const fn

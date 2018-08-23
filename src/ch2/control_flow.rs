@@ -152,6 +152,7 @@ pub fn while_true(x: i32) -> i32 {
     while true {
         return x+1;
     }
+    x
 }
 
 /// # if true
@@ -171,6 +172,7 @@ pub fn if_true(x: i32) -> i32 {
     if true {
         return x+1;
     }
+    x
 }
 
 /// # match 匹配

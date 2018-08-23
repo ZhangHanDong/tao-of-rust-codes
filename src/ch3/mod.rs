@@ -14,3 +14,7 @@
 pub fn title(){
     println!("第3章：{}", "类型系统");
 }
+
+pub mod type_size;
+pub mod zero_size;
+pub mod bottom_type;

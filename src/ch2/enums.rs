@@ -74,7 +74,7 @@ pub enum IpAddr {
 ///     None => (),
 /// };
 /// ```
-pub enum Option{
+pub enum MyOption{
     Some(i32),
     None,
 }

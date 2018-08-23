@@ -167,6 +167,8 @@ pub fn linked_list() {
 /// map_demo();
 /// ```
 fn map_demo() {
+    use std::collections::BTreeMap;
+    use std::collections::HashMap;
     let mut hmap = HashMap::new();
     let mut bmap = BTreeMap::new();
     hmap.insert(3, "c");
