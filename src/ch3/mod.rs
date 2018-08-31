@@ -18,3 +18,10 @@ pub fn title(){
 pub mod type_size;
 pub mod zero_size;
 pub mod bottom_type;
+pub mod type_infer;
+pub mod generics;
+pub mod traits;
+pub mod abstract_type;
+pub mod tag_trait;
+pub mod type_cast;
+pub mod trait_limit;
