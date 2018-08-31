@@ -162,3 +162,26 @@ pub fn trait_special(){
     let x = Diver::<&'static str> { inner: "Bob" };
     x.swim()
 }
+
+/// # trait局限: GAT（Generic Associated Type） 或 ATC（Associated type constructor）
+///
+/// Rust标准库中的迭代器API不允许生成从迭代器本身借用的元素。
+/// 比如std::io::Lines，其实现迭代器只能读一行数据分配一个新的String，而不能重用内部缓存区。
+/// 而流式迭代器可以允许通过引用迭代，而不是值，这样就可以实现重用。
+/// 想要支持这种StreamingIterator，就必须实现一种更高级别的类型多态性，
+/// 所以GAT 将会把Rust类型系统扩展到支持特点形式的高级多态性，称为泛型关联类型，也叫做关联类型构造函数
+///
+/// 不过，当前此功能还未实现，
+/// 相关[RFC1598](https://github.com/rust-lang/rfcs/blob/master/text/1598-generic_associated_types.md)
+///
+/// Base usage:
+///
+/// ```
+/// trait StreamingIterator {
+///     type Item<'a>;
+///     fn next<'a>(&'a mut self) -> Option<Self::Item<'a>>;
+/// }
+/// ```
+pub fn gat(){
+    unimplemented!();
+}
