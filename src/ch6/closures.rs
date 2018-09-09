@@ -574,42 +574,55 @@ pub fn pass_closure(){
 /// Base usage: 以闭包为结构体字段，自动推断引用的生命周期参数
 ///
 /// ```rust
-/// struct Closure<F> {
-///     data: (u8, u16),
+/// struct Pick<F> {
+///     data: (u32, u32),
 ///     func: F,
 /// }
-/// impl<F> Closure<F>
-///     where F: Fn(&(u8, u16)) -> &u8, // 自动推断
-/// {
-///     fn call(&self) -> &u8 {
+/// impl<F> Pick<F>
+///     where F: Fn(&(u32, u32)) -> &u32
+///     {
+///     fn call(&self) -> &u32 {
 ///         (self.func)(&self.data)
-///    }
 /// }
-/// fn do_it(data: &(u8, u16)) -> &u8 { &data.0 }
+/// }
+/// fn max(data: &(u32, u32)) -> &u32 {
+///     if data.0 > data.1{
+///         &data.0
+///     }else{
+///         &data.1
+///     }
+///
+/// }
 /// fn main() {
-///     let c = Closure { data: (0, 1), func: do_it };
-///     println!("{}", c.call());
+///    let elm = Pick { data: (3, 1), func: max };
+///    println!("{}", elm.call());
 /// }
 /// ```
 ///
 /// Base usage: 以闭包为结构体字段，显式指定引用的生命周期参数
 ///
 /// ```rust
-/// struct Closure<F> {
-///     data: (u8, u16),
+/// struct Pick<F> {
+///     data: (u32, u32),
 ///     func: F,
 /// }
-/// impl<F> Closure<F>
-///     where F: for<'f> Fn(&'f (u8, u16)) -> &'f u8, // 显式指定
+/// impl<F> Pick<F>
+///     where F: for<'f> Fn(&'f (u32, u32)) -> &'f u32, // 显式指定
 ///     {
-///     fn call(&self) -> &u8 {
+///     fn call(&self) -> &u32 {
 ///         (self.func)(&self.data)
-///    }
+///  }
 /// }
-/// fn do_it(data: &(u8, u16)) -> &u8 { &data.0 }
+/// fn max(data: &(u32, u32)) -> &u32 {
+///     if data.0 > data.1{
+///         &data.0
+///     }else{
+///         &data.1
+///     }
+/// }
 /// fn main() {
-///    let clo = Closure { data: (0, 1), func: do_it };
-///    println!("{}", clo.call());
+///    let elm = Pick { data: (3, 1), func: max };
+///    println!("{}", elm.call());
 /// }
 /// ```
 pub fn higher_kind_lifetime(){
@@ -630,6 +643,4 @@ pub fn higher_kind_lifetime(){
         let x  = Box::new(&2usize);
         bar(x);
     }
-
-
 }
