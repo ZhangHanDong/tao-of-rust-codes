@@ -1,6 +1,7 @@
 #![feature(const_fn)]
 #![feature(never_type)]
 #![feature(specialization)]
+#![feature(unboxed_closures, fn_traits)]
 //! 《Rust编程之道》
 //!
 //!  作者：张汉东
