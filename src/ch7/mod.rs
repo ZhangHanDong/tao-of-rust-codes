@@ -14,3 +14,6 @@
 pub fn title(){
     println!("第7章：{}", "结构化编程");
 }
+
+pub mod structs;
+pub mod design_pattern;
