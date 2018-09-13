@@ -1,7 +1,9 @@
 [package]
-name = "tao-of-rust"
+name = "failures_crate"
 version = "0.1.0"
 authors = ["blackanger <blackanger.z@gmail.com>"]
+edition = "2018"
 
 [dependencies]
-failures_crate = { path = "./src/ch9/failures_crate" }
+failure="*"
+failure_derive="*"

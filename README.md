@@ -1,5 +1,10 @@
 # 《Rust编程之道》随书源码示例
 
+### Rust版本依赖：
+
+- `Rust stable 1.28 + `
+- `Rust Nightly 1.30 +`
+
 ### 使用说明：
 
 ```shell
