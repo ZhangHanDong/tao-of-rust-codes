@@ -92,7 +92,7 @@ pub fn share_ownership(){
 /// # 智能指针和所有权: 内部可变性
 ///    是一种可以外部不可变但是内部可变的一种容器
 /// Base usage: Cell<T>
-///   Cell<T>要求T实现Copy，无运行时开销
+///   Cell<T>适合于实现Copy的类型，无运行时开销
 ///
 /// ```rust
 /// use std::cell::Cell;
@@ -110,7 +110,7 @@ pub fn share_ownership(){
 /// ```
 ///
 /// Base usage: RefCell<T>
-///   RefCell<T>并不要求T一定要实现Copy，有运行时开销，维护运行时借用检查器
+///   RefCell<T>适合没有实现Copy的类型，有运行时开销，维护运行时借用检查器
 ///
 /// ```rust
 /// use std::cell::RefCell;

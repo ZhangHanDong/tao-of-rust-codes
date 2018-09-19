@@ -55,6 +55,18 @@ pub fn mut_params(){
 ///     fn f() { print!("2"); }
 /// }
 /// ```
+///
+/// Base usage: Rust 2018 利用原始标识（Raw identifiers）来将保留字作为函数名
+///
+/// ```rust
+/// fn r#match(needle: &str, haystack: &str) -> bool {
+///     haystack.contains(needle)
+/// }
+/// 
+/// fn main() {
+///     assert!(r#match("foo", "foobar"));
+/// }
+/// ```
 pub fn function_shadow(){
     fn f() { print!("1"); }
     fn main() {

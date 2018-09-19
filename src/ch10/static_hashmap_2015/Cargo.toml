@@ -1,0 +1,8 @@
+[package]
+name = "static_hashmap_2015"
+version = "0.1.0"
+authors = ["blackanger <blackanger.z@gmail.com>"]
+edition = "2015"
+
+[dependencies]
+lazy_static = "1.0.0"

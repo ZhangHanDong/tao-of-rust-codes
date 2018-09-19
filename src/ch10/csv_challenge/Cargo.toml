@@ -1,0 +1,9 @@
+[package]
+name = "csv_challenge"
+version = "0.1.0"
+authors = ["blackanger <blackanger.z@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+structopt = "0.2"
+structopt-derive = "0.2"

@@ -5,3 +5,4 @@ authors = ["blackanger <blackanger.z@gmail.com>"]
 
 [dependencies]
 failures_crate = { path = "./src/ch9/failures_crate" }
+csv_challenge = { path = "./src/ch10/csv_challenge" }
