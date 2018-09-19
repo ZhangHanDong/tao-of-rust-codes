@@ -37,7 +37,7 @@
 ///         inner_mod::super_mod_visible_fn();
 ///     
 ///         // 不能使用inner_mod 的私有函数
-///         inner_mod::inner_mod_visible_fn();
+///         // inner_mod::inner_mod_visible_fn();
 ///     }
 /// }
 /// fn bar() {
@@ -58,6 +58,8 @@
 /// 
 ///
 /// Basic usage: 模块可见性 Rust 2018 Edtion
+/// 
+/// 请在Play手动选择Rust edition运行
 ///
 /// ```
 /// pub mod outer_mod {
