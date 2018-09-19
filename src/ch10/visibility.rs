@@ -1,6 +1,15 @@
-/// # 模块可见性
+/// # 模块
+/// 
+/// 本章相关包：
+/// 
+/// - static_hashmap
+/// - static_hashmap_2015
+/// - static_hashmap_2018
+/// - csv_challenge
+/// 
+/// 请参考本书随书GitHub仓库相关源码
 ///
-/// Basic usage: 
+/// Basic usage: 模块可见性
 ///
 /// ```
 /// pub mod outer_mod {
