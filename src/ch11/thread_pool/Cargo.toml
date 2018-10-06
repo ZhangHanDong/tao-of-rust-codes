@@ -1,0 +1,8 @@
+[package]
+name = "thread_pool"
+version = "0.1.0"
+authors = ["blackanger <blackanger.z@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+num_cpus = "1.8"
