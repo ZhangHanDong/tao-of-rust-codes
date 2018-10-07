@@ -1,6 +1,31 @@
 /// # 协程
+/// 
+/// Basic usage: 生成器示例1
 ///
-/// Basic usage: 生成器示例
+/// ```rust
+/// #![feature(generators, generator_trait)]
+/// 
+/// use std::ops::Generator;
+/// 
+/// fn main(){
+///     
+///     // let mut gen : Box<Generator<Yield=i32, Return=i32>> = Box::new(||{
+///     let mut gen  = ||{
+///         yield 1;
+///         yield 2;
+///         yield 3;
+///         return 4;
+///     };
+///     unsafe {
+///       for _ in 0..4{
+///          let c = gen.resume();   
+///          println!("{:?}", c);
+///       }
+///     }
+/// }
+/// ```
+/// 
+/// Basic usage: 生成器示例2
 ///
 /// ```rust
 /// #![feature(generators, generator_trait)]
