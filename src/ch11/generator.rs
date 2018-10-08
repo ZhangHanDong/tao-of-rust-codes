@@ -31,59 +31,62 @@
 /// #![feature(generators, generator_trait)]
 /// use std::ops::{Generator, GeneratorState};
 /// 
-/// let mut gen = {
-///     enum __Gen {
-///         // (0) 初始状态
-///         State0,
-///         // (1) resume方法执行以后
-///        State1(State1),
-///        // (2) resume方法执行以后
-///        State2(State2),
-///        // (3) resume方法执行以后
-///        State3(State3),
-///        // (4) resume方法执行以后，正好完成
-///        State4
-///     }
-/// 
-///     struct State1 { x: u64 }
-///     struct State2 { x: u64 }
-///     struct State3 { x: u64 }
-///     struct State4 { x: u64 }
-/// 
-///     impl Generator for __Gen {
-///         type Yield = u64;
-///         type Return = u64;
-/// 
-///         unsafe fn resume(&mut self) -> GeneratorState<u64, u64> {
-///             use std::mem;
-///             match mem::replace(self, __Gen::State4) {
-///                 __Gen::State0 => {
-///                     *self = __Gen::State1(State1{x: 1});
-///                     GeneratorState::Yielded(1)
-///                 }
-///                 __Gen::State1(State1{x: 1}) => {
-///                     *self = __Gen::State2(State2{x: 2});
-///                     GeneratorState::Yielded(2)
+/// enum __Gen {
+///     // (0) 初始状态
+///     State0,
+///     // (1) resume方法执行以后
+///    State1(State1),
+///    // (2) resume方法执行以后
+///    State2(State2),
+///    // (3) resume方法执行以后
+///    State3(State3),
+///    // (4) resume方法执行以后，正好完成
+///    State4
+/// }
+///
+/// struct State1 { x: u64 }
+/// struct State2 { x: u64 }
+/// struct State3 { x: u64 }
+/// struct State4 { x: u64 }
+///
+/// impl Generator for __Gen {
+///     type Yield = u64;
+///     type Return = u64;
+///
+///     unsafe fn resume(&mut self) -> GeneratorState<u64, u64> {
+///         use std::mem;
+///         match mem::replace(self, __Gen::State4) {
+///             __Gen::State0 => {
+///                 *self = __Gen::State1(State1{x: 1});
+///                 GeneratorState::Yielded(1)
 ///             }
-///                 __Gen::State2(State2{x: 2}) => {
-///                     *self = __Gen::State3(State3{x: 3});
-///                     GeneratorState::Yielded(3)
-///                 }
-///                 __Gen::State3(State3{x: 3}) => {
-///                     *self = __Gen::State4;
-///                     GeneratorState::Complete(4)
-///                 }
-///                 _ => {
-///                     panic!("generator resumed after completion")
-///                 }
+///             __Gen::State1(State1{x: 1}) => {
+///                 *self = __Gen::State2(State2{x: 2});
+///                 GeneratorState::Yielded(2)
+///         }
+///             __Gen::State2(State2{x: 2}) => {
+///                 *self = __Gen::State3(State3{x: 3});
+///                 GeneratorState::Yielded(3)
+///             }
+///             __Gen::State3(State3{x: 3}) => {
+///                 *self = __Gen::State4;
+///                 GeneratorState::Complete(4)
+///             }
+///             _ => {
+///                 panic!("generator resumed after completion")
 ///             }
 ///         }
 ///     }
-///     __Gen::State0
-/// };
+/// }
 /// 
-/// for _ in 0..4 {
-///     println!("{:?}", unsafe{ gen.resume()});
+/// fn main(){
+///     let mut gen = {
+///         __Gen::State0
+///     };
+///     
+///     for _ in 0..4 {
+///         println!("{:?}", unsafe{ gen.resume()});
+///     }
 /// }
 /// ```
 /// 
