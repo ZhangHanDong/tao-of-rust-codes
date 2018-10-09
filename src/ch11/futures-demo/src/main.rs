@@ -29,7 +29,7 @@ impl Future for AlmostReady {
         -> Poll<Self::Output>
     {
         if self.ready {
-            Poll::Ready(self.value)
+            Poll::Ready(self.value + 1)
         } else {
             unsafe { Pin::get_mut_unchecked(self).ready = true ;}
             lw.wake();

@@ -118,34 +118,36 @@
 ///
 /// Basic usage: 生成器变为迭代器
 /// 
+/// Generator<Yield=T, Returen=()>
 /// yields T and returns ()
 ///
 /// ```rust
 /// #![feature(generators, generator_trait)]
 /// 
-/// use std::ops::Generator;
+/// use std::ops::{Generator, GeneratorState};
 /// 
-/// pub fn up_to(limit: u64) -> impl Generator<Yield = u64, Return = ()> {
+/// pub fn up_to() -> impl Generator<Yield = u64, Return = ()> {
 ///     move || {
-/// 	for x in 0..limit {
-/// 	     yield x;
-/// 	}
-/// 	return ();
+///         let mut x = 0;
+///         loop {
+///             x += 1;
+///             yield x;
+///         }
+///         return ();
 ///     }
 /// }
 /// fn main(){
-///     let a = 10;
-///     let mut b = up_to(a);
+///     let mut gen = up_to();
 ///     unsafe {
-///       for _ in 0..=10{
-///          let c = b.resume();   
-///          println!("{:?}", c);
+///       for _ in 0..10{
+///          match gen.resume() {
+///              GeneratorState::Yielded(i) => println!("{:?}", i),
+///             _ => println!("Completed"),
+///          }
 ///       }
 ///     }
 /// }
 /// ```
-/// 
-/// 
 ///
 /// Basic usage: 生成器变身Futures
 /// 
@@ -154,7 +156,7 @@
 /// ```rust
 /// #![feature(generators, generator_trait)]
 /// 
-/// use std::ops::Generator;
+/// use std::ops::{Generator, GeneratorState};
 /// 
 /// pub fn up_to(limit: u64) -> impl Generator<Yield = (), Return = Result<u64, ()>> {
 ///     move || {
@@ -165,12 +167,14 @@
 ///     }
 /// }
 /// fn main(){
-///     let a = 10;
-///     let mut b = up_to(a);
+///     let limit = 2;
+///     let mut gen = up_to(limit);
 ///     unsafe {
-///       for _ in 0..=10{
-///          let c = b.resume();   
-///          println!("{:?}", c);
+///       for i in 0..=limit{
+///          match gen.resume() {
+///              GeneratorState::Yielded(v) => println!("resume {:?} : Pending", i),
+///              GeneratorState::Complete(v) => println!("resume {:?} : Ready", i),
+///          }
 ///       }
 ///     }
 /// }
@@ -208,8 +212,50 @@
 /// }
 /// ```
 /// 
+///
+/// Basic usage: Pin的用法
+///
+/// ```rust
+/// #![feature(pin)]
 /// 
+/// use std::pin::{Pin, Unpin};
+/// use std::marker::Pinned;
+/// use std::ptr::NonNull;
 /// 
+/// struct Unmovable {
+///     data: String,
+///     slice: NonNull<String>,
+///     _pin: Pinned,
+/// }
+/// 
+/// impl Unpin for Unmovable {} 
+/// 
+/// impl Unmovable {
+///     fn new(data: String) -> Pin<Box<Self>> {
+///         let res = Unmovable {
+///             data,
+///             slice: NonNull::dangling(),
+///             _pin: Pinned,
+///         };
+///         let mut boxed = Box::pinned(res);
+///         let slice = NonNull::from(&boxed.data);
+///         unsafe {
+///             let mut_ref: Pin<&mut Self> = Pin::as_mut(&mut boxed);
+///             Pin::get_mut_unchecked(mut_ref).slice = slice;
+///         }
+///         boxed
+///     }
+/// }
+/// 
+/// fn main() {
+///     let unmoved = Unmovable::new("hello".to_string());
+///     let mut still_unmoved = unmoved;
+///     assert_eq!(still_unmoved.slice, NonNull::from(&still_unmoved.data));
+/// 
+///     let mut new_unmoved = Unmovable::new("world".to_string());
+///     std::mem::swap(&mut *still_unmoved, &mut *new_unmoved);
+/// }
+/// ```
 pub fn generaotr(){
     unimplemented!();
 }
