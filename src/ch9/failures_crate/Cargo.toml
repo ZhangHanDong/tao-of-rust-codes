@@ -12,5 +12,5 @@ keywords = ["book"]
 categories = ["rust-programming-book-codes"]
 
 [dependencies]
-failure="*"
-failure_derive="*"
+failure="0.1.2"
+failure_derive="0.1.2"
