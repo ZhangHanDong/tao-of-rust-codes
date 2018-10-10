@@ -3,3 +3,5 @@
 Cargo.lock
 .DS_Store
 lldb
+.vscode/
+rls/
