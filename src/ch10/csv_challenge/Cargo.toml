@@ -3,6 +3,14 @@ name = "csv_challenge"
 version = "0.1.0"
 authors = ["blackanger <blackanger.z@gmail.com>"]
 edition = "2018"
+description = "《Rust编程之道》随书源码之CSV挑战"
+homepage = "https://github.com/ZhangHanDong/tao-of-rust-codes"
+documentation = "https://docs.rs/tao-of-rust"
+repository = "https://github.com/ZhangHanDong/tao-of-rust-codes"
+license = "MIT"
+keywords = ["book"]
+categories = ["rust-programming-book-codes"]
+readme = "README.md"
 
 [dependencies]
 structopt = "0.2"

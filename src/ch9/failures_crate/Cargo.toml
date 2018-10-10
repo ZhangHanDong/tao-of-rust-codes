@@ -3,6 +3,14 @@ name = "failures_crate"
 version = "0.1.0"
 authors = ["blackanger <blackanger.z@gmail.com>"]
 edition = "2018"
+description = "《Rust编程之道》随书源码之failures crate"
+homepage = "https://github.com/ZhangHanDong/tao-of-rust-codes"
+documentation = "https://docs.rs/tao-of-rust"
+repository = "https://github.com/ZhangHanDong/tao-of-rust-codes"
+license = "MIT"
+keywords = ["book"]
+categories = ["rust-programming-book-codes"]
+readme = "README.md"
 
 [dependencies]
 failure="*"
