@@ -22,6 +22,8 @@ $ cargo doc
 $ open target/doc/tao_of_rust/index.html
 ```
 
+或者在线阅读[docs.rs/tao-of-rust](https://docs.rs/tao-of-rust)
+
 ### 图示
 
 ![img1](images/0.png)
