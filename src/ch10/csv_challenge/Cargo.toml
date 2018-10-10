@@ -10,7 +10,6 @@ repository = "https://github.com/ZhangHanDong/tao-of-rust-codes"
 license = "MIT"
 keywords = ["book"]
 categories = ["rust-programming-book-codes"]
-readme = "README.md"
 
 [dependencies]
 structopt = "0.2"
