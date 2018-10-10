@@ -7,11 +7,11 @@ edition = "2018"
 [dependencies]
 jetscii = "0.4.3"
 stdsimd = "0.1.0"
-// faster = "0.5.0"
+
 
 [[bin]]
-path = "src/faster_main.rs"
-name = "faster"
+path = "src/auto_vector.rs"
+name = "auto_vector"
 
 [[bin]]
 path = "src/main.rs"
