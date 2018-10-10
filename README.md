@@ -1,6 +1,6 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![crates.io](https://crates.io/crates/tao-of-rust)](https://crates.io/crates/tao-of-rust)
-[![Released API docs](https://docs.rs/tao-of-rust)](https://docs.rs/tao-of-rust)
+[[crates.io|v0.10](https://crates.io/crates/tao-of-rust)](https://crates.io/crates/tao-of-rust)
+[[doc.rs](https://docs.rs/tao-of-rust)](https://docs.rs/tao-of-rust)
 # 《Rust编程之道》随书源码
 
 本书预计2018.12月出版
