@@ -1,6 +1,6 @@
 extern crate proc_macro;
 use {
-    syn::{Token},
+    syn::{Token, DeriveInput, parse_macro_input},
     quote::*,
     proc_macro2,
     self::proc_macro::TokenStream,
@@ -8,7 +8,7 @@ use {
 
 #[proc_macro_derive(New)]
 pub fn derive(input: TokenStream) -> TokenStream {
-    let ast: syn::DeriveInput = syn::parse(input).expect("Couldn't parse item");
+    let ast: syn::DeriveInput =  parse_macro_input!(input as DeriveInput);
     let result = match ast.data {
         syn::Data::Struct(ref s) => new_for_struct(&ast, &s.fields),
         _ => panic!("doesn't work with unions yet"),
@@ -58,7 +58,7 @@ fn new_impl(ast: &syn::DeriveInput,
 
 
     let (impl_generics, ty_generics, where_clause) = ast.generics.split_for_impl();
-    let (mut new, doc) = (
+    let (new, doc) = (
         syn::Ident::new("new", proc_macro2::Span::call_site()),
         format!("Constructs a new `{}`.", struct_name)
     );

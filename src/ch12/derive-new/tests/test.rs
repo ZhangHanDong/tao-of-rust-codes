@@ -1,5 +1,4 @@
-#[macro_use]
-extern crate derive_new;
+use derive_new::New;
 // A struct with no fields.
 #[derive(New, PartialEq, Debug)]
 pub struct Foo {}
