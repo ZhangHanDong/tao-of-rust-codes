@@ -8,7 +8,7 @@ use {
 
 #[proc_macro_derive(New)]
 pub fn derive(input: TokenStream) -> TokenStream {
-    let ast: syn::DeriveInput =  parse_macro_input!(input as DeriveInput);
+    let ast =  parse_macro_input!(input as DeriveInput);
     let result = match ast.data {
         syn::Data::Struct(ref s) => new_for_struct(&ast, &s.fields),
         _ => panic!("doesn't work with unions yet"),
