@@ -1,0 +1,13 @@
+[package]
+name = "derive-new"
+version = "0.1.0"
+authors = ["blackanger <blackanger.z@gmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "0.6"
+syn = "0.15"
+proc-macro2="0.4"

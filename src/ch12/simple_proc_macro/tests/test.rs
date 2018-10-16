@@ -1,0 +1,33 @@
+#![feature(custom_attribute)]
+#![feature(proc_macro_non_items)]
+use simple_proc_macro::{A, attr_with_args, hashmap};
+
+// 自定义派生属性
+#[derive(A)]
+struct A;
+
+// 自定义编译器插件
+#[attr_with_args("Hello, Rust!")]
+fn foo() {}
+
+// 测试自定义派生属性
+#[test]
+fn test_derive_a() {
+    assert_eq!("hello from impl A".to_string(), A.a());
+}
+
+// 测试自定义编译器插件
+#[test]
+fn test_foo() {
+    let r = foo();
+    assert_eq!(r, "Hello, Rust!") ;
+}
+
+// 测试Bang宏
+#[test]
+fn test_hashmap() {
+    let hm = hashmap!{ "a" => 1,"b" => 2,"c" => 3};
+    assert_eq!(hm["c"], 3);
+    let hm = hashmap!{ "a": 1, "b": 2,};
+    assert_eq!(hm["a"], 1);
+}

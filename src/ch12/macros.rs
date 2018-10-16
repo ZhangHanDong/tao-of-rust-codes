@@ -215,6 +215,10 @@
 ///    assert_eq!(map["a"], 1);
 /// }
 /// ```
+/// # 宏导入导出
+///
+/// 请查阅源码中的相关crate
+///   - hashmap_lite
 pub fn declarative_macros(){
     unimplemented!();
 }
@@ -256,5 +260,15 @@ pub fn declarative_macros(){
 /// > 宏定义中的作用域是独立的。但是目前Rust的卫生性并不完善，生命周期、类型等都无法保证卫生性。
 /// 
 pub fn hygienic_test(){
+    unimplemented!();
+}
+
+
+/// # 宏系统: 过程宏
+///
+/// 请查阅源码中的相关crate
+///   - simple_proc_macro
+///   - derive-new (支持syn 0.15 和 quote 0.6)
+pub fn proc_macros(){
     unimplemented!();
 }
