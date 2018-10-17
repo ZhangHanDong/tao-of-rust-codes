@@ -274,3 +274,13 @@ pub fn hygienic_test(){
 pub fn proc_macros(){
     unimplemented!();
 }
+
+/// # 宏系统: 编译器插件
+///
+/// 请查阅源码中的相关crate
+///   - plugin_demo
+/// 
+/// 
+pub fn plugin_demo(){
+    unimplemented!();
+}
