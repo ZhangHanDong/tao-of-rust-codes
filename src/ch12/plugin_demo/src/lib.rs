@@ -22,13 +22,13 @@ static ROMAN_NUMERALS: &'static [(&'static str, usize)] = &[
 fn expand_roman(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
         -> Box<MacResult + 'static> {
 
-    // if args.len() != 1 {
-    //     // 验证传入的参数不能为空，或者多于1个参数   
-    //     cx.span_err(
-    //         sp,
-    //         &format!("argument should be a single identifier, but got {} arguments", args.len()));
-    //     return DummyResult::any(sp); // DummyResult为trait object，传递出错的位置信息
-    // }
+    if args.len() != 1 {
+        // 验证传入的参数不能为空，或者多于1个参数   
+        cx.span_err(
+            sp,
+            &format!("argument should be a single identifier, but got {} arguments", args.len()));
+        return DummyResult::any(sp); // DummyResult为trait object，传递出错的位置信息
+    }
 
     let text = match args[0] {
         // 验证传入的参数必须是标识符 token::Ident
@@ -58,7 +58,7 @@ fn expand_roman(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
 }
 
 #[plugin_registrar]
-pub fn roman_to_digit(reg: &mut Registry) {
+pub fn plugin_registrar_demo(reg: &mut Registry) {
     // 使用register_macro注册为宏
     reg.register_macro("roman_to_digit", expand_roman);
 }
