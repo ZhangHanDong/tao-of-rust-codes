@@ -5,4 +5,6 @@
 /// ```
 /// 
 /// ```
-/// 
+pub fn hello(){
+    unimplemented!();
+}
