@@ -43,8 +43,6 @@
 ///
 /// offset方法不能保证传入的偏移量合法，故为unsafe
 /// 
-/// 通过该代码发现Rust的一个Bug，发了个[issues 55143](https://github.com/rust-lang/rust/issues/55143)
-/// 
 /// ```rust
 /// fn main() {
 ///     let s: &str = "Rust";
@@ -52,7 +50,7 @@
 ///     unsafe {
 ///         println!("{:?}", *ptr.offset(1) as char); // u
 ///         println!("{:?}", *ptr.offset(3) as char); // t
-///         println!("{:?}", *ptr.offset(255) as char); // ÿ
+///         println!("{:?}", *ptr.offset(255) as char); // ÿ 有UB风险
 ///     }
 /// }
 /// ```
