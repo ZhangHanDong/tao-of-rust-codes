@@ -30,7 +30,7 @@ pub fn hello_cpp(){
     unimplemented!();
 }
 
-/// # C中调用Rust函数
+/// # C/Ruby/Python/Node.js中调用Rust函数
 ///
 /// Basic usage: 请看随书源码crate
 /// 

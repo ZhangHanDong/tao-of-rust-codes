@@ -1,0 +1,11 @@
+[package]
+name = "hello_wasm"
+version = "0.1.0"
+authors = ["blackanger <blackanger.z@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["cdylib"]

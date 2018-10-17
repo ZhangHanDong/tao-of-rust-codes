@@ -22,3 +22,4 @@ pub mod non_null_pointer;
 pub mod panic_safety;
 pub mod global_alloc;
 pub mod ffi;
+pub mod wasm;
