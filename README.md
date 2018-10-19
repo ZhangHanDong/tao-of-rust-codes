@@ -43,3 +43,7 @@ $ open target/doc/tao_of_rust/index.html
 
 点击Run，跳转到[play.rust-lang.org](https://play.rust-lang.org)
 ![img4](images/run.png)
+
+### 本书完整目录
+
+![TOC](images/toc.png)
