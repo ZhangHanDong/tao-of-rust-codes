@@ -21,3 +21,5 @@ database_t * database_new(void);
 void database_free(database_t *);
 void database_insert(database_t *);
 uint32_t database_query(const database_t *, const char *zip);
+
+void match();

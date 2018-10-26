@@ -27,4 +27,6 @@ int main (void) {
     printf("%d\n", pop2 - pop1);   
      
     print_hello_from_rust();
+
+    match();
 }

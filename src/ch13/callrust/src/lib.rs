@@ -144,3 +144,10 @@ pub extern fn database_free(ptr: *mut Database) {
     if ptr.is_null() { return }
     unsafe { Box::from_raw(ptr); }
 }
+
+// Rust 1.30 新加入的 `r#`语法，可以使用Rust关键字命名函数
+// 在C语言那边使用`match`函数名可调用
+#[no_mangle]
+pub extern fn r#match() {
+    println!("Hello from Rust from r#match");
+}
