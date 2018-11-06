@@ -1,6 +1,5 @@
 // #![feature(custom_attribute)]
 // #![feature(proc_macro_non_items)]
-#![feature(proc_macro_hygiene)]
 
 extern crate proc_macro;
 use self::proc_macro::TokenStream;

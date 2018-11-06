@@ -1,6 +1,10 @@
 // #![feature(custom_attribute)]
 // #![feature(proc_macro_non_items)]
+// 过程宏-bang宏还无法用于表达式位置
+// 相关issues：https://github.com/rust-lang/rust/issues/54727
+// https://github.com/rust-lang/blog.rust-lang.org/issues/285
 #![feature(proc_macro_hygiene)]
+
 
 use simple_proc_macro::{A, attr_with_args, hashmap};
 
