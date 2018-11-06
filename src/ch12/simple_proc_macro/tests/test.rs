@@ -1,5 +1,7 @@
-#![feature(custom_attribute)]
-#![feature(proc_macro_non_items)]
+// #![feature(custom_attribute)]
+// #![feature(proc_macro_non_items)]
+#![feature(proc_macro_hygiene)]
+
 use simple_proc_macro::{A, attr_with_args, hashmap};
 
 // 自定义派生属性
