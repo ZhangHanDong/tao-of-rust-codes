@@ -1,5 +1,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
+![img3](images/rustbook.jpg)
+
 # 《Rust编程之道》随书源码
 
 本书预计2018.12月出版
