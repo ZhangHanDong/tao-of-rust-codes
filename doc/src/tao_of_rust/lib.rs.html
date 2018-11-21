@@ -43,6 +43,9 @@
 <span id="43">43</span>
 <span id="44">44</span>
 <span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">never_type</span>)]</span>
@@ -53,6 +56,8 @@
 <span class="doccomment">//!  作者：张汉东</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!  这里记录本书中涉及的所有示例代码。</span>
+<span class="doccomment">//!  </span>
+<span class="doccomment">//!  [源码仓库 : ZhangHanDong/tao-of-rust-codes](https://github.com/ZhangHanDong/tao-of-rust-codes)</span>
 
 <span class="doccomment">//! &lt;hr/&gt;</span>
 <span class="doccomment">//!</span>
@@ -69,12 +74,17 @@
 <span class="doccomment">//! &lt;/audio&gt;</span>
 <span class="doccomment">//! &lt;/div&gt;</span>
 
-
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_playground_url</span> <span class="op">=</span> <span class="string">&quot;https://play.rust-lang.org/&quot;</span>,
+<span class="attribute">#![<span class="ident">doc</span>(
+       <span class="ident">html_playground_url</span> <span class="op">=</span> <span class="string">&quot;https://play.rust-lang.org/&quot;</span>,
        <span class="ident">test</span>(<span class="ident">no_crate_inject</span>, <span class="ident">attr</span>(<span class="ident">deny</span>(<span class="ident">warnings</span>))),
-       <span class="ident">test</span>(<span class="ident">attr</span>(<span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">deprecated</span>, <span class="ident">unused_variables</span>, <span class="ident">unused_mut</span>))))]</span>
+       <span class="ident">test</span>(<span class="ident">attr</span>(<span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">deprecated</span>, <span class="ident">unused_variables</span>, <span class="ident">unused_mut</span>)))
+)]</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch1</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch10</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch11</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch12</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch13</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch2</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch3</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch4</span>;
@@ -83,10 +93,6 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch7</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch8</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch9</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch10</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch11</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch12</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ch13</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">appendix</span>;
 </pre></div>

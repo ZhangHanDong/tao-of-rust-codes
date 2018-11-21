@@ -24,7 +24,7 @@ _注意：本书代码的平台是Linux或macOS_
 输出文档时指定target目录：
 
 ```
-$ cargo doc --target-dir ./ 
+$ cargo doc --target-dir ./
 ```
 
 ### 使用说明：
