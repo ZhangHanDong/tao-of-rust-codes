@@ -9,7 +9,9 @@
 //!  这里记录本书中涉及的所有示例代码。
 //!  
 //!  [源码仓库 : ZhangHanDong/tao-of-rust-codes](https://github.com/ZhangHanDong/tao-of-rust-codes)
-
+//! <div>
+//! <img src="../../../images/rustbook.jpg" />
+//! </div>
 //! <hr/>
 //!
 //! 正文从 [第一章: 新时代的语言][ch1] 开始。

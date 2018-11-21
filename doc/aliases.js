@@ -20,6 +20,7 @@ ALIASES['structopt_derive'] = {};
 ALIASES['syn'] = {};
 ALIASES['synstructure'] = {};
 ALIASES['tao_of_rust'] = {};
+ALIASES['tao_of_rust'] = {};
 ALIASES['textwrap'] = {};
 ALIASES['unicode_segmentation'] = {};
 ALIASES['unicode_width'] = {};
