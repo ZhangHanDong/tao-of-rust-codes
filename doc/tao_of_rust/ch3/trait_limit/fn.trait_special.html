@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `trait_special` fn in crate `tao_of_rust`."><meta name="keywords" content="rust, rustlang, rust-lang, trait_special"><title>tao_of_rust::ch3::trait_limit::trait_special - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc fn"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><div class="sidebar-elems"><p class='location'><a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch3</a>::<wbr><a href='index.html'>trait_limit</a></p><script>window.sidebarCurrent = {name: 'trait_special', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/tao_of_rust/ch3/trait_limit.rs.html#145-164' title='goto source code'>[src]</a></span><span class='in-band'>Function <a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch3</a>::<wbr><a href='index.html'>trait_limit</a>::<wbr><a class="fn" href=''>trait_special</a></span></h1><pre class='rust fn'>pub fn trait_special()</pre><div class='docblock'><h1 id="trait-特化specialization" class="section-header"><a href="#trait-特化specialization">trait: 特化（specialization）</a></h1>
+<p>重叠规则：不能为重叠的类型实现同一个trait
+以下代码会编译失败。这种实现方式也被称为覆盖式实现（blanket impl）</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AnyTrait</span> <span class="kw">for</span> <span class="ident">T</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AnyTrait</span> <span class="kw">for</span> <span class="ident">T</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Copy</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AnyTrait</span> <span class="kw">for</span> <span class="ident">String</span><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Aimpl%3CT%3E%20AnyTrait%20for%20T%0Aimpl%3CT%3E%20AnyTrait%20for%20T%20where%20T%3A%20Copy%0Aimpl%3CT%3E%20AnyTrait%20for%20String%0A%7D">Run</a></pre></div>
+<p>第一个问题：性能问题</p>
+<p>以下代码为所有类型T实现了AddAssign，也就是 += 操作，
+这样实现虽然好，但是会带来性能问题，因为强制使用了clone方法，但实际上有的类型并不需要clone。
+而因为有重叠规则的限制，并不能为某些不需要clone的具体类型重新实现add_assign方法。
+所以，在标准库中，就基本上为每个具体的类型都各自实现了一遍AddAssign。</p>
+<p>第二个问题：代码重用</p>
+<p>如果没有重叠规则，则可以默认使用上面对泛型T的实现，
+然后对不需要clone的类型重新实现AddAssign，那么就完全没必要为每个具体类型都实现一遍add_assign方法，
+可以省掉很多重复代码</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">T</span>: <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">AddAssign</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">add_assign</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">R</span>) {
+        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>() <span class="op">+</span> <span class="ident">rhs</span>;
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">tmp</span>;
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Aimpl%3CR%2C%20T%3A%20Add%3CR%3E%20%2B%20Clone%3E%20AddAssign%3CR%3E%20for%20T%20%7B%0A%20%20%20%20fn%20add_assign(%26mut%20self%2C%20rhs%3A%20R)%20%7B%0A%20%20%20%20%20%20%20%20let%20tmp%20%3D%20self.clone()%20%2B%20rhs%3B%0A%20%20%20%20%20%20%20%20*self%20%3D%20tmp%3B%0A%20%20%20%20%7D%0A%7D%0A%7D">Run</a></pre></div>
+<p>Basic usage: 使用特化之trait默认实现</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">specialization</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Diver</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="ident">inner</span>: <span class="ident">T</span>,
+}
+<span class="kw">trait</span> <span class="ident">Swimmer</span> {
+    <span class="kw">fn</span> <span class="ident">swim</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;swimming&quot;</span>)
+    }
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Swimmer</span> <span class="kw">for</span> <span class="ident">Diver</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {}
+
+<span class="kw">impl</span> <span class="ident">Swimmer</span> <span class="kw">for</span> <span class="ident">Diver</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">swim</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;drowning, help!&quot;</span>)
+    }
+}
+
+<span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">Diver</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> { <span class="ident">inner</span>: <span class="string">&quot;Bob&quot;</span> };
+<span class="ident">x</span>.<span class="ident">swim</span>();
+<span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">Diver</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> { <span class="ident">inner</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Alice&quot;</span>) };
+<span class="ident">y</span>.<span class="ident">swim</span>();<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(specialization)%5D%0Afn%20main()%20%7B%0Astruct%20Diver%3CT%3E%20%7B%0A%20%20%20%20inner%3A%20T%2C%0A%7D%0Atrait%20Swimmer%20%7B%0A%20%20%20%20fn%20swim(%26self)%20%7B%0A%20%20%20%20%20%20%20%20println!(%22swimming%22)%0A%20%20%20%20%7D%0A%7D%0Aimpl%3CT%3E%20Swimmer%20for%20Diver%3CT%3E%20%7B%7D%0A%0Aimpl%20Swimmer%20for%20Diver%3C%26'static%20str%3E%20%7B%0A%20%20%20%20fn%20swim(%26self)%20%7B%0A%20%20%20%20%20%20%20%20println!(%22drowning%2C%20help!%22)%0A%20%20%20%20%7D%0A%7D%0A%0Alet%20x%20%3D%20Diver%3A%3A%3C%26'static%20str%3E%20%7B%20inner%3A%20%22Bob%22%20%7D%3B%0Ax.swim()%3B%0Alet%20y%20%3D%20Diver%3A%3A%3CString%3E%20%7B%20inner%3A%20String%3A%3Afrom(%22Alice%22)%20%7D%3B%0Ay.swim()%3B%0A%7D&amp;version=nightly">Run</a></pre></div>
+<p>Basic usage: 使用特化之default关键字</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">specialization</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Diver</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="ident">inner</span>: <span class="ident">T</span>,
+}
+<span class="kw">trait</span> <span class="ident">Swimmer</span> {
+    <span class="kw">fn</span> <span class="ident">swim</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Swimmer</span> <span class="kw">for</span> <span class="ident">Diver</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">swim</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;swimming&quot;</span>)
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Swimmer</span> <span class="kw">for</span> <span class="ident">Diver</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">swim</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;drowning, help!&quot;</span>)
+    }
+}
+
+<span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">Diver</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> { <span class="ident">inner</span>: <span class="string">&quot;Bob&quot;</span> };
+<span class="ident">x</span>.<span class="ident">swim</span>();
+<span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">Diver</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> { <span class="ident">inner</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Alice&quot;</span>) };
+<span class="ident">y</span>.<span class="ident">swim</span>();<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(specialization)%5D%0Afn%20main()%20%7B%0Astruct%20Diver%3CT%3E%20%7B%0A%20%20%20%20inner%3A%20T%2C%0A%7D%0Atrait%20Swimmer%20%7B%0A%20%20%20%20fn%20swim(%26self)%3B%0A%7D%0Aimpl%3CT%3E%20Swimmer%20for%20Diver%3CT%3E%20%7B%0A%20%20%20%20default%20fn%20swim(%26self)%20%7B%0A%20%20%20%20%20%20%20%20println!(%22swimming%22)%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20Swimmer%20for%20Diver%3C%26'static%20str%3E%20%7B%0A%20%20%20%20fn%20swim(%26self)%20%7B%0A%20%20%20%20%20%20%20%20println!(%22drowning%2C%20help!%22)%0A%20%20%20%20%7D%0A%7D%0A%0Alet%20x%20%3D%20Diver%3A%3A%3C%26'static%20str%3E%20%7B%20inner%3A%20%22Bob%22%20%7D%3B%0Ax.swim()%3B%0Alet%20y%20%3D%20Diver%3A%3A%3CString%3E%20%7B%20inner%3A%20String%3A%3Afrom(%22Alice%22)%20%7D%3B%0Ay.swim()%3B%0A%7D&amp;version=nightly">Run</a></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

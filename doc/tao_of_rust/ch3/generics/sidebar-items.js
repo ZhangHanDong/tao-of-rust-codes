@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["foo","泛型"],["impl_method","泛型: 为泛型结构体实现方法"],["infer_generics","泛型: 返回值自动推导"]]});

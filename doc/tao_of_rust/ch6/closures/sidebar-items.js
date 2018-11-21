@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["closure_gen_type","闭包生成类型"],["closures","闭包"],["custom_closures","自定义闭包实现"],["higher_kind_lifetime","高阶生命周期"],["pass_closure","闭包作为参数或返回值传递"]]});

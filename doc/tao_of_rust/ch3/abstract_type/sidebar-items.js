@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["impl_trait","抽象类型： impl Trait unbox存在类型 （Rust 2018）"],["trait_object","抽象类型：Box（装箱）抽象类型 之 trait对象"]]});

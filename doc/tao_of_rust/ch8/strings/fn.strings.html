@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `strings` fn in crate `tao_of_rust`."><meta name="keywords" content="rust, rustlang, rust-lang, strings"><title>tao_of_rust::ch8::strings::strings - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc fn"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><div class="sidebar-elems"><p class='location'><a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch8</a>::<wbr><a href='index.html'>strings</a></p><script>window.sidebarCurrent = {name: 'strings', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/tao_of_rust/ch8/strings.rs.html#210-212' title='goto source code'>[src]</a></span><span class='in-band'>Function <a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch8</a>::<wbr><a href='index.html'>strings</a>::<wbr><a class="fn" href=''>strings</a></span></h1><pre class='rust fn'>pub fn strings()</pre><div class='docblock'><h1 id="字符串string" class="section-header"><a href="#字符串string">字符串String</a></h1>
+<p>Base usage: 组成String的三部分展示</p>
+<ol>
+<li>指向堆中字节序列的指针（as_ptr方法）</li>
+<li>记录堆中字节序列的字节长度（len方法）</li>
+<li>堆分配的容量（capacity方法）</li>
+</ol>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;fooα&quot;</span>);
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:p}&quot;</span>, <span class="ident">a</span>.<span class="ident">as_ptr</span>());
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:p}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">a</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">a</span>.<span class="ident">len</span>(), <span class="number">5</span>);
+    <span class="ident">a</span>.<span class="ident">reserve</span>(<span class="number">10</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">a</span>.<span class="ident">capacity</span>(), <span class="number">15</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20mut%20a%20%3D%20String%3A%3Afrom(%22foo%CE%B1%22)%3B%0A%20%20%20%20println!(%22%7B%3Ap%7D%22%2C%20a.as_ptr())%3B%0A%20%20%20%20println!(%22%7B%3Ap%7D%22%2C%20%26a)%3B%0A%20%20%20%20assert_eq!(a.len()%2C%205)%3B%0A%20%20%20%20a.reserve(10)%3B%0A%20%20%20%20assert_eq!(a.capacity()%2C%2015)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 创建字符串的各种方法</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">string</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;&quot;</span>, <span class="ident">string</span>);
+    <span class="kw">let</span> <span class="ident">string</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;hello rust&quot;</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;hello rust&quot;</span>, <span class="ident">string</span>);
+    <span class="kw">let</span> <span class="ident">string</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">with_capacity</span>(<span class="number">20</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;&quot;</span>, <span class="ident">string</span>);
+    <span class="kw">let</span> <span class="ident">str</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;the tao of rust&quot;</span>;
+    <span class="kw">let</span> <span class="ident">string</span>: <span class="ident">String</span> <span class="op">=</span>
+       <span class="ident">str</span>.<span class="ident">chars</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="op">!</span><span class="ident">c</span>.<span class="ident">is_whitespace</span>()).<span class="ident">collect</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;thetaoofrust&quot;</span>, <span class="ident">string</span>);
+    <span class="kw">let</span> <span class="ident">string</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">str</span>.<span class="ident">to_owned</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;the tao of rust&quot;</span>, <span class="ident">string</span>);
+    <span class="kw">let</span> <span class="ident">string</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">str</span>.<span class="ident">to_string</span>();
+    <span class="kw">let</span> <span class="ident">str</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">string</span>[<span class="number">11</span>..<span class="number">15</span>];
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;rust&quot;</span>, <span class="ident">str</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20string%3A%20String%20%3D%20String%3A%3Anew()%3B%0A%20%20%20%20assert_eq!(%22%22%2C%20string)%3B%0A%20%20%20%20let%20string%3A%20String%20%3D%20String%3A%3Afrom(%22hello%20rust%22)%3B%0A%20%20%20%20assert_eq!(%22hello%20rust%22%2C%20string)%3B%0A%20%20%20%20let%20string%3A%20String%20%3D%20String%3A%3Awith_capacity(20)%3B%0A%20%20%20%20assert_eq!(%22%22%2C%20string)%3B%0A%20%20%20%20let%20str%3A%20%26'static%20str%20%3D%20%22the%20tao%20of%20rust%22%3B%0A%20%20%20%20let%20string%3A%20String%20%3D%0A%20%20%20%20%20%20%20str.chars().filter(%7Cc%7C%20!c.is_whitespace()).collect()%3B%0A%20%20%20%20assert_eq!(%22thetaoofrust%22%2C%20string)%3B%0A%20%20%20%20let%20string%3A%20String%20%3D%20str.to_owned()%3B%0A%20%20%20%20assert_eq!(%22the%20tao%20of%20rust%22%2C%20string)%3B%0A%20%20%20%20let%20string%3A%20String%20%3D%20str.to_string()%3B%0A%20%20%20%20let%20str%3A%20%26str%20%3D%20%26string%5B11..15%5D%3B%0A%20%20%20%20assert_eq!(%22rust%22%2C%20str)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: chars和bytes方法展示</p>
+<p>字符串的操作大致分为两种方式：按字节处理和按字符处理</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;borös&quot;</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">chars</span> <span class="op">=</span> <span class="ident">str</span>.<span class="ident">chars</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;b&#39;</span>), <span class="ident">chars</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;o&#39;</span>), <span class="ident">chars</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;r&#39;</span>), <span class="ident">chars</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;ö&#39;</span>), <span class="ident">chars</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;s&#39;</span>), <span class="ident">chars</span>.<span class="ident">next</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">str</span>.<span class="ident">bytes</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">6</span>, <span class="ident">str</span>.<span class="ident">len</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">98</span>), <span class="ident">bytes</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">111</span>), <span class="ident">bytes</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">114</span>), <span class="ident">bytes</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">195</span>), <span class="ident">bytes</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">182</span>), <span class="ident">bytes</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">115</span>), <span class="ident">bytes</span>.<span class="ident">next</span>());
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20str%20%3D%20%22bor%C3%B6s%22%3B%0A%20%20%20%20let%20mut%20chars%20%3D%20str.chars()%3B%0A%20%20%20%20assert_eq!(Some('b')%2C%20chars.next())%3B%0A%20%20%20%20assert_eq!(Some('o')%2C%20chars.next())%3B%0A%20%20%20%20assert_eq!(Some('r')%2C%20chars.next())%3B%0A%20%20%20%20assert_eq!(Some('%C3%B6')%2C%20chars.next())%3B%0A%20%20%20%20assert_eq!(Some('s')%2C%20chars.next())%3B%0A%20%20%20%20let%20mut%20bytes%20%3D%20str.bytes()%3B%0A%20%20%20%20assert_eq!(6%2C%20str.len())%3B%0A%20%20%20%20assert_eq!(Some(98)%2C%20bytes.next())%3B%0A%20%20%20%20assert_eq!(Some(111)%2C%20bytes.next())%3B%0A%20%20%20%20assert_eq!(Some(114)%2C%20bytes.next())%3B%0A%20%20%20%20assert_eq!(Some(195)%2C%20bytes.next())%3B%0A%20%20%20%20assert_eq!(Some(182)%2C%20bytes.next())%3B%0A%20%20%20%20assert_eq!(Some(115)%2C%20bytes.next())%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 使用get和get_mut</p>
+<p>字符串不能按index来字节访问字符，所以需要get和get_mut</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;borös&quot;</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;b&quot;</span>), <span class="ident">v</span>.<span class="ident">get</span>(<span class="number">0</span>..<span class="number">1</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;ö&quot;</span>), <span class="ident">v</span>.<span class="ident">get</span>(<span class="number">3</span>..<span class="number">5</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;orös&quot;</span>), <span class="ident">v</span>.<span class="ident">get</span>(<span class="number">1</span>..));
+    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">v</span>.<span class="ident">get_mut</span>(<span class="number">4</span>..).<span class="ident">is_none</span>()); <span class="comment">// 访问了非法的utf8序列</span>
+    <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">v</span>.<span class="ident">is_char_boundary</span>(<span class="number">4</span>)); <span class="comment">// 验证字符是否属于合法边界</span>
+    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">v</span>.<span class="ident">get_mut</span>(..<span class="number">8</span>).<span class="ident">is_none</span>());
+    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">v</span>.<span class="ident">get_mut</span>(..<span class="number">42</span>).<span class="ident">is_none</span>());
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20mut%20v%20%3D%20String%3A%3Afrom(%22bor%C3%B6s%22)%3B%0A%20%20%20%20assert_eq!(Some(%22b%22)%2C%20v.get(0..1))%3B%0A%20%20%20%20assert_eq!(Some(%22%C3%B6%22)%2C%20v.get(3..5))%3B%0A%20%20%20%20assert_eq!(Some(%22or%C3%B6s%22)%2C%20v.get(1..))%3B%0A%20%20%20%20assert!(v.get_mut(4..).is_none())%3B%20%2F%2F%20%E8%AE%BF%E9%97%AE%E4%BA%86%E9%9D%9E%E6%B3%95%E7%9A%84utf8%E5%BA%8F%E5%88%97%0A%20%20%20%20assert!(!v.is_char_boundary(4))%3B%20%2F%2F%20%E9%AA%8C%E8%AF%81%E5%AD%97%E7%AC%A6%E6%98%AF%E5%90%A6%E5%B1%9E%E4%BA%8E%E5%90%88%E6%B3%95%E8%BE%B9%E7%95%8C%0A%20%20%20%20assert!(v.get_mut(..8).is_none())%3B%0A%20%20%20%20assert!(v.get_mut(..42).is_none())%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 使用split_at和split_at_mut切割字符串</p>
+<p>需要注意字符串的合法边界</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;Per Martin-Löf&quot;</span>;
+    <span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">last</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">split_at</span>(<span class="number">12</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;Per Martin-L&quot;</span>, <span class="ident">first</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;öf&quot;</span>, <span class="ident">last</span>);
+    <span class="comment">// &#39;main&#39; panicked：byte index 13 is not a char boundary</span>
+    <span class="comment">// let (first, last) = s.split_at(13);</span>
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20s%20%3D%20%22Per%20Martin-L%C3%B6f%22%3B%0A%20%20%20%20let%20(first%2C%20last)%20%3D%20s.split_at(12)%3B%0A%20%20%20%20assert_eq!(%22Per%20Martin-L%22%2C%20first)%3B%0A%20%20%20%20assert_eq!(%22%C3%B6f%22%2C%20last)%3B%0A%20%20%20%20%2F%2F%20'main'%20panicked%EF%BC%9Abyte%20index%2013%20is%20not%20a%20char%20boundary%0A%20%20%20%20%2F%2F%20let%20(first%2C%20last)%20%3D%20s.split_at(13)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 追加字符串</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hello</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Hello, &quot;</span>);
+    <span class="ident">hello</span>.<span class="ident">push</span>(<span class="string">&#39;R&#39;</span>);
+    <span class="ident">hello</span>.<span class="ident">push_str</span>(<span class="string">&quot;ust!&quot;</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;Hello, Rust!&quot;</span>, <span class="ident">hello</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20mut%20hello%20%3D%20String%3A%3Afrom(%22Hello%2C%20%22)%3B%0A%20%20%20%20hello.push('R')%3B%0A%20%20%20%20hello.push_str(%22ust!%22)%3B%0A%20%20%20%20assert_eq!(%22Hello%2C%20Rust!%22%2C%20hello)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 使用extend迭代器追加字符串</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;hello&quot;</span>);
+    <span class="ident">message</span>.<span class="ident">extend</span>([<span class="string">&#39;,&#39;</span>, <span class="string">&#39;r&#39;</span>, <span class="string">&#39;u&#39;</span>].<span class="ident">iter</span>());
+    <span class="ident">message</span>.<span class="ident">extend</span>(<span class="string">&quot;st &quot;</span>.<span class="ident">chars</span>());
+    <span class="ident">message</span>.<span class="ident">extend</span>(<span class="string">&quot;w o r l d&quot;</span>.<span class="ident">split_whitespace</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;hello,rust world&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">message</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20mut%20message%20%3D%20String%3A%3Afrom(%22hello%22)%3B%0A%20%20%20%20message.extend(%5B'%2C'%2C%20'r'%2C%20'u'%5D.iter())%3B%0A%20%20%20%20message.extend(%22st%20%22.chars())%3B%0A%20%20%20%20message.extend(%22w%20o%20r%20l%20d%22.split_whitespace())%3B%0A%20%20%20%20assert_eq!(%22hello%2Crust%20world%22%2C%20%26message)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 使用insert和insert_str插入字符串</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">with_capacity</span>(<span class="number">3</span>);
+    <span class="ident">s</span>.<span class="ident">insert</span>(<span class="number">0</span>, <span class="string">&#39;f&#39;</span>);
+    <span class="ident">s</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="string">&#39;o&#39;</span>);
+    <span class="ident">s</span>.<span class="ident">insert</span>(<span class="number">2</span>, <span class="string">&#39;o&#39;</span>);
+    <span class="ident">s</span>.<span class="ident">insert_str</span>(<span class="number">0</span>, <span class="string">&quot;bar&quot;</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;barfoo&quot;</span>, <span class="ident">s</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20mut%20s%20%3D%20String%3A%3Awith_capacity(3)%3B%0A%20%20%20%20s.insert(0%2C%20'f')%3B%0A%20%20%20%20s.insert(1%2C%20'o')%3B%0A%20%20%20%20s.insert(2%2C%20'o')%3B%0A%20%20%20%20s.insert_str(0%2C%20%22bar%22)%3B%0A%20%20%20%20assert_eq!(%22barfoo%22%2C%20s)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 字符串连接</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">left</span> <span class="op">=</span> <span class="string">&quot;the tao&quot;</span>.<span class="ident">to_string</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">right</span> <span class="op">=</span> <span class="string">&quot;Rust&quot;</span>.<span class="ident">to_string</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">left</span> <span class="op">+</span> <span class="string">&quot; of &quot;</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="ident">right</span>, <span class="string">&quot;the tao of Rust&quot;</span>);
+    <span class="ident">right</span> <span class="op">+=</span> <span class="string">&quot;!&quot;</span>;
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">right</span>, <span class="string">&quot;Rust!&quot;</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20left%20%3D%20%22the%20tao%22.to_string()%3B%0A%20%20%20%20let%20mut%20right%20%3D%20%22Rust%22.to_string()%3B%0A%20%20%20%20assert_eq!(left%20%2B%20%22%20of%20%22%20%2B%20%26right%2C%20%22the%20tao%20of%20Rust%22)%3B%0A%20%20%20%20right%20%2B%3D%20%22!%22%3B%0A%20%20%20%20assert_eq!(right%2C%20%22Rust!%22)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 更新字符串</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ascii</span>::{<span class="ident">AsciiExt</span>};
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;fooαbar&quot;</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">into_bytes</span>();
+    (<span class="number">0</span>..<span class="ident">result</span>.<span class="ident">len</span>()).<span class="ident">for_each</span>( <span class="op">|</span><span class="ident">i</span><span class="op">|</span>
+        <span class="kw">if</span> <span class="ident">i</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">0</span> {
+            <span class="ident">result</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">result</span>[<span class="ident">i</span>].<span class="ident">to_ascii_lowercase</span>();
+        }<span class="kw">else</span> {
+            <span class="ident">result</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">result</span>[<span class="ident">i</span>].<span class="ident">to_ascii_uppercase</span>();
+        }
+   );
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;fOoαBaR&quot;</span>, <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">result</span>).<span class="ident">unwrap</span>());
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Ause%20std%3A%3Aascii%3A%3A%7BAsciiExt%7D%3B%0Afn%20main()%20%7B%0A%20%20%20%20let%20s%20%3D%20String%3A%3Afrom(%22foo%CE%B1bar%22)%3B%0A%20%20%20%20let%20mut%20result%20%3D%20s.into_bytes()%3B%0A%20%20%20%20(0..result.len()).for_each(%20%7Ci%7C%0A%20%20%20%20%20%20%20%20if%20i%20%25%202%20%3D%3D%200%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20result%5Bi%5D%20%3D%20result%5Bi%5D.to_ascii_lowercase()%3B%0A%20%20%20%20%20%20%20%20%7Delse%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20result%5Bi%5D%20%3D%20result%5Bi%5D.to_ascii_uppercase()%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20)%3B%0A%20%20%20assert_eq!(%22fOo%CE%B1BaR%22%2C%20String%3A%3Afrom_utf8(result).unwrap())%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 按字符迭代处理字符串</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;fooαbar&quot;</span>);
+    <span class="kw">let</span> <span class="ident">s</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">enumerate</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">i</span>, <span class="ident">c</span>)<span class="op">|</span> {
+        <span class="kw">if</span> <span class="ident">i</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">0</span> {
+            <span class="ident">c</span>.<span class="ident">to_lowercase</span>().<span class="ident">to_string</span>()
+        } <span class="kw">else</span> {
+            <span class="ident">c</span>.<span class="ident">to_uppercase</span>().<span class="ident">to_string</span>()
+        }
+    }).<span class="ident">collect</span>();
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;fOoΑbAr&quot;</span>, <span class="ident">s</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20s%20%3D%20String%3A%3Afrom(%22foo%CE%B1bar%22)%3B%0A%20%20%20%20let%20s%3A%20String%20%3D%20s.chars().enumerate().map(%7C(i%2C%20c)%7C%20%7B%0A%20%20%20%20%20%20%20%20if%20i%20%25%202%20%3D%3D%200%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20c.to_lowercase().to_string()%0A%20%20%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20c.to_uppercase().to_string()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D).collect()%3B%0A%20%20%20assert_eq!(%22fOo%CE%91bAr%22%2C%20s)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 字符串删除</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;hαllo&quot;</span>);
+    <span class="ident">s</span>.<span class="ident">remove</span>(<span class="number">3</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;hαlo&quot;</span>, <span class="ident">s</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;o&#39;</span>), <span class="ident">s</span>.<span class="ident">pop</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;l&#39;</span>), <span class="ident">s</span>.<span class="ident">pop</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;α&#39;</span>), <span class="ident">s</span>.<span class="ident">pop</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;h&quot;</span>, <span class="ident">s</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;hαllo&quot;</span>);
+    <span class="ident">s</span>.<span class="ident">truncate</span>(<span class="number">3</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;hα&quot;</span>, <span class="ident">s</span>);
+    <span class="ident">s</span>.<span class="ident">clear</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s</span>, <span class="string">&quot;&quot;</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;α is alpha, β is beta&quot;</span>);
+    <span class="kw">let</span> <span class="ident">beta_offset</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">find</span>(<span class="string">&#39;β&#39;</span>).<span class="ident">unwrap_or</span>(<span class="ident">s</span>.<span class="ident">len</span>());
+    <span class="kw">let</span> <span class="ident">t</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">drain</span>(..<span class="ident">beta_offset</span>).<span class="ident">collect</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>, <span class="string">&quot;α is alpha, &quot;</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s</span>, <span class="string">&quot;β is beta&quot;</span>);
+    <span class="ident">s</span>.<span class="ident">drain</span>(..);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s</span>, <span class="string">&quot;&quot;</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20mut%20s%20%3D%20String%3A%3Afrom(%22h%CE%B1llo%22)%3B%0A%20%20%20%20s.remove(3)%3B%0A%20%20%20%20assert_eq!(%22h%CE%B1lo%22%2C%20s)%3B%0A%20%20%20%20assert_eq!(Some('o')%2C%20s.pop())%3B%0A%20%20%20%20assert_eq!(Some('l')%2C%20s.pop())%3B%0A%20%20%20%20assert_eq!(Some('%CE%B1')%2C%20s.pop())%3B%0A%20%20%20%20assert_eq!(%22h%22%2C%20s)%3B%0A%20%20%20%20let%20mut%20s%20%3D%20String%3A%3Afrom(%22h%CE%B1llo%22)%3B%0A%20%20%20%20s.truncate(3)%3B%0A%20%20%20%20assert_eq!(%22h%CE%B1%22%2C%20s)%3B%0A%20%20%20%20s.clear()%3B%0A%20%20%20%20assert_eq!(s%2C%20%22%22)%3B%0A%20%20%20%20let%20mut%20s%20%3D%20String%3A%3Afrom(%22%CE%B1%20is%20alpha%2C%20%CE%B2%20is%20beta%22)%3B%0A%20%20%20%20let%20beta_offset%20%3D%20s.find('%CE%B2').unwrap_or(s.len())%3B%0A%20%20%20%20let%20t%3A%20String%20%3D%20s.drain(..beta_offset).collect()%3B%0A%20%20%20%20assert_eq!(t%2C%20%22%CE%B1%20is%20alpha%2C%20%22)%3B%0A%20%20%20%20assert_eq!(s%2C%20%22%CE%B2%20is%20beta%22)%3B%0A%20%20%20%20s.drain(..)%3B%0A%20%20%20%20assert_eq!(s%2C%20%22%22)%3B%0A%7D">Run</a></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

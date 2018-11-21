@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Color","枚举类型： like C"],["IpAddr","枚举类型： 带参数"],["MyOption","枚举类型：Option"],["Number","枚举类型： 无参数"]],"fn":[["match_ref_2015","match 匹配引用 (Rust 2015 用法)"],["match_ref_2018","match 匹配引用 (Rust 2018 用法)"]]});

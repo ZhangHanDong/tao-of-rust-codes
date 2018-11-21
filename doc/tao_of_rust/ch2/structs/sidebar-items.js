@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Color","元组结构体定义"],["Empty","单元结构体"],["Integer","元组结构体：NewType模式"],["People","具名结构体定义"]]});

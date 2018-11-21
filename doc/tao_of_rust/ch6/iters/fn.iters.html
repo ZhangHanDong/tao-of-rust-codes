@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `iters` fn in crate `tao_of_rust`."><meta name="keywords" content="rust, rustlang, rust-lang, iters"><title>tao_of_rust::ch6::iters::iters - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc fn"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><div class="sidebar-elems"><p class='location'><a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch6</a>::<wbr><a href='index.html'>iters</a></p><script>window.sidebarCurrent = {name: 'iters', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/tao_of_rust/ch6/iters.rs.html#360-379' title='goto source code'>[src]</a></span><span class='in-band'>Function <a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch6</a>::<wbr><a href='index.html'>iters</a>::<wbr><a class="fn" href=''>iters</a></span></h1><pre class='rust fn'>pub fn iters()</pre><div class='docblock'><h1 id="迭代器" class="section-header"><a href="#迭代器">迭代器</a></h1>
+<p>Base usage: 自定义内部迭代器</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">trait</span> <span class="ident">InIterator</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">each</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>);
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">InIterator</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">each</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">while</span> <span class="ident">i</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">len</span>() {
+            <span class="self">self</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">f</span>(<span class="self">self</span>[<span class="ident">i</span>]);
+            <span class="ident">i</span> <span class="op">+=</span> <span class="number">1</span>;
+        }
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">main</span>(){
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];
+    <span class="ident">v</span>.<span class="ident">each</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span> <span class="op">*</span> <span class="number">3</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>([<span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>], <span class="kw-2">&amp;</span><span class="ident">v</span>[..<span class="number">3</span>]);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Atrait%20InIterator%3CT%3A%20Copy%3E%20%7B%0A%20%20%20%20fn%20each%3CF%3A%20Fn(T)%20-%3E%20T%3E(%26mut%20self%2C%20f%3A%20F)%3B%0A%7D%0Aimpl%3CT%3A%20Copy%3E%20InIterator%3CT%3E%20for%20Vec%3CT%3E%20%7B%0A%20%20%20%20fn%20each%3CF%3A%20Fn(T)%20-%3E%20T%3E(%26mut%20self%2C%20f%3A%20F)%20%7B%0A%20%20%20%20%20%20%20%20let%20mut%20i%20%3D%200%3B%0A%20%20%20%20%20%20%20%20while%20i%20%3C%20self.len()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20self%5Bi%5D%20%3D%20f(self%5Bi%5D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20i%20%2B%3D%201%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0Afn%20main()%7B%0A%20%20%20%20let%20mut%20v%20%3D%20vec!%5B1%2C2%2C3%5D%3B%0A%20%20%20%20v.each(%7Ci%7C%20i%20*%203)%3B%0A%20%20%20%20assert_eq!(%5B3%2C%206%2C%209%5D%2C%20%26v%5B..3%5D)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 外部迭代器 for</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">v</span> {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">i</span>);
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20v%20%3D%20vec!%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0A%20%20%20%20for%20i%20in%20v%20%7B%0A%20%20%20%20%20%20%20%20println!(%22%7B%7D%22%2C%20i)%3B%0A%20%20%20%20%7D%0A%7D">Run</a></pre></div>
+<p>Base usage:  for循环的等价代码</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+    {  <span class="comment">// 等价于for循环的scope</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">_iterator</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">into_iter</span>();
+        <span class="kw">loop</span> {
+            <span class="kw">match</span> <span class="ident">_iterator</span>.<span class="ident">next</span>() {
+                <span class="prelude-val">Some</span>(<span class="ident">i</span>) <span class="op">=&gt;</span> {
+                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">i</span>);
+                }
+               <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">break</span>,
+           }
+       }
+   }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20v%20%3D%20vec!%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0A%20%20%20%20%7B%20%20%2F%2F%20%E7%AD%89%E4%BB%B7%E4%BA%8Efor%E5%BE%AA%E7%8E%AF%E7%9A%84scope%0A%20%20%20%20%20%20%20%20let%20mut%20_iterator%20%3D%20v.into_iter()%3B%0A%20%20%20%20%20%20%20%20loop%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20match%20_iterator.next()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Some(i)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20println!(%22%7B%7D%22%2C%20i)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20None%20%3D%3E%20break%2C%0A%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%7D%0A%20%20%20%7D%0A%7D">Run</a></pre></div>
+<p>Base usage:  为自定义结构体实现Iterator</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">struct</span> <span class="ident">Counter</span> {
+    <span class="ident">count</span>: <span class="ident">usize</span>,
+}
+<span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Counter</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">usize</span>;
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">count</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">count</span> <span class="op">&lt;</span> <span class="number">6</span> {
+            <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">count</span>)
+       } <span class="kw">else</span> {
+           <span class="prelude-val">None</span>
+       }
+   }
+}
+<span class="kw">fn</span> <span class="ident">main</span>() {
+   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">counter</span> <span class="op">=</span> <span class="ident">Counter</span> { <span class="ident">count</span>: <span class="number">0</span> };
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="ident">counter</span>.<span class="ident">next</span>());
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">2</span>), <span class="ident">counter</span>.<span class="ident">next</span>());
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">3</span>), <span class="ident">counter</span>.<span class="ident">next</span>());
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">4</span>), <span class="ident">counter</span>.<span class="ident">next</span>());
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">5</span>), <span class="ident">counter</span>.<span class="ident">next</span>());
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">None</span>, <span class="ident">counter</span>.<span class="ident">next</span>());
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Astruct%20Counter%20%7B%0A%20%20%20%20count%3A%20usize%2C%0A%7D%0Aimpl%20Iterator%20for%20Counter%20%7B%0A%20%20%20%20type%20Item%20%3D%20usize%3B%0A%20%20%20%20fn%20next(%26mut%20self)%20-%3E%20Option%3Cusize%3E%20%7B%0A%20%20%20%20%20%20%20%20self.count%20%2B%3D%201%3B%0A%20%20%20%20%20%20%20%20if%20self.count%20%3C%206%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Some(self.count)%0A%20%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20None%0A%20%20%20%20%20%20%20%7D%0A%20%20%20%7D%0A%7D%0Afn%20main()%20%7B%0A%20%20%20let%20mut%20counter%20%3D%20Counter%20%7B%20count%3A%200%20%7D%3B%0A%20%20%20assert_eq!(Some(1)%2C%20counter.next())%3B%0A%20%20%20assert_eq!(Some(2)%2C%20counter.next())%3B%0A%20%20%20assert_eq!(Some(3)%2C%20counter.next())%3B%0A%20%20%20assert_eq!(Some(4)%2C%20counter.next())%3B%0A%20%20%20assert_eq!(Some(5)%2C%20counter.next())%3B%0A%20%20%20assert_eq!(None%2C%20counter.next())%3B%0A%7D">Run</a></pre></div>
+<p>Base usage:  size_hint方法，可获取迭代器剩余长度的边界信息</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">a</span> : [<span class="ident">i32</span>; <span class="number">3</span>]<span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">iter</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>((<span class="number">3</span>, <span class="prelude-val">Some</span>(<span class="number">3</span>)), <span class="ident">iter</span>.<span class="ident">size_hint</span>());
+    <span class="ident">iter</span>.<span class="ident">next</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>((<span class="number">2</span>, <span class="prelude-val">Some</span>(<span class="number">2</span>)), <span class="ident">iter</span>.<span class="ident">size_hint</span>());
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20a%20%3A%20%5Bi32%3B%203%5D%3D%20%5B1%2C%202%2C%203%5D%3B%0A%20%20%20%20let%20mut%20iter%20%3D%20a.iter()%3B%0A%20%20%20%20assert_eq!((3%2C%20Some(3))%2C%20iter.size_hint())%3B%0A%20%20%20%20iter.next()%3B%0A%20%20%20%20assert_eq!((2%2C%20Some(2))%2C%20iter.size_hint())%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 切片实现了Iter和IterMut</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>(){
+    <span class="kw">let</span> <span class="ident">arr</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">arr</span>.<span class="ident">iter</span>() {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">i</span>);
+    }
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">arr</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%7B%0A%20%20%20%20let%20arr%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0A%20%20%20%20for%20i%20in%20arr.iter()%20%7B%0A%20%20%20%20%20%20%20%20println!(%22%7B%3A%3F%7D%22%2C%20i)%3B%0A%20%20%20%20%7D%0A%20%20%20%20println!(%22%7B%3A%3F%7D%22%2C%20arr)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: Map是Rust里最常见的迭代器适配器</p>
+<p>此示例还包括了其他适配器</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">arr1</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+    <span class="kw">let</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">arr1</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">x</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;&gt;</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">c1</span>[..], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]);
+    <span class="kw">let</span> <span class="ident">arr2</span> <span class="op">=</span> [<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;h&quot;</span>];
+    <span class="kw">let</span> <span class="ident">c2</span> <span class="op">=</span> <span class="ident">arr2</span>.<span class="ident">iter</span>().<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">parse</span>().<span class="ident">ok</span>())
+                          .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;&gt;</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">c2</span>[..], [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]);
+    <span class="kw">let</span> <span class="ident">arr3</span> <span class="op">=</span> [<span class="string">&#39;a&#39;</span>, <span class="string">&#39;b&#39;</span>, <span class="string">&#39;c&#39;</span>];
+   <span class="kw">for</span> (<span class="ident">idx</span>, <span class="ident">val</span>) <span class="kw">in</span> <span class="ident">arr3</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
+       <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;idx: {:?}, val: {}&quot;</span>, <span class="ident">idx</span>, <span class="ident">val</span>.<span class="ident">to_uppercase</span>());
+   }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20arr1%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0A%20%20%20%20let%20c1%20%3D%20arr1.iter().map(%7Cx%7C%202%20*%20x).collect%3A%3A%3CVec%3Ci32%3E%3E()%3B%0A%20%20%20%20assert_eq!(%26c1%5B..%5D%2C%20%5B2%2C%204%2C%206%2C%208%2C%2010%5D)%3B%0A%20%20%20%20let%20arr2%20%3D%20%5B%221%22%2C%20%222%22%2C%20%223%22%2C%20%22h%22%5D%3B%0A%20%20%20%20let%20c2%20%3D%20arr2.iter().filter_map(%7Cx%7C%20x.parse().ok())%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.collect%3A%3A%3CVec%3Ci32%3E%3E()%3B%0A%20%20%20%20assert_eq!(%26c2%5B..%5D%2C%20%5B1%2C2%2C3%5D)%3B%0A%20%20%20%20let%20arr3%20%3D%20%5B'a'%2C%20'b'%2C%20'c'%5D%3B%0A%20%20%20for%20(idx%2C%20val)%20in%20arr3.iter().enumerate()%20%7B%0A%20%20%20%20%20%20%20println!(%22idx%3A%20%7B%3A%3F%7D%2C%20val%3A%20%7B%7D%22%2C%20idx%2C%20val.to_uppercase())%3B%0A%20%20%20%7D%0A%7D">Run</a></pre></div>
+<p>Base usage: Rev 反向迭代器适配器</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">iter</span>().<span class="ident">rev</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">3</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">2</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">1</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20a%20%3D%20%5B1%2C%202%2C%203%5D%3B%0A%20%20%20%20let%20mut%20iter%20%3D%20a.iter().rev()%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20Some(%263))%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20Some(%262))%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20Some(%261))%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20None)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: next_back方法示意</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">numbers</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">numbers</span>.<span class="ident">into_iter</span>();
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="ident">iter</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">6</span>), <span class="ident">iter</span>.<span class="ident">next_back</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">5</span>), <span class="ident">iter</span>.<span class="ident">next_back</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">2</span>), <span class="ident">iter</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">3</span>), <span class="ident">iter</span>.<span class="ident">next</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">4</span>), <span class="ident">iter</span>.<span class="ident">next</span>());
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">None</span>, <span class="ident">iter</span>.<span class="ident">next</span>());
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">None</span>, <span class="ident">iter</span>.<span class="ident">next_back</span>());
+}
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">x</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="number">2</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="number">4</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="number">6</span>));
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20numbers%20%3D%20vec!%5B1%2C%202%2C%203%2C%204%2C%205%2C%206%5D%3B%0A%20%20%20%20let%20mut%20iter%20%3D%20numbers.into_iter()%3B%0A%20%20%20%20assert_eq!(Some(1)%2C%20iter.next())%3B%0A%20%20%20%20assert_eq!(Some(6)%2C%20iter.next_back())%3B%0A%20%20%20%20assert_eq!(Some(5)%2C%20iter.next_back())%3B%0A%20%20%20%20assert_eq!(Some(2)%2C%20iter.next())%3B%0A%20%20%20%20assert_eq!(Some(3)%2C%20iter.next())%3B%0A%20%20%20%20assert_eq!(Some(4)%2C%20iter.next())%3B%0A%20%20%20assert_eq!(None%2C%20iter.next())%3B%0A%20%20%20assert_eq!(None%2C%20iter.next_back())%3B%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20a%20%3D%20%5B1%2C%202%2C%203%5D%3B%0A%20%20%20%20let%20mut%20iter%20%3D%20a.into_iter().map(%7Cx%7C%202%20*%20x)%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20Some(2))%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20Some(4))%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20Some(6))%3B%0A%20%20%20%20assert_eq!(iter.next()%2C%20None)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 消费器any和fold示意</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">a</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">!=</span> <span class="number">2</span>), <span class="bool-val">true</span>);
+    <span class="kw">let</span> <span class="ident">sum</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">x</span><span class="op">|</span> <span class="ident">acc</span> <span class="op">+</span> <span class="ident">x</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum</span>, <span class="number">6</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20a%20%3D%20%5B1%2C%202%2C%203%5D%3B%0A%20%20%20%20assert_eq!(a.iter().any(%7C%26x%7C%20x%20!%3D%202)%2C%20true)%3B%0A%20%20%20%20let%20sum%20%3D%20a.iter().fold(0%2C%20%7Cacc%2C%20x%7C%20acc%20%2B%20x)%3B%0A%20%20%20%20assert_eq!(sum%2C%206)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: any示例</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">arr</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+    <span class="kw">let</span> <span class="ident">result1</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">!=</span> <span class="number">2</span>);
+    <span class="kw">let</span> <span class="ident">result2</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">!=</span> <span class="number">2</span>);
+    <span class="comment">// error:</span>
+    <span class="comment">// the trait bound `&amp;{integer}: std::cmp::PartialEq&lt;{integer}&gt;` is not satisfied</span>
+    <span class="comment">// let result2 = arr.iter().any(|x| x != 2);</span>
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">result1</span>, <span class="bool-val">true</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">result2</span>, <span class="bool-val">true</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20arr%20%3D%20%5B1%2C%202%2C%203%5D%3B%0A%20%20%20%20let%20result1%20%3D%20arr.iter().any(%7C%26x%7C%20x%20!%3D%202)%3B%0A%20%20%20%20let%20result2%20%3D%20arr.iter().any(%7Cx%7C%20*x%20!%3D%202)%3B%0A%20%20%20%20%2F%2F%20error%3A%0A%20%20%20%20%2F%2F%20the%20trait%20bound%20%60%26%7Binteger%7D%3A%20std%3A%3Acmp%3A%3APartialEq%3C%7Binteger%7D%3E%60%20is%20not%20satisfied%0A%20%20%20%20%2F%2F%20let%20result2%20%3D%20arr.iter().any(%7Cx%7C%20x%20!%3D%202)%3B%0A%20%20%20%20assert_eq!(result1%2C%20true)%3B%0A%20%20%20%20assert_eq!(result2%2C%20true)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 使用fold对数组求和</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">arr</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+    <span class="kw">let</span> <span class="ident">sum1</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">x</span><span class="op">|</span> <span class="ident">acc</span> <span class="op">+</span> <span class="ident">x</span>);
+    <span class="kw">let</span> <span class="ident">sum2</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">x</span><span class="op">|</span> <span class="ident">acc</span> <span class="op">+</span> <span class="kw-2">*</span><span class="ident">x</span>);
+    <span class="kw">let</span> <span class="ident">sum3</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">acc</span> <span class="op">+</span> <span class="ident">x</span>);
+    <span class="kw">let</span> <span class="ident">sum4</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">into_iter</span>().<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">x</span><span class="op">|</span> <span class="ident">acc</span> <span class="op">+</span> <span class="ident">x</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum1</span>, <span class="number">6</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum2</span>, <span class="number">6</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum3</span>, <span class="number">6</span>);
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum4</span>, <span class="number">6</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%20%20%20%20let%20arr%20%3D%20vec!%5B1%2C%202%2C%203%5D%3B%0A%20%20%20%20let%20sum1%20%3D%20arr.iter().fold(0%2C%20%7Cacc%2C%20x%7C%20acc%20%2B%20x)%3B%0A%20%20%20%20let%20sum2%20%3D%20arr.iter().fold(0%2C%20%7Cacc%2C%20x%7C%20acc%20%2B%20*x)%3B%0A%20%20%20%20let%20sum3%20%3D%20arr.iter().fold(0%2C%20%7Cacc%2C%20%26x%7C%20acc%20%2B%20x)%3B%0A%20%20%20%20let%20sum4%20%3D%20arr.into_iter().fold(0%2C%20%7Cacc%2C%20x%7C%20acc%20%2B%20x)%3B%0A%20%20%20%20assert_eq!(sum1%2C%206)%3B%0A%20%20%20%20assert_eq!(sum2%2C%206)%3B%0A%20%20%20%20assert_eq!(sum3%2C%206)%3B%0A%20%20%20assert_eq!(sum4%2C%206)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 自定义集合MyVec实现FromIterator</p>
+<p>实现FromIterator就可以拥有Collect的能力</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>::<span class="ident">FromIterator</span>;
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">MyVec</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>);
+<span class="kw">impl</span> <span class="ident">MyVec</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">MyVec</span> {
+        <span class="ident">MyVec</span>(<span class="ident">Vec</span>::<span class="ident">new</span>())
+    }
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">elem</span>: <span class="ident">i32</span>) {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">elem</span>);
+   }
+}
+<span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MyVec</span> {
+   <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">i32</span><span class="op">&gt;&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+       <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">MyVec</span>::<span class="ident">new</span>();
+       <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">iter</span> {
+           <span class="ident">c</span>.<span class="ident">add</span>(<span class="ident">i</span>);
+       }
+       <span class="ident">c</span>
+   }
+}
+<span class="kw">fn</span> <span class="ident">main</span>() {
+   <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> (<span class="number">0</span>..<span class="number">5</span>).<span class="ident">into_iter</span>();
+   <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">MyVec</span>::<span class="ident">from_iter</span>(<span class="ident">iter</span>);
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">c</span>.<span class="number">0</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);
+   <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> (<span class="number">0</span>..<span class="number">5</span>).<span class="ident">into_iter</span>();
+   <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">MyVec</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">collect</span>();
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">c</span>.<span class="number">0</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);
+   <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> (<span class="number">0</span>..<span class="number">5</span>).<span class="ident">into_iter</span>();
+   <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">MyVec</span><span class="op">&gt;</span>();
+   <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">c</span>.<span class="number">0</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Ause%20std%3A%3Aiter%3A%3AFromIterator%3B%0A%23%5Bderive(Debug)%5D%0Astruct%20MyVec(Vec%3Ci32%3E)%3B%0Aimpl%20MyVec%20%7B%0A%20%20%20%20fn%20new()%20-%3E%20MyVec%20%7B%0A%20%20%20%20%20%20%20%20MyVec(Vec%3A%3Anew())%0A%20%20%20%20%7D%0A%20%20%20%20fn%20add(%26mut%20self%2C%20elem%3A%20i32)%20%7B%0A%20%20%20%20%20%20%20%20self.0.push(elem)%3B%0A%20%20%20%7D%0A%7D%0Aimpl%20FromIterator%3Ci32%3E%20for%20MyVec%20%7B%0A%20%20%20fn%20from_iter%3CI%3A%20IntoIterator%3CItem%20%3D%20i32%3E%3E(iter%3A%20I)%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20let%20mut%20c%20%3D%20MyVec%3A%3Anew()%3B%0A%20%20%20%20%20%20%20for%20i%20in%20iter%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20c.add(i)%3B%0A%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20c%0A%20%20%20%7D%0A%7D%0Afn%20main()%20%7B%0A%20%20%20let%20iter%20%3D%20(0..5).into_iter()%3B%0A%20%20%20let%20c%20%3D%20MyVec%3A%3Afrom_iter(iter)%3B%0A%20%20%20assert_eq!(c.0%2C%20vec!%5B0%2C%201%2C%202%2C%203%2C%204%5D)%3B%0A%20%20%20let%20iter%20%3D%20(0..5).into_iter()%3B%0A%20%20%20let%20c%3A%20MyVec%20%3D%20iter.collect()%3B%0A%20%20%20assert_eq!(c.0%2C%20vec!%5B0%2C%201%2C%202%2C%203%2C%204%5D)%3B%0A%20%20%20let%20iter%20%3D%20(0..5).into_iter()%3B%0A%20%20%20let%20c%20%3D%20iter.collect%3A%3A%3CMyVec%3E()%3B%0A%20%20%20assert_eq!(c.0%2C%20vec!%5B0%2C%201%2C%202%2C%203%2C%204%5D)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 自定义适配器</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;iterator adaptors are lazy and do nothing unless consumed&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Step</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
+    <span class="ident">iter</span>: <span class="ident">I</span>,
+    <span class="ident">skip</span>: <span class="ident">usize</span>,
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Step</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span>,
+    {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">I</span>::<span class="ident">Item</span>;
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">elt</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>();
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">skip</span> <span class="op">&gt;</span> <span class="number">0</span> {
+            <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth</span>(<span class="self">self</span>.<span class="ident">skip</span> <span class="op">-</span> <span class="number">1</span>);
+        }
+       <span class="ident">elt</span>
+   }
+}
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">step</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>, <span class="ident">step</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">Step</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
+<span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span>,
+{
+    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">step</span> <span class="op">!=</span> <span class="number">0</span>);
+    <span class="ident">Step</span> {
+        <span class="ident">iter</span>: <span class="ident">iter</span>,
+            <span class="ident">skip</span>: <span class="ident">step</span> <span class="op">-</span> <span class="number">1</span>,
+    }
+}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IterExt</span>: <span class="ident">Iterator</span> {
+    <span class="kw">fn</span> <span class="ident">step</span>(<span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">Step</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
+    {
+        <span class="ident">step</span>(<span class="self">self</span>, <span class="ident">n</span>)
+    }
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">IterExt</span> <span class="kw">for</span> <span class="ident">T</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Iterator</span> {}
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">arr</span> <span class="op">=</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>];
+    <span class="kw">let</span> <span class="ident">sum</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">iter</span>().<span class="ident">step</span>(<span class="number">2</span>).<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">x</span><span class="op">|</span> <span class="ident">acc</span> <span class="op">+</span> <span class="ident">x</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">9</span>, <span class="ident">sum</span>); <span class="comment">// [1, 3, 5]</span>
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23%5Bderive(Clone%2C%20Debug)%5D%0A%23%5Bmust_use%20%3D%20%22iterator%20adaptors%20are%20lazy%20and%20do%20nothing%20unless%20consumed%22%5D%0Apub%20struct%20Step%3CI%3E%20%7B%0A%20%20%20%20iter%3A%20I%2C%0A%20%20%20%20skip%3A%20usize%2C%0A%7D%0Aimpl%3CI%3E%20Iterator%20for%20Step%3CI%3E%0A%20%20%20%20where%20I%3A%20Iterator%2C%0A%20%20%20%20%7B%0A%20%20%20%20type%20Item%20%3D%20I%3A%3AItem%3B%0A%20%20%20%20fn%20next(%26mut%20self)%20-%3E%20Option%3CI%3A%3AItem%3E%20%7B%0A%20%20%20%20%20%20%20%20let%20elt%20%3D%20self.iter.next()%3B%0A%20%20%20%20%20%20%20%20if%20self.skip%20%3E%200%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20self.iter.nth(self.skip%20-%201)%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20elt%0A%20%20%20%7D%0A%7D%0Apub%20fn%20step%3CI%3E(iter%3A%20I%2C%20step%3A%20usize)%20-%3E%20Step%3CI%3E%0Awhere%20I%3A%20Iterator%2C%0A%7B%0A%20%20%20%20assert!(step%20!%3D%200)%3B%0A%20%20%20%20Step%20%7B%0A%20%20%20%20%20%20%20%20iter%3A%20iter%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20skip%3A%20step%20-%201%2C%0A%20%20%20%20%7D%0A%7D%0Apub%20trait%20IterExt%3A%20Iterator%20%7B%0A%20%20%20%20fn%20step(self%2C%20n%3A%20usize)%20-%3E%20Step%3CSelf%3E%0A%20%20%20%20where%20Self%3A%20Sized%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20step(self%2C%20n)%0A%20%20%20%20%7D%0A%7D%0Aimpl%3CT%3A%20%3FSized%3E%20IterExt%20for%20T%20where%20T%3A%20Iterator%20%7B%7D%0Afn%20main()%20%7B%0A%20%20%20%20let%20arr%20%3D%20%5B1%2C2%2C3%2C4%2C5%2C6%5D%3B%0A%20%20%20%20let%20sum%20%3D%20arr.iter().step(2).fold(0%2C%20%7Cacc%2C%20x%7C%20acc%20%2B%20x)%3B%0A%20%20%20%20assert_eq!(9%2C%20sum)%3B%20%2F%2F%20%5B1%2C%203%2C%205%5D%0A%7D">Run</a></pre></div>
+<p>Base usage: 第三方包Itertools中实现的Positions适配器示例</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;iterator adaptors are lazy and do nothing unless consumed&quot;</span>]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Positions</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span> {
+    <span class="ident">iter</span>: <span class="ident">I</span>,
+    <span class="ident">f</span>: <span class="ident">F</span>,
+    <span class="ident">count</span>: <span class="ident">usize</span>,
+}
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">positions</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">Positions</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span>,
+   <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">I</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>,
+   {
+   <span class="ident">Positions</span> {
+       <span class="ident">iter</span>: <span class="ident">iter</span>,
+       <span class="ident">f</span>: <span class="ident">f</span>,
+       <span class="ident">count</span>: <span class="number">0</span>
+   }
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Positions</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span>
+   <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span>,
+   <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">I</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>,
+{
+   <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">usize</span>;
+   <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+       <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>() {
+           <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">count</span>;
+           <span class="self">self</span>.<span class="ident">count</span> <span class="op">=</span> <span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>;
+           <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">f</span>)(<span class="ident">v</span>) {
+               <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">i</span>);
+           }
+      }
+      <span class="prelude-val">None</span>
+   }
+   <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+       (<span class="number">0</span>, <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">size_hint</span>().<span class="number">1</span>)
+   }
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">Positions</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span>
+   <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
+   <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">I</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>,
+{
+   <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+       <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>() {
+           <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">f</span>)(<span class="ident">v</span>) {
+               <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">count</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">len</span>())
+           }
+       }
+       <span class="prelude-val">None</span>
+  }
+}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Itertools</span>: <span class="ident">Iterator</span> {
+   <span class="kw">fn</span> <span class="ident">positions</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="ident">Positions</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">P</span><span class="op">&gt;</span>
+   <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
+   <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>,
+   {
+       <span class="ident">positions</span>(<span class="self">self</span>, <span class="ident">predicate</span>)
+   }
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Itertools</span> <span class="kw">for</span> <span class="ident">T</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Iterator</span> {}
+<span class="kw">fn</span> <span class="ident">main</span>() {
+   <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>];
+   <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">iter</span>().<span class="ident">positions</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span> <span class="op">%</span> <span class="number">3</span> <span class="op">==</span> <span class="number">0</span>);
+   <span class="kw">let</span> <span class="ident">rev_r</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">iter</span>().<span class="ident">positions</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span> <span class="op">%</span> <span class="number">3</span> <span class="op">==</span> <span class="number">0</span>).<span class="ident">rev</span>();
+   <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">r</span> { <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">i</span>); } <span class="comment">// OUTPUT: 2  3  5 7</span>
+   <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">rev_r</span> { <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">i</span>); } <span class="comment">// OUTPUT: 7 5 3 2</span>
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23%5Bmust_use%20%3D%20%22iterator%20adaptors%20are%20lazy%20and%20do%20nothing%20unless%20consumed%22%5D%0A%23%5Bderive(Debug)%5D%0Apub%20struct%20Positions%3CI%2C%20F%3E%20%7B%0A%20%20%20%20iter%3A%20I%2C%0A%20%20%20%20f%3A%20F%2C%0A%20%20%20%20count%3A%20usize%2C%0A%7D%0Apub%20fn%20positions%3CI%2C%20F%3E(iter%3A%20I%2C%20f%3A%20F)%20-%3E%20Positions%3CI%2C%20F%3E%0A%20%20%20%20where%20I%3A%20Iterator%2C%0A%20%20%20F%3A%20FnMut(I%3A%3AItem)%20-%3E%20bool%2C%0A%20%20%20%7B%0A%20%20%20Positions%20%7B%0A%20%20%20%20%20%20%20iter%3A%20iter%2C%0A%20%20%20%20%20%20%20f%3A%20f%2C%0A%20%20%20%20%20%20%20count%3A%200%0A%20%20%20%7D%0A%7D%0Aimpl%3CI%2C%20F%3E%20Iterator%20for%20Positions%3CI%2C%20F%3E%0A%20%20%20where%20I%3A%20Iterator%2C%0A%20%20%20F%3A%20FnMut(I%3A%3AItem)%20-%3E%20bool%2C%0A%7B%0A%20%20%20type%20Item%20%3D%20usize%3B%0A%20%20%20fn%20next(%26mut%20self)%20-%3E%20Option%3CSelf%3A%3AItem%3E%20%7B%0A%20%20%20%20%20%20%20while%20let%20Some(v)%20%3D%20self.iter.next()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20let%20i%20%3D%20self.count%3B%0A%20%20%20%20%20%20%20%20%20%20%20self.count%20%3D%20i%20%2B%201%3B%0A%20%20%20%20%20%20%20%20%20%20%20if%20(self.f)(v)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20Some(i)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20None%0A%20%20%20%7D%0A%20%20%20fn%20size_hint(%26self)%20-%3E%20(usize%2C%20Option%3Cusize%3E)%20%7B%0A%20%20%20%20%20%20%20(0%2C%20self.iter.size_hint().1)%0A%20%20%20%7D%0A%7D%0Aimpl%3CI%2C%20F%3E%20DoubleEndedIterator%20for%20Positions%3CI%2C%20F%3E%0A%20%20%20where%20I%3A%20DoubleEndedIterator%20%2B%20ExactSizeIterator%2C%0A%20%20%20F%3A%20FnMut(I%3A%3AItem)%20-%3E%20bool%2C%0A%7B%0A%20%20%20fn%20next_back(%26mut%20self)%20-%3E%20Option%3CSelf%3A%3AItem%3E%20%7B%0A%20%20%20%20%20%20%20while%20let%20Some(v)%20%3D%20self.iter.next_back()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20if%20(self.f)(v)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20Some(self.count%20%2B%20self.iter.len())%0A%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20None%0A%20%20%7D%0A%7D%0Apub%20trait%20Itertools%3A%20Iterator%20%7B%0A%20%20%20fn%20positions%3CP%3E(self%2C%20predicate%3A%20P)%20-%3E%20Positions%3CSelf%2C%20P%3E%0A%20%20%20where%20Self%3A%20Sized%2C%0A%20%20%20P%3A%20FnMut(Self%3A%3AItem)%20-%3E%20bool%2C%0A%20%20%20%7B%0A%20%20%20%20%20%20%20positions(self%2C%20predicate)%0A%20%20%20%7D%0A%7D%0Aimpl%3CT%3A%20%3FSized%3E%20Itertools%20for%20T%20where%20T%3A%20Iterator%20%7B%7D%0Afn%20main()%20%7B%0A%20%20%20let%20data%20%3D%20vec!%5B1%2C%202%2C%203%2C%203%2C%204%2C%206%2C%207%2C%209%5D%3B%0A%20%20%20let%20r%20%3D%20data.iter().positions(%7Cv%7C%20v%20%25%203%20%3D%3D%200)%3B%0A%20%20%20let%20rev_r%20%3D%20data.iter().positions(%7Cv%7C%20v%20%25%203%20%3D%3D%200).rev()%3B%0A%20%20%20for%20i%20in%20r%20%7B%20println!(%22%7B%3A%3F%7D%22%2C%20i)%3B%20%7D%20%2F%2F%20OUTPUT%3A%202%20%203%20%205%207%0A%20%20%20for%20i%20in%20rev_r%20%7B%20println!(%22%7B%3A%3F%7D%22%2C%20i)%3B%20%7D%20%2F%2F%20OUTPUT%3A%207%205%203%202%0A%7D">Run</a></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

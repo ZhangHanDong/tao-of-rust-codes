@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["compare_size","动态大小类型：比较`&[u32; 5]`和`&mut [u32]`的空间占用"],["reset","动态大小类型：`[T]` ### 探索数组"],["str_compose","动态大小类型：str ### 探索&str的组成"]]});

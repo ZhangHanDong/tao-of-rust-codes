@@ -21,6 +21,12 @@ _注意：本书代码的平台是Linux或macOS_
 - `Rust stable 1.28 + `
 - `Rust Nightly 1.30 +`
 
+输出文档时指定target目录：
+
+```
+$ cargo doc --target-dir ./ 
+```
+
 ### 使用说明：
 
 ```shell

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["contract","使用Unsafe进行安全抽象"],["drop_ck_test","Drop检查"],["forget_drop","使用`std::mem::forget`跳过Drop"],["manually_drop","使用`std::mem:ManuallyDrop`手工Drop"],["unbound_lifetime","未绑定生命周期（Unbound Lifetime）"],["variances","子类型和型变（variance）"]]});

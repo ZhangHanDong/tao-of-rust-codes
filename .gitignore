@@ -4,3 +4,5 @@
 Cargo.lock
 .DS_Store
 .vscode
+/debug
+.rustc_info.json

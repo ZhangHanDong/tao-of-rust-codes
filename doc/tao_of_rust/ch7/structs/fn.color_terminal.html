@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `color_terminal` fn in crate `tao_of_rust`."><meta name="keywords" content="rust, rustlang, rust-lang, color_terminal"><title>tao_of_rust::ch7::structs::color_terminal - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc fn"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><div class="sidebar-elems"><p class='location'><a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch7</a>::<wbr><a href='index.html'>structs</a></p><script>window.sidebarCurrent = {name: 'color_terminal', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/tao_of_rust/ch7/structs.rs.html#337-339' title='goto source code'>[src]</a></span><span class='in-band'>Function <a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch7</a>::<wbr><a href='index.html'>structs</a>::<wbr><a class="fn" href=''>color_terminal</a></span></h1><pre class='rust fn'>pub fn color_terminal()</pre><div class='docblock'><h1 id="结构体-面向对象示例" class="section-header"><a href="#结构体-面向对象示例">结构体: 面向对象示例</a></h1>
+<p>Base usage: 让终端的输出带上颜色 color.rs</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
+
+<span class="kw">struct</span> <span class="ident">ColoredString</span> {
+    <span class="ident">input</span>: <span class="ident">String</span>,
+    <span class="ident">fgcolor</span>: <span class="ident">String</span>,
+    <span class="ident">bgcolor</span>: <span class="ident">String</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ColoredString</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">ColoredString</span> {
+            <span class="ident">input</span>: <span class="ident">String</span>::<span class="ident">default</span>(),
+            <span class="ident">fgcolor</span>: <span class="ident">String</span>::<span class="ident">new</span>(),
+            <span class="ident">bgcolor</span>: <span class="ident">String</span>::<span class="ident">new</span>(),
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">ColoredString</span>{
+    <span class="kw">fn</span> <span class="ident">compute_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;\x1B[&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">has_wrote</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">bgcolor</span>.<span class="ident">is_empty</span>() {
+            <span class="ident">res</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bgcolor</span>);
+            <span class="ident">has_wrote</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        }
+        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">fgcolor</span>.<span class="ident">is_empty</span>() {
+            <span class="kw">if</span> <span class="ident">has_wrote</span> {
+                <span class="ident">res</span>.<span class="ident">push</span>(<span class="string">&#39;;&#39;</span>);
+            }
+            <span class="ident">res</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fgcolor</span>);
+        }
+        <span class="ident">res</span>.<span class="ident">push</span>(<span class="string">&#39;m&#39;</span>);
+        <span class="ident">res</span>
+    }
+}
+
+<span class="kw">trait</span> <span class="ident">Colorize</span> {
+    <span class="kw">fn</span> <span class="ident">red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">on_yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Colorize</span> <span class="kw">for</span> <span class="ident">ColoredString</span> {
+    <span class="kw">fn</span> <span class="ident">red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span>{ <span class="ident">fgcolor</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;31&quot;</span>), ..<span class="self">self</span>  }
+    }
+    <span class="kw">fn</span> <span class="ident">on_yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span> { <span class="ident">bgcolor</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;43&quot;</span>), ..<span class="self">self</span> }
+    }
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Colorize</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span> {
+            <span class="ident">fgcolor</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;31&quot;</span>),
+            <span class="ident">input</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="self">self</span>),
+            ..<span class="ident">ColoredString</span>::<span class="ident">default</span>()
+        }
+    }
+    <span class="kw">fn</span> <span class="ident">on_yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span> {
+            <span class="ident">bgcolor</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;43&quot;</span>),
+            <span class="ident">input</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="self">self</span>),
+            ..<span class="ident">ColoredString</span>::<span class="ident">default</span>()
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ColoredString</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">input</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">input</span>.<span class="ident">clone</span>();
+        <span class="macro">try</span><span class="macro">!</span>(<span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">compute_style</span>()));
+        <span class="macro">try</span><span class="macro">!</span>(<span class="ident">f</span>.<span class="ident">write_str</span>(<span class="ident">input</span>));
+        <span class="macro">try</span><span class="macro">!</span>(<span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;\x1B[0m&quot;</span>));
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="comment">/*
+格式参考
+$ echo &quot;\e[31;43mHello\e[0m&quot;
+$ echo &quot;\x1B[31;43mHello\x1B[0m&quot;
+$ echo &quot;\033[31;43mHello\033[0m&quot;
+
+*/</span>
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">hi</span> <span class="op">=</span> <span class="string">&quot;Hello&quot;</span>.<span class="ident">red</span>().<span class="ident">on_yellow</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">hi</span>);
+    <span class="kw">let</span> <span class="ident">hi</span> <span class="op">=</span> <span class="string">&quot;Hello&quot;</span>.<span class="ident">on_yellow</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">hi</span>);
+    <span class="kw">let</span> <span class="ident">hi</span> <span class="op">=</span> <span class="string">&quot;Hello&quot;</span>.<span class="ident">red</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">hi</span>);
+    <span class="kw">let</span> <span class="ident">hi</span> <span class="op">=</span> <span class="string">&quot;Hello&quot;</span>.<span class="ident">on_yellow</span>().<span class="ident">red</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">hi</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Ause%20std%3A%3Afmt%3B%0A%0Astruct%20ColoredString%20%7B%0A%20%20%20%20input%3A%20String%2C%0A%20%20%20%20fgcolor%3A%20String%2C%0A%20%20%20%20bgcolor%3A%20String%2C%0A%7D%0A%0Aimpl%20Default%20for%20ColoredString%20%7B%0A%20%20%20%20fn%20default()%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20input%3A%20String%3A%3Adefault()%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20fgcolor%3A%20String%3A%3Anew()%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20bgcolor%3A%20String%3A%3Anew()%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20ColoredString%7B%0A%20%20%20%20fn%20compute_style(%26self)%20-%3E%20String%20%7B%0A%20%20%20%20%20%20%20%20let%20mut%20res%20%3D%20String%3A%3Afrom(%22%5Cx1B%5B%22)%3B%0A%20%20%20%20%20%20%20%20let%20mut%20has_wrote%20%3D%20false%3B%0A%20%20%20%20%20%20%20%20if%20!self.bgcolor.is_empty()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20res.push_str(%26self.bgcolor)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20has_wrote%20%3D%20true%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20if%20!self.fgcolor.is_empty()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20has_wrote%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20res.push('%3B')%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20res.push_str(%26self.fgcolor)%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20res.push('m')%3B%0A%20%20%20%20%20%20%20%20res%0A%20%20%20%20%7D%0A%7D%0A%0Atrait%20Colorize%20%7B%0A%20%20%20%20fn%20red(self)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20on_yellow(self)%20-%3E%20ColoredString%3B%0A%7D%0Aimpl%3C'a%3E%20Colorize%20for%20ColoredString%20%7B%0A%20%20%20%20fn%20red(self)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%7B%20fgcolor%3A%20String%3A%3Afrom(%2231%22)%2C%20..self%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20fn%20on_yellow(self)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%20bgcolor%3A%20String%3A%3Afrom(%2243%22)%2C%20..self%20%7D%0A%20%20%20%20%7D%0A%7D%0Aimpl%3C'a%3E%20Colorize%20for%20%26'a%20str%20%7B%0A%20%20%20%20fn%20red(self)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20fgcolor%3A%20String%3A%3Afrom(%2231%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20input%3A%20String%3A%3Afrom(self)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20..ColoredString%3A%3Adefault()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20fn%20on_yellow(self)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20bgcolor%3A%20String%3A%3Afrom(%2243%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20input%3A%20String%3A%3Afrom(self)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20..ColoredString%3A%3Adefault()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20fmt%3A%3ADisplay%20for%20ColoredString%20%7B%0A%20%20%20%20fn%20fmt(%26self%2C%20f%3A%20%26mut%20fmt%3A%3AFormatter)%20-%3E%20fmt%3A%3AResult%20%7B%0A%20%20%20%20%20%20%20%20let%20mut%20input%20%3D%20%26self.input.clone()%3B%0A%20%20%20%20%20%20%20%20try!(f.write_str(%26self.compute_style()))%3B%0A%20%20%20%20%20%20%20%20try!(f.write_str(input))%3B%0A%20%20%20%20%20%20%20%20try!(f.write_str(%22%5Cx1B%5B0m%22))%3B%0A%20%20%20%20%20%20%20%20Ok(())%0A%20%20%20%20%7D%0A%7D%0A%0A%2F*%0A%E6%A0%BC%E5%BC%8F%E5%8F%82%E8%80%83%0A%24%20echo%20%22%5Ce%5B31%3B43mHello%5Ce%5B0m%22%0A%24%20echo%20%22%5Cx1B%5B31%3B43mHello%5Cx1B%5B0m%22%0A%24%20echo%20%22%5C033%5B31%3B43mHello%5C033%5B0m%22%0A%0A*%2F%0Afn%20main()%20%7B%0A%20%20%20%20let%20hi%20%3D%20%22Hello%22.red().on_yellow()%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20hi)%3B%0A%20%20%20%20let%20hi%20%3D%20%22Hello%22.on_yellow()%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20hi)%3B%0A%20%20%20%20let%20hi%20%3D%20%22Hello%22.red()%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20hi)%3B%0A%20%20%20%20let%20hi%20%3D%20%22Hello%22.on_yellow().red()%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20hi)%3B%0A%7D">Run</a></pre></div>
+<p>Base usage: 【重构】让终端的输出带上颜色 color.rs</p>
+<p>下面代码最好手工复制到<code>play.rust-lang.org</code>执行</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">From</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">String</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="kw">enum</span> <span class="ident">Color</span> {
+    <span class="ident">Red</span>,
+    <span class="ident">Yellow</span>,
+    <span class="ident">Blue</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Color</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_fg_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+            <span class="ident">Color</span>::<span class="ident">Red</span> <span class="op">=&gt;</span> <span class="string">&quot;31&quot;</span>,
+            <span class="ident">Color</span>::<span class="ident">Yellow</span> <span class="op">=&gt;</span> <span class="string">&quot;33&quot;</span>,
+            <span class="ident">Color</span>::<span class="ident">Blue</span> <span class="op">=&gt;</span> <span class="string">&quot;34&quot;</span>,
+        }
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_bg_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+            <span class="ident">Color</span>::<span class="ident">Red</span> <span class="op">=&gt;</span> <span class="string">&quot;41&quot;</span>,
+            <span class="ident">Color</span>::<span class="ident">Yellow</span> <span class="op">=&gt;</span> <span class="string">&quot;43&quot;</span>,
+            <span class="ident">Color</span>::<span class="ident">Blue</span> <span class="op">=&gt;</span> <span class="string">&quot;44&quot;</span>,
+        }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">src</span>.<span class="ident">parse</span>().<span class="ident">unwrap_or</span>(<span class="ident">Color</span>::<span class="ident">Red</span>)
+    }
+}
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Color</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">src</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">src</span>.<span class="ident">parse</span>().<span class="ident">unwrap_or</span>(<span class="ident">Color</span>::<span class="ident">Red</span>)
+    }
+}
+<span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">Color</span> {
+    <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ();
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">to_lowercase</span>();
+        <span class="kw">match</span> <span class="ident">src</span>.<span class="ident">as_ref</span>() {
+            <span class="string">&quot;red&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Color</span>::<span class="ident">Red</span>),
+            <span class="string">&quot;yellow&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>),
+            <span class="string">&quot;blue&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Color</span>::<span class="ident">Blue</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(()),
+        }
+    }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="kw">struct</span> <span class="ident">ColoredString</span> {
+    <span class="ident">input</span>: <span class="ident">String</span>,
+    <span class="ident">fgcolor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
+    <span class="ident">bgcolor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
+}
+
+
+
+<span class="kw">impl</span> <span class="ident">ColoredString</span> {
+    <span class="kw">fn</span> <span class="ident">compute_style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;\x1B[&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">has_wrote</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">bgcolor</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">bgcolor</span> {
+            <span class="kw">if</span> <span class="ident">has_wrote</span> {
+                <span class="ident">res</span>.<span class="ident">push</span>(<span class="string">&#39;;&#39;</span>);
+            }
+            <span class="ident">res</span>.<span class="ident">push_str</span>(<span class="ident">bgcolor</span>.<span class="ident">to_bg_str</span>());
+            <span class="ident">has_wrote</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">fgcolor</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">fgcolor</span> {
+            <span class="kw">if</span> <span class="ident">has_wrote</span> {
+                <span class="ident">res</span>.<span class="ident">push</span>(<span class="string">&#39;;&#39;</span>);
+            }
+            <span class="ident">res</span>.<span class="ident">push_str</span>(<span class="ident">fgcolor</span>.<span class="ident">to_fg_str</span>());
+        }
+        <span class="ident">res</span>.<span class="ident">push</span>(<span class="string">&#39;m&#39;</span>);
+        <span class="ident">res</span>
+    }
+}
+
+
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ColoredString</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">ColoredString</span> {
+            <span class="ident">input</span>: <span class="ident">String</span>::<span class="ident">default</span>(),
+            <span class="ident">fgcolor</span>: <span class="prelude-val">None</span>,
+            <span class="ident">bgcolor</span>: <span class="prelude-val">None</span>,
+        }
+    }
+}
+
+<span class="comment">// impl&lt;&#39;a&gt; From&lt;&amp;&#39;a str&gt; for ColoredString {</span>
+<span class="comment">//     fn from(s: &amp;&#39;a str) -&gt; Self {</span>
+<span class="comment">//         ColoredString { input: String::from(s), ..ColoredString::default() }</span>
+<span class="comment">//     }</span>
+<span class="comment">// }</span>
+
+<span class="kw">trait</span> <span class="ident">Colorize</span> {
+    <span class="kw">fn</span> <span class="ident">red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">blue</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">color</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">on_red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">on_yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">on_blue</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+    <span class="kw">fn</span> <span class="ident">on_color</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span>;
+}
+<span class="kw">impl</span> <span class="ident">Colorize</span> <span class="kw">for</span> <span class="ident">ColoredString</span> {
+    <span class="kw">fn</span> <span class="ident">red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">color</span>(<span class="ident">Color</span>::<span class="ident">Red</span>)}
+    <span class="kw">fn</span> <span class="ident">yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">color</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)}
+    <span class="kw">fn</span> <span class="ident">blue</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">color</span>(<span class="ident">Color</span>::<span class="ident">Blue</span>)}
+    <span class="kw">fn</span> <span class="ident">color</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span> { <span class="ident">fgcolor</span>: <span class="prelude-val">Some</span>(<span class="ident">color</span>.<span class="ident">into</span>()), ..<span class="self">self</span> }
+    }
+    <span class="kw">fn</span> <span class="ident">on_red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">on_color</span>(<span class="ident">Color</span>::<span class="ident">Red</span>)}
+    <span class="kw">fn</span> <span class="ident">on_yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">on_color</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)}
+    <span class="kw">fn</span> <span class="ident">on_blue</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">on_color</span>(<span class="ident">Color</span>::<span class="ident">Blue</span>)}
+    <span class="kw">fn</span> <span class="ident">on_color</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span> { <span class="ident">bgcolor</span>: <span class="prelude-val">Some</span>(<span class="ident">color</span>.<span class="ident">into</span>()), ..<span class="self">self</span> }
+    }
+}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Colorize</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">color</span>(<span class="ident">Color</span>::<span class="ident">Red</span>)}
+    <span class="kw">fn</span> <span class="ident">yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">color</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)}
+    <span class="kw">fn</span> <span class="ident">blue</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">color</span>(<span class="ident">Color</span>::<span class="ident">Blue</span>)}
+    <span class="kw">fn</span> <span class="ident">color</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span> {
+            <span class="ident">fgcolor</span>: <span class="prelude-val">Some</span>(<span class="ident">color</span>.<span class="ident">into</span>()),
+            <span class="ident">input</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="self">self</span>),
+            ..<span class="ident">ColoredString</span>::<span class="ident">default</span>()
+        }
+    }
+    <span class="kw">fn</span> <span class="ident">on_red</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">on_color</span>(<span class="ident">Color</span>::<span class="ident">Red</span>)}
+    <span class="kw">fn</span> <span class="ident">on_yellow</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">on_color</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)}
+    <span class="kw">fn</span> <span class="ident">on_blue</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {<span class="self">self</span>.<span class="ident">on_color</span>(<span class="ident">Color</span>::<span class="ident">Blue</span>)}
+    <span class="kw">fn</span> <span class="ident">on_color</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">ColoredString</span> {
+        <span class="ident">ColoredString</span> {
+            <span class="ident">bgcolor</span>: <span class="prelude-val">Some</span>(<span class="ident">color</span>.<span class="ident">into</span>()),
+            <span class="ident">input</span>: <span class="ident">String</span>::<span class="ident">from</span>(<span class="self">self</span>),
+            ..<span class="ident">ColoredString</span>::<span class="ident">default</span>()
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ColoredString</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">input</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">input</span>.<span class="ident">clone</span>();
+
+        <span class="macro">try</span><span class="macro">!</span>(<span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">compute_style</span>()));
+        <span class="macro">try</span><span class="macro">!</span>(<span class="ident">f</span>.<span class="ident">write_str</span>(<span class="ident">input</span>));
+        <span class="macro">try</span><span class="macro">!</span>(<span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;\x1B[0m&quot;</span>));
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">red</span> <span class="op">=</span> <span class="string">&quot;red&quot;</span>.<span class="ident">red</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">red</span>);
+    <span class="kw">let</span> <span class="ident">yellow</span> <span class="op">=</span> <span class="string">&quot;yellow&quot;</span>.<span class="ident">yellow</span>().<span class="ident">on_blue</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">yellow</span>);
+    <span class="kw">let</span> <span class="ident">blue</span> <span class="op">=</span> <span class="string">&quot;blue&quot;</span>.<span class="ident">blue</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">blue</span>);
+    <span class="kw">let</span> <span class="ident">red</span> <span class="op">=</span> <span class="string">&quot;red&quot;</span>.<span class="ident">color</span>(<span class="string">&quot;red&quot;</span>);
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">red</span>);
+    <span class="kw">let</span> <span class="ident">yellow</span> <span class="op">=</span> <span class="string">&quot;yellow&quot;</span>.<span class="ident">on_color</span>(<span class="string">&quot;yellow&quot;</span>);
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">yellow</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Ause%20std%3A%3Aconvert%3A%3AFrom%3B%0Ause%20std%3A%3Astr%3A%3AFromStr%3B%0Ause%20std%3A%3Astring%3A%3AString%3B%0Ause%20std%3A%3Afmt%3B%0A%0A%23%5Bderive(Clone%2C%20Copy%2C%20Debug%2C%20PartialEq%2C%20Eq)%5D%0Aenum%20Color%20%7B%0A%20%20%20%20Red%2C%0A%20%20%20%20Yellow%2C%0A%20%20%20%20Blue%2C%0A%7D%0A%0Aimpl%20Color%20%7B%0A%20%20%20%20pub%20fn%20to_fg_str(%26self)%20-%3E%20%26str%20%7B%0A%20%20%20%20%20%20%20%20match%20*self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Color%3A%3ARed%20%3D%3E%20%2231%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20Color%3A%3AYellow%20%3D%3E%20%2233%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20Color%3A%3ABlue%20%3D%3E%20%2234%22%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20pub%20fn%20to_bg_str(%26self)%20-%3E%20%26str%20%7B%0A%20%20%20%20%20%20%20%20match%20*self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Color%3A%3ARed%20%3D%3E%20%2241%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20Color%3A%3AYellow%20%3D%3E%20%2243%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20Color%3A%3ABlue%20%3D%3E%20%2244%22%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%3C'a%3E%20From%3C%26'a%20str%3E%20for%20Color%20%7B%0A%20%20%20%20fn%20from(src%3A%20%26str)%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20src.parse().unwrap_or(Color%3A%3ARed)%0A%20%20%20%20%7D%0A%7D%0Aimpl%20From%3CString%3E%20for%20Color%20%7B%0A%20%20%20%20fn%20from(src%3A%20String)%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20src.parse().unwrap_or(Color%3A%3ARed)%0A%20%20%20%20%7D%0A%7D%0Aimpl%20FromStr%20for%20Color%20%7B%0A%20%20%20%20type%20Err%20%3D%20()%3B%0A%20%20%20%20fn%20from_str(src%3A%20%26str)%20-%3E%20Result%3CSelf%2C%20Self%3A%3AErr%3E%20%7B%0A%20%20%20%20%20%20%20%20let%20src%20%3D%20src.to_lowercase()%3B%0A%20%20%20%20%20%20%20%20match%20src.as_ref()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22red%22%20%3D%3E%20Ok(Color%3A%3ARed)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22yellow%22%20%3D%3E%20Ok(Color%3A%3AYellow)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22blue%22%20%3D%3E%20Ok(Color%3A%3ABlue)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20_%20%3D%3E%20Err(())%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0A%23%5Bderive(Clone%2C%20Debug%2C%20PartialEq%2C%20Eq)%5D%0Astruct%20ColoredString%20%7B%0A%20%20%20%20input%3A%20String%2C%0A%20%20%20%20fgcolor%3A%20Option%3CColor%3E%2C%0A%20%20%20%20bgcolor%3A%20Option%3CColor%3E%2C%0A%7D%0A%0A%0A%0Aimpl%20ColoredString%20%7B%0A%20%20%20%20fn%20compute_style(%26self)%20-%3E%20String%20%7B%0A%20%20%20%20%20%20%20%20let%20mut%20res%20%3D%20String%3A%3Afrom(%22%5Cx1B%5B%22)%3B%0A%20%20%20%20%20%20%20%20let%20mut%20has_wrote%20%3D%20false%3B%0A%20%20%20%20%20%20%20%20if%20let%20Some(ref%20bgcolor)%20%3D%20self.bgcolor%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20has_wrote%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20res.push('%3B')%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20res.push_str(bgcolor.to_bg_str())%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20has_wrote%20%3D%20true%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20if%20let%20Some(ref%20fgcolor)%20%3D%20self.fgcolor%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20has_wrote%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20res.push('%3B')%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20res.push_str(fgcolor.to_fg_str())%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20res.push('m')%3B%0A%20%20%20%20%20%20%20%20res%0A%20%20%20%20%7D%0A%7D%0A%0A%0Aimpl%20Default%20for%20ColoredString%20%7B%0A%20%20%20%20fn%20default()%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20input%3A%20String%3A%3Adefault()%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20fgcolor%3A%20None%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20bgcolor%3A%20None%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0A%2F%2F%20impl%3C'a%3E%20From%3C%26'a%20str%3E%20for%20ColoredString%20%7B%0A%2F%2F%20%20%20%20%20fn%20from(s%3A%20%26'a%20str)%20-%3E%20Self%20%7B%0A%2F%2F%20%20%20%20%20%20%20%20%20ColoredString%20%7B%20input%3A%20String%3A%3Afrom(s)%2C%20..ColoredString%3A%3Adefault()%20%7D%0A%2F%2F%20%20%20%20%20%7D%0A%2F%2F%20%7D%0A%0Atrait%20Colorize%20%7B%0A%20%20%20%20fn%20red(self)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20yellow(self)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20blue(self)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20color%3CS%3A%20Into%3CColor%3E%3E(self%2C%20color%3A%20S)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20on_red(self)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20on_yellow(self)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20on_blue(self)%20-%3E%20ColoredString%3B%0A%20%20%20%20fn%20on_color%3CS%3A%20Into%3CColor%3E%3E(self%2C%20color%3A%20S)%20-%3E%20ColoredString%3B%0A%7D%0Aimpl%20Colorize%20for%20ColoredString%20%7B%0A%20%20%20%20fn%20red(self)%20-%3E%20ColoredString%20%7Bself.color(Color%3A%3ARed)%7D%0A%20%20%20%20fn%20yellow(self)%20-%3E%20ColoredString%20%7Bself.color(Color%3A%3AYellow)%7D%0A%20%20%20%20fn%20blue(self)%20-%3E%20ColoredString%20%7Bself.color(Color%3A%3ABlue)%7D%0A%20%20%20%20fn%20color%3CS%3A%20Into%3CColor%3E%3E(self%2C%20color%3A%20S)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%20fgcolor%3A%20Some(color.into())%2C%20..self%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20fn%20on_red(self)%20-%3E%20ColoredString%20%7Bself.on_color(Color%3A%3ARed)%7D%0A%20%20%20%20fn%20on_yellow(self)%20-%3E%20ColoredString%20%7Bself.on_color(Color%3A%3AYellow)%7D%0A%20%20%20%20fn%20on_blue(self)%20-%3E%20ColoredString%20%7Bself.on_color(Color%3A%3ABlue)%7D%0A%20%20%20%20fn%20on_color%3CS%3A%20Into%3CColor%3E%3E(self%2C%20color%3A%20S)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%20bgcolor%3A%20Some(color.into())%2C%20..self%20%7D%0A%20%20%20%20%7D%0A%7D%0Aimpl%3C'a%3E%20Colorize%20for%20%26'a%20str%20%7B%0A%20%20%20%20fn%20red(self)%20-%3E%20ColoredString%20%7Bself.color(Color%3A%3ARed)%7D%0A%20%20%20%20fn%20yellow(self)%20-%3E%20ColoredString%20%7Bself.color(Color%3A%3AYellow)%7D%0A%20%20%20%20fn%20blue(self)%20-%3E%20ColoredString%20%7Bself.color(Color%3A%3ABlue)%7D%0A%20%20%20%20fn%20color%3CS%3A%20Into%3CColor%3E%3E(self%2C%20color%3A%20S)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20fgcolor%3A%20Some(color.into())%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20input%3A%20String%3A%3Afrom(self)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20..ColoredString%3A%3Adefault()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20fn%20on_red(self)%20-%3E%20ColoredString%20%7Bself.on_color(Color%3A%3ARed)%7D%0A%20%20%20%20fn%20on_yellow(self)%20-%3E%20ColoredString%20%7Bself.on_color(Color%3A%3AYellow)%7D%0A%20%20%20%20fn%20on_blue(self)%20-%3E%20ColoredString%20%7Bself.on_color(Color%3A%3ABlue)%7D%0A%20%20%20%20fn%20on_color%3CS%3A%20Into%3CColor%3E%3E(self%2C%20color%3A%20S)%20-%3E%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20ColoredString%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20bgcolor%3A%20Some(color.into())%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20input%3A%20String%3A%3Afrom(self)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20..ColoredString%3A%3Adefault()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20fmt%3A%3ADisplay%20for%20ColoredString%20%7B%0A%20%20%20%20fn%20fmt(%26self%2C%20f%3A%20%26mut%20fmt%3A%3AFormatter)%20-%3E%20fmt%3A%3AResult%20%7B%0A%20%20%20%20%20%20%20%20let%20mut%20input%20%3D%20%26self.input.clone()%3B%0A%0A%20%20%20%20%20%20%20%20try!(f.write_str(%26self.compute_style()))%3B%0A%20%20%20%20%20%20%20%20try!(f.write_str(input))%3B%0A%20%20%20%20%20%20%20%20try!(f.write_str(%22%5Cx1B%5B0m%22))%3B%0A%20%20%20%20%20%20%20%20Ok(())%0A%20%20%20%20%7D%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20red%20%3D%20%22red%22.red()%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20red)%3B%0A%20%20%20%20let%20yellow%20%3D%20%22yellow%22.yellow().on_blue()%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20yellow)%3B%0A%20%20%20%20let%20blue%20%3D%20%22blue%22.blue()%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20blue)%3B%0A%20%20%20%20let%20red%20%3D%20%22red%22.color(%22red%22)%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20red)%3B%0A%20%20%20%20let%20yellow%20%3D%20%22yellow%22.on_color(%22yellow%22)%3B%0A%20%20%20%20println!(%22%7B%7D%22%2C%20yellow)%3B%0A%7D">Run</a></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

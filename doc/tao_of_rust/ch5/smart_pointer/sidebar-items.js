@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["box_demo","智能指针和所有权: Box"],["cow","智能指针和所有权: Cow写时复制    是一个枚举类型的智能指针，包括两个可选值：Borrowed，用于包裹引用，以及Owned，用于包裹所有者    一般用于读多写少的场景 Base usage: Cow"],["inner_mutable","智能指针和所有权: 内部可变性    是一种可以外部不可变但是内部可变的一种容器 Base usage: Cell   Cell适合于实现Copy的类型，无运行时开销"],["share_ownership","智能指针和所有权: Rc / Arc"]]});

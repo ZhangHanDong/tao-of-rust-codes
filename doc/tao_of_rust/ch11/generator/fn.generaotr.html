@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `generaotr` fn in crate `tao_of_rust`."><meta name="keywords" content="rust, rustlang, rust-lang, generaotr"><title>tao_of_rust::ch11::generator::generaotr - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc fn"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><div class="sidebar-elems"><p class='location'><a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch11</a>::<wbr><a href='index.html'>generator</a></p><script>window.sidebarCurrent = {name: 'generaotr', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/tao_of_rust/ch11/generator.rs.html#259-261' title='goto source code'>[src]</a></span><span class='in-band'>Function <a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch11</a>::<wbr><a href='index.html'>generator</a>::<wbr><a class="fn" href=''>generaotr</a></span></h1><pre class='rust fn'>pub fn generaotr()</pre><div class='docblock'><h1 id="协程" class="section-header"><a href="#协程">协程</a></h1>
+<p>Basic usage: 生成器示例1</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generators</span>, <span class="ident">generator_trait</span>)]</span>
+ 
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Generator</span>;
+ 
+<span class="kw">fn</span> <span class="ident">main</span>(){
+     
+    <span class="comment">// let mut gen : Box&lt;Generator&lt;Yield=i32, Return=i32&gt;&gt; = Box::new(||{</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gen</span>  <span class="op">=</span> <span class="op">||</span>{
+        <span class="kw">yield</span> <span class="number">1</span>;
+        <span class="kw">yield</span> <span class="number">2</span>;
+        <span class="kw">yield</span> <span class="number">3</span>;
+        <span class="kw">return</span> <span class="number">4</span>;
+    };
+    <span class="kw">unsafe</span> {
+      <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">4</span>{
+         <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">gen</span>.<span class="ident">resume</span>();   
+         <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">c</span>);
+      }
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(generators%2C%20generator_trait)%5D%0A%20%0Ause%20std%3A%3Aops%3A%3AGenerator%3B%0A%20%0Afn%20main()%7B%0A%20%20%20%20%20%0A%20%20%20%20%2F%2F%20let%20mut%20gen%20%3A%20Box%3CGenerator%3CYield%3Di32%2C%20Return%3Di32%3E%3E%20%3D%20Box%3A%3Anew(%7C%7C%7B%0A%20%20%20%20let%20mut%20gen%20%20%3D%20%7C%7C%7B%0A%20%20%20%20%20%20%20%20yield%201%3B%0A%20%20%20%20%20%20%20%20yield%202%3B%0A%20%20%20%20%20%20%20%20yield%203%3B%0A%20%20%20%20%20%20%20%20return%204%3B%0A%20%20%20%20%7D%3B%0A%20%20%20%20unsafe%20%7B%0A%20%20%20%20%20%20for%20_%20in%200..4%7B%0A%20%20%20%20%20%20%20%20%20let%20c%20%3D%20gen.resume()%3B%20%20%20%0A%20%20%20%20%20%20%20%20%20println!(%22%7B%3A%3F%7D%22%2C%20c)%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D&amp;version=nightly">Run</a></pre></div>
+<p>Basic usage: 生成器示例1中的gen生成器实例由编译器自动生成下面等价的代码</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generators</span>, <span class="ident">generator_trait</span>)]</span>
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Generator</span>, <span class="ident">GeneratorState</span>};
+ 
+<span class="kw">enum</span> <span class="ident">__Gen</span> {
+    <span class="comment">// (0) 初始状态</span>
+    <span class="ident">Start</span>,
+    <span class="comment">// (1) resume方法执行以后</span>
+    <span class="ident">State1</span>(<span class="ident">State1</span>),
+    <span class="comment">// (2) resume方法执行以后</span>
+    <span class="ident">State2</span>(<span class="ident">State2</span>),
+    <span class="comment">// (3) resume方法执行以后</span>
+    <span class="ident">State3</span>(<span class="ident">State3</span>),
+    <span class="comment">// (4) resume方法执行以后，正好完成</span>
+    <span class="ident">Done</span>
+}
+
+<span class="kw">struct</span> <span class="ident">State1</span> { <span class="ident">x</span>: <span class="ident">u64</span> }
+<span class="kw">struct</span> <span class="ident">State2</span> { <span class="ident">x</span>: <span class="ident">u64</span> }
+<span class="kw">struct</span> <span class="ident">State3</span> { <span class="ident">x</span>: <span class="ident">u64</span> }
+
+<span class="kw">impl</span> <span class="ident">Generator</span> <span class="kw">for</span> <span class="ident">__Gen</span> {
+    <span class="kw">type</span> <span class="ident">Yield</span> <span class="op">=</span> <span class="ident">u64</span>;
+    <span class="kw">type</span> <span class="ident">Return</span> <span class="op">=</span> <span class="ident">u64</span>;
+
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">resume</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">GeneratorState</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">u64</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">replace</span>(<span class="self">self</span>, <span class="ident">__Gen</span>::<span class="ident">Done</span>) {
+            <span class="ident">__Gen</span>::<span class="ident">Start</span> <span class="op">=&gt;</span> {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">__Gen</span>::<span class="ident">State1</span>(<span class="ident">State1</span>{<span class="ident">x</span>: <span class="number">1</span>});
+                <span class="ident">GeneratorState</span>::<span class="ident">Yielded</span>(<span class="number">1</span>)
+            }
+            <span class="ident">__Gen</span>::<span class="ident">State1</span>(<span class="ident">State1</span>{<span class="ident">x</span>: <span class="number">1</span>}) <span class="op">=&gt;</span> {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">__Gen</span>::<span class="ident">State2</span>(<span class="ident">State2</span>{<span class="ident">x</span>: <span class="number">2</span>});
+                <span class="ident">GeneratorState</span>::<span class="ident">Yielded</span>(<span class="number">2</span>)
+        }
+            <span class="ident">__Gen</span>::<span class="ident">State2</span>(<span class="ident">State2</span>{<span class="ident">x</span>: <span class="number">2</span>}) <span class="op">=&gt;</span> {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">__Gen</span>::<span class="ident">State3</span>(<span class="ident">State3</span>{<span class="ident">x</span>: <span class="number">3</span>});
+                <span class="ident">GeneratorState</span>::<span class="ident">Yielded</span>(<span class="number">3</span>)
+            }
+            <span class="ident">__Gen</span>::<span class="ident">State3</span>(<span class="ident">State3</span>{<span class="ident">x</span>: <span class="number">3</span>}) <span class="op">=&gt;</span> {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">__Gen</span>::<span class="ident">Done</span>;
+                <span class="ident">GeneratorState</span>::<span class="ident">Complete</span>(<span class="number">4</span>)
+            }
+            <span class="kw">_</span> <span class="op">=&gt;</span> {
+                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;generator resumed after completion&quot;</span>)
+            }
+        }
+    }
+}
+ 
+<span class="kw">fn</span> <span class="ident">main</span>(){
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gen</span> <span class="op">=</span> {
+        <span class="ident">__Gen</span>::<span class="ident">Start</span>
+    };
+     
+    <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">4</span> {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw">unsafe</span>{ <span class="ident">gen</span>.<span class="ident">resume</span>()});
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(generators%2C%20generator_trait)%5D%0Ause%20std%3A%3Aops%3A%3A%7BGenerator%2C%20GeneratorState%7D%3B%0A%20%0Aenum%20__Gen%20%7B%0A%20%20%20%20%2F%2F%20(0)%20%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81%0A%20%20%20%20Start%2C%0A%20%20%20%20%2F%2F%20(1)%20resume%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E4%BB%A5%E5%90%8E%0A%20%20%20%20State1(State1)%2C%0A%20%20%20%20%2F%2F%20(2)%20resume%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E4%BB%A5%E5%90%8E%0A%20%20%20%20State2(State2)%2C%0A%20%20%20%20%2F%2F%20(3)%20resume%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E4%BB%A5%E5%90%8E%0A%20%20%20%20State3(State3)%2C%0A%20%20%20%20%2F%2F%20(4)%20resume%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E4%BB%A5%E5%90%8E%EF%BC%8C%E6%AD%A3%E5%A5%BD%E5%AE%8C%E6%88%90%0A%20%20%20%20Done%0A%7D%0A%0Astruct%20State1%20%7B%20x%3A%20u64%20%7D%0Astruct%20State2%20%7B%20x%3A%20u64%20%7D%0Astruct%20State3%20%7B%20x%3A%20u64%20%7D%0A%0Aimpl%20Generator%20for%20__Gen%20%7B%0A%20%20%20%20type%20Yield%20%3D%20u64%3B%0A%20%20%20%20type%20Return%20%3D%20u64%3B%0A%0A%20%20%20%20unsafe%20fn%20resume(%26mut%20self)%20-%3E%20GeneratorState%3Cu64%2C%20u64%3E%20%7B%0A%20%20%20%20%20%20%20%20match%20std%3A%3Amem%3A%3Areplace(self%2C%20__Gen%3A%3ADone)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20__Gen%3A%3AStart%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20*self%20%3D%20__Gen%3A%3AState1(State1%7Bx%3A%201%7D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20GeneratorState%3A%3AYielded(1)%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20__Gen%3A%3AState1(State1%7Bx%3A%201%7D)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20*self%20%3D%20__Gen%3A%3AState2(State2%7Bx%3A%202%7D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20GeneratorState%3A%3AYielded(2)%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20__Gen%3A%3AState2(State2%7Bx%3A%202%7D)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20*self%20%3D%20__Gen%3A%3AState3(State3%7Bx%3A%203%7D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20GeneratorState%3A%3AYielded(3)%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20__Gen%3A%3AState3(State3%7Bx%3A%203%7D)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20*self%20%3D%20__Gen%3A%3ADone%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20GeneratorState%3A%3AComplete(4)%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20_%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20panic!(%22generator%20resumed%20after%20completion%22)%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%20%0Afn%20main()%7B%0A%20%20%20%20let%20mut%20gen%20%3D%20%7B%0A%20%20%20%20%20%20%20%20__Gen%3A%3AStart%0A%20%20%20%20%7D%3B%0A%20%20%20%20%20%0A%20%20%20%20for%20_%20in%200..4%20%7B%0A%20%20%20%20%20%20%20%20println!(%22%7B%3A%3F%7D%22%2C%20unsafe%7B%20gen.resume()%7D)%3B%0A%20%20%20%20%7D%0A%7D&amp;version=nightly">Run</a></pre></div>
+<p>Basic usage: 生成器示例2</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generators</span>, <span class="ident">generator_trait</span>)]</span>
+ 
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Generator</span>;
+ 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">up_to</span>(<span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Generator</span><span class="op">&lt;</span><span class="ident">Yield</span> <span class="op">=</span> <span class="ident">u64</span>, <span class="ident">Return</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span> {
+    <span class="kw">move</span> <span class="op">||</span> {
+    <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">limit</span> {
+         <span class="kw">yield</span> <span class="ident">x</span>;
+    }
+    <span class="kw">return</span> <span class="ident">limit</span>;
+    }
+}
+<span class="kw">fn</span> <span class="ident">main</span>(){
+    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">10</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">up_to</span>(<span class="ident">a</span>);
+    <span class="kw">unsafe</span> {
+      <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..=<span class="number">10</span>{
+         <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">resume</span>();   
+         <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">c</span>);
+      }
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(generators%2C%20generator_trait)%5D%0A%20%0Ause%20std%3A%3Aops%3A%3AGenerator%3B%0A%20%0Apub%20fn%20up_to(limit%3A%20u64)%20-%3E%20impl%20Generator%3CYield%20%3D%20u64%2C%20Return%20%3D%20u64%3E%20%7B%0A%20%20%20%20move%20%7C%7C%20%7B%0A%20%20%20%20for%20x%20in%200..limit%20%7B%0A%20%20%20%20%20%20%20%20%20yield%20x%3B%0A%20%20%20%20%7D%0A%20%20%20%20return%20limit%3B%0A%20%20%20%20%7D%0A%7D%0Afn%20main()%7B%0A%20%20%20%20let%20a%20%3D%2010%3B%0A%20%20%20%20let%20mut%20b%20%3D%20up_to(a)%3B%0A%20%20%20%20unsafe%20%7B%0A%20%20%20%20%20%20for%20_%20in%200..%3D10%7B%0A%20%20%20%20%20%20%20%20%20let%20c%20%3D%20b.resume()%3B%20%20%20%0A%20%20%20%20%20%20%20%20%20println!(%22%7B%3A%3F%7D%22%2C%20c)%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D&amp;version=nightly">Run</a></pre></div>
+<p>Basic usage: 生成器变为迭代器</p>
+<p>Generator&lt;Yield=T, Returen=()&gt;
+yields T and returns ()</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generators</span>, <span class="ident">generator_trait</span>)]</span>
+ 
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Generator</span>, <span class="ident">GeneratorState</span>};
+ 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">up_to</span>() <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Generator</span><span class="op">&lt;</span><span class="ident">Yield</span> <span class="op">=</span> <span class="ident">u64</span>, <span class="ident">Return</span> <span class="op">=</span> ()<span class="op">&gt;</span> {
+    <span class="kw">move</span> <span class="op">||</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">loop</span> {
+            <span class="ident">x</span> <span class="op">+=</span> <span class="number">1</span>;
+            <span class="kw">yield</span> <span class="ident">x</span>;
+        }
+        <span class="kw">return</span> ();
+    }
+}
+<span class="kw">fn</span> <span class="ident">main</span>(){
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">up_to</span>();
+    <span class="kw">unsafe</span> {
+      <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span>{
+         <span class="kw">match</span> <span class="ident">gen</span>.<span class="ident">resume</span>() {
+             <span class="ident">GeneratorState</span>::<span class="ident">Yielded</span>(<span class="ident">i</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">i</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Completed&quot;</span>),
+         }
+      }
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(generators%2C%20generator_trait)%5D%0A%20%0Ause%20std%3A%3Aops%3A%3A%7BGenerator%2C%20GeneratorState%7D%3B%0A%20%0Apub%20fn%20up_to()%20-%3E%20impl%20Generator%3CYield%20%3D%20u64%2C%20Return%20%3D%20()%3E%20%7B%0A%20%20%20%20move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20let%20mut%20x%20%3D%200%3B%0A%20%20%20%20%20%20%20%20loop%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20x%20%2B%3D%201%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20yield%20x%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20return%20()%3B%0A%20%20%20%20%7D%0A%7D%0Afn%20main()%7B%0A%20%20%20%20let%20mut%20gen%20%3D%20up_to()%3B%0A%20%20%20%20unsafe%20%7B%0A%20%20%20%20%20%20for%20_%20in%200..10%7B%0A%20%20%20%20%20%20%20%20%20match%20gen.resume()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20GeneratorState%3A%3AYielded(i)%20%3D%3E%20println!(%22%7B%3A%3F%7D%22%2C%20i)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20_%20%3D%3E%20println!(%22Completed%22)%2C%0A%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D&amp;version=nightly">Run</a></pre></div>
+<p>Basic usage: 生成器变身Futures</p>
+<p>yields () and returns Result&lt;T, E&gt; 等价于 Future of T and E</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generators</span>, <span class="ident">generator_trait</span>)]</span>
+ 
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Generator</span>, <span class="ident">GeneratorState</span>};
+ 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">up_to</span>(<span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Generator</span><span class="op">&lt;</span><span class="ident">Yield</span> <span class="op">=</span> (), <span class="ident">Return</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span>, ()<span class="op">&gt;&gt;</span> {
+    <span class="kw">move</span> <span class="op">||</span> {
+    <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">limit</span> {
+         <span class="kw">yield</span> ();
+    }
+    <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">limit</span>);
+    }
+}
+<span class="kw">fn</span> <span class="ident">main</span>(){
+    <span class="kw">let</span> <span class="ident">limit</span> <span class="op">=</span> <span class="number">2</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">up_to</span>(<span class="ident">limit</span>);
+    <span class="kw">unsafe</span> {
+      <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..=<span class="ident">limit</span>{
+         <span class="kw">match</span> <span class="ident">gen</span>.<span class="ident">resume</span>() {
+             <span class="ident">GeneratorState</span>::<span class="ident">Yielded</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;resume {:?} : Pending&quot;</span>, <span class="ident">i</span>),
+             <span class="ident">GeneratorState</span>::<span class="ident">Complete</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;resume {:?} : Ready&quot;</span>, <span class="ident">i</span>),
+         }
+      }
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(generators%2C%20generator_trait)%5D%0A%20%0Ause%20std%3A%3Aops%3A%3A%7BGenerator%2C%20GeneratorState%7D%3B%0A%20%0Apub%20fn%20up_to(limit%3A%20u64)%20-%3E%20impl%20Generator%3CYield%20%3D%20()%2C%20Return%20%3D%20Result%3Cu64%2C%20()%3E%3E%20%7B%0A%20%20%20%20move%20%7C%7C%20%7B%0A%20%20%20%20for%20x%20in%200..limit%20%7B%0A%20%20%20%20%20%20%20%20%20yield%20()%3B%0A%20%20%20%20%7D%0A%20%20%20%20return%20Ok(limit)%3B%0A%20%20%20%20%7D%0A%7D%0Afn%20main()%7B%0A%20%20%20%20let%20limit%20%3D%202%3B%0A%20%20%20%20let%20mut%20gen%20%3D%20up_to(limit)%3B%0A%20%20%20%20unsafe%20%7B%0A%20%20%20%20%20%20for%20i%20in%200..%3Dlimit%7B%0A%20%20%20%20%20%20%20%20%20match%20gen.resume()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20GeneratorState%3A%3AYielded(v)%20%3D%3E%20println!(%22resume%20%7B%3A%3F%7D%20%3A%20Pending%22%2C%20i)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20GeneratorState%3A%3AComplete(v)%20%3D%3E%20println!(%22resume%20%7B%3A%3F%7D%20%3A%20Ready%22%2C%20i)%2C%0A%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D&amp;version=nightly">Run</a></pre></div>
+<p>Basic usage: 跨yield借用会报错</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generators</span>, <span class="ident">generator_trait</span>)]</span>
+ 
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Generator</span>;
+ 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">up_to</span>(<span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Generator</span><span class="op">&lt;</span><span class="ident">Yield</span> <span class="op">=</span> <span class="ident">u64</span>, <span class="ident">Return</span> <span class="op">=</span> <span class="ident">u64</span><span class="op">&gt;</span> {
+    <span class="kw">move</span> <span class="op">||</span> {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">5</span>;
+        <span class="kw">let</span> <span class="ident">ref_a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">a</span>;
+    <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">limit</span> {
+         <span class="kw">yield</span> <span class="ident">x</span>;
+         <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="number">5</span>{
+             <span class="kw">yield</span> <span class="kw-2">*</span><span class="ident">ref_a</span>;
+         }
+    }
+    <span class="kw">return</span> <span class="ident">limit</span>;
+    }
+}
+<span class="kw">fn</span> <span class="ident">main</span>(){
+    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">10</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">up_to</span>(<span class="ident">a</span>);
+    <span class="kw">unsafe</span> {
+      <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..=<span class="number">10</span>{
+         <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">resume</span>();   
+         <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">c</span>);
+      }
+    }
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(generators%2C%20generator_trait)%5D%0A%20%0Ause%20std%3A%3Aops%3A%3AGenerator%3B%0A%20%0Apub%20fn%20up_to(limit%3A%20u64)%20-%3E%20impl%20Generator%3CYield%20%3D%20u64%2C%20Return%20%3D%20u64%3E%20%7B%0A%20%20%20%20move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20let%20a%20%3D%205%3B%0A%20%20%20%20%20%20%20%20let%20ref_a%20%3D%20%26a%3B%0A%20%20%20%20for%20x%20in%200..limit%20%7B%0A%20%20%20%20%20%20%20%20%20yield%20x%3B%0A%20%20%20%20%20%20%20%20%20if%20x%20%3D%3D%205%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20yield%20*ref_a%3B%0A%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20return%20limit%3B%0A%20%20%20%20%7D%0A%7D%0Afn%20main()%7B%0A%20%20%20%20let%20a%20%3D%2010%3B%0A%20%20%20%20let%20mut%20b%20%3D%20up_to(a)%3B%0A%20%20%20%20unsafe%20%7B%0A%20%20%20%20%20%20for%20_%20in%200..%3D10%7B%0A%20%20%20%20%20%20%20%20%20let%20c%20%3D%20b.resume()%3B%20%20%20%0A%20%20%20%20%20%20%20%20%20println!(%22%7B%3A%3F%7D%22%2C%20c)%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D&amp;version=nightly">Run</a></pre></div>
+<p>Basic usage: Pin的用法</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">pin</span>)]</span>
+ 
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::{<span class="ident">Pin</span>, <span class="ident">Unpin</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">Pinned</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">NonNull</span>;
+ 
+<span class="kw">struct</span> <span class="ident">Unmovable</span> {
+    <span class="ident">data</span>: <span class="ident">String</span>,
+    <span class="ident">slice</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="ident">_pin</span>: <span class="ident">Pinned</span>,
+}
+ 
+<span class="kw">impl</span> <span class="ident">Unpin</span> <span class="kw">for</span> <span class="ident">Unmovable</span> {} 
+ 
+<span class="kw">impl</span> <span class="ident">Unmovable</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;&gt;</span> {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Unmovable</span> {
+            <span class="ident">data</span>,
+            <span class="ident">slice</span>: <span class="ident">NonNull</span>::<span class="ident">dangling</span>(),
+            <span class="ident">_pin</span>: <span class="ident">Pinned</span>,
+        };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boxed</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">pinned</span>(<span class="ident">res</span>);
+        <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">NonNull</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="ident">boxed</span>.<span class="ident">data</span>);
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">mut_ref</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Pin</span>::<span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">boxed</span>);
+            <span class="ident">Pin</span>::<span class="ident">get_mut_unchecked</span>(<span class="ident">mut_ref</span>).<span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice</span>;
+        }
+        <span class="ident">boxed</span>
+    }
+}
+ 
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">unmoved</span> <span class="op">=</span> <span class="ident">Unmovable</span>::<span class="ident">new</span>(<span class="string">&quot;hello&quot;</span>.<span class="ident">to_string</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">still_unmoved</span> <span class="op">=</span> <span class="ident">unmoved</span>;
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">still_unmoved</span>.<span class="ident">slice</span>, <span class="ident">NonNull</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="ident">still_unmoved</span>.<span class="ident">data</span>));
+ 
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_unmoved</span> <span class="op">=</span> <span class="ident">Unmovable</span>::<span class="ident">new</span>(<span class="string">&quot;world&quot;</span>.<span class="ident">to_string</span>());
+    <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">still_unmoved</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">new_unmoved</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(pin)%5D%0A%20%0Ause%20std%3A%3Apin%3A%3A%7BPin%2C%20Unpin%7D%3B%0Ause%20std%3A%3Amarker%3A%3APinned%3B%0Ause%20std%3A%3Aptr%3A%3ANonNull%3B%0A%20%0Astruct%20Unmovable%20%7B%0A%20%20%20%20data%3A%20String%2C%0A%20%20%20%20slice%3A%20NonNull%3CString%3E%2C%0A%20%20%20%20_pin%3A%20Pinned%2C%0A%7D%0A%20%0Aimpl%20Unpin%20for%20Unmovable%20%7B%7D%20%0A%20%0Aimpl%20Unmovable%20%7B%0A%20%20%20%20fn%20new(data%3A%20String)%20-%3E%20Pin%3CBox%3CSelf%3E%3E%20%7B%0A%20%20%20%20%20%20%20%20let%20res%20%3D%20Unmovable%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20data%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20slice%3A%20NonNull%3A%3Adangling()%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20_pin%3A%20Pinned%2C%0A%20%20%20%20%20%20%20%20%7D%3B%0A%20%20%20%20%20%20%20%20let%20mut%20boxed%20%3D%20Box%3A%3Apinned(res)%3B%0A%20%20%20%20%20%20%20%20let%20slice%20%3D%20NonNull%3A%3Afrom(%26boxed.data)%3B%0A%20%20%20%20%20%20%20%20unsafe%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20let%20mut_ref%3A%20Pin%3C%26mut%20Self%3E%20%3D%20Pin%3A%3Aas_mut(%26mut%20boxed)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20Pin%3A%3Aget_mut_unchecked(mut_ref).slice%20%3D%20slice%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20boxed%0A%20%20%20%20%7D%0A%7D%0A%20%0Afn%20main()%20%7B%0A%20%20%20%20let%20unmoved%20%3D%20Unmovable%3A%3Anew(%22hello%22.to_string())%3B%0A%20%20%20%20let%20mut%20still_unmoved%20%3D%20unmoved%3B%0A%20%20%20%20assert_eq!(still_unmoved.slice%2C%20NonNull%3A%3Afrom(%26still_unmoved.data))%3B%0A%20%0A%20%20%20%20let%20mut%20new_unmoved%20%3D%20Unmovable%3A%3Anew(%22world%22.to_string())%3B%0A%20%20%20%20std%3A%3Amem%3A%3Aswap(%26mut%20*still_unmoved%2C%20%26mut%20*new_unmoved)%3B%0A%7D&amp;version=nightly">Run</a></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

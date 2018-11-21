@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `crossbeam_demo` fn in crate `tao_of_rust`."><meta name="keywords" content="rust, rustlang, rust-lang, crossbeam_demo"><title>tao_of_rust::ch11::crossbeam::crossbeam_demo - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc fn"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><div class="sidebar-elems"><p class='location'><a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch11</a>::<wbr><a href='index.html'>crossbeam</a></p><script>window.sidebarCurrent = {name: 'crossbeam_demo', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/tao_of_rust/ch11/crossbeam.rs.html#156-158' title='goto source code'>[src]</a></span><span class='in-band'>Function <a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch11</a>::<wbr><a href='index.html'>crossbeam</a>::<wbr><a class="fn" href=''>crossbeam_demo</a></span></h1><pre class='rust fn'>pub fn crossbeam_demo()</pre><div class='docblock'><h1 id="crossbeam使用" class="section-header"><a href="#crossbeam使用">Crossbeam使用</a></h1>
+<p>Basic usage: 使用标准库，出错</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">guards</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+
+<span class="comment">// 这样也可以 for &amp;i in &amp;array {</span>
+<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">array</span> {
+    <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;element: {}&quot;</span>, <span class="ident">i</span>);
+    });
+
+    <span class="ident">guards</span>.<span class="ident">push</span>(<span class="ident">guard</span>);
+}
+
+<span class="kw">for</span> <span class="ident">guard</span> <span class="kw">in</span> <span class="ident">guards</span> {
+    <span class="ident">guard</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>();
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Alet%20array%20%3D%20%5B1%2C%202%2C%203%5D%3B%0Alet%20mut%20guards%20%3D%20vec!%5B%5D%3B%0A%0A%2F%2F%20%E8%BF%99%E6%A0%B7%E4%B9%9F%E5%8F%AF%E4%BB%A5%20for%20%26i%20in%20%26array%20%7B%0Afor%20i%20in%20%26array%20%7B%0A%20%20%20%20let%20guard%20%3D%20std%3A%3Athread%3A%3Aspawn(move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20println!(%22element%3A%20%7B%7D%22%2C%20i)%3B%0A%20%20%20%20%7D)%3B%0A%0A%20%20%20%20guards.push(guard)%3B%0A%7D%0A%0Afor%20guard%20in%20guards%20%7B%0A%20%20%20%20guard.join().unwrap()%3B%0A%7D%0A%7D">Run</a></pre></div>
+<p>Basic usage: 使用Arc修正</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
+
+<span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">guards</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+
+<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">array</span>.<span class="ident">len</span>() {
+    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">array</span>.<span class="ident">clone</span>();
+
+    <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;element: {}&quot;</span>, <span class="ident">a</span>[<span class="ident">i</span>]);
+    });
+
+    <span class="ident">guards</span>.<span class="ident">push</span>(<span class="ident">guard</span>);
+}
+
+<span class="kw">for</span> <span class="ident">guard</span> <span class="kw">in</span> <span class="ident">guards</span> {
+    <span class="ident">guard</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>();
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Async%3A%3AArc%3B%0A%0Alet%20array%20%3D%20Arc%3A%3Anew(%5B1%2C%202%2C%203%5D)%3B%0Alet%20mut%20guards%20%3D%20vec!%5B%5D%3B%0A%0Afor%20i%20in%200..array.len()%20%7B%0A%20%20%20%20let%20a%20%3D%20array.clone()%3B%0A%0A%20%20%20%20let%20guard%20%3D%20std%3A%3Athread%3A%3Aspawn(move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20println!(%22element%3A%20%7B%7D%22%2C%20a%5Bi%5D)%3B%0A%20%20%20%20%7D)%3B%0A%0A%20%20%20%20guards.push(guard)%3B%0A%7D%0A%0Afor%20guard%20in%20guards%20%7B%0A%20%20%20%20guard.join().unwrap()%3B%0A%7D%0A%7D">Run</a></pre></div>
+<p>Basic usage: 使用crossbeam的scoped thread</p>
+<p>请用 Rust 2018 Edtion</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">crossbeam</span>::<span class="ident">thread</span>::<span class="ident">scope</span>;
+ 
+<span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+
+<span class="ident">scope</span>(<span class="op">|</span><span class="ident">scope</span><span class="op">|</span> {
+    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">array</span> {
+        <span class="ident">scope</span>.<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;element: {}&quot;</span>, <span class="ident">i</span>);
+        });
+    }
+});<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20crossbeam%3A%3Athread%3A%3Ascope%3B%0A%20%0Alet%20array%20%3D%20%5B1%2C%202%2C%203%5D%3B%0A%0Ascope(%7Cscope%7C%20%7B%0A%20%20%20%20for%20i%20in%20%26array%20%7B%0A%20%20%20%20%20%20%20%20scope.spawn(move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20println!(%22element%3A%20%7B%7D%22%2C%20i)%3B%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%7D%0A%7D)%3B%0A%7D">Run</a></pre></div>
+<p>Basic usage: 使用crossbeam channel</p>
+<p>请用 Rust 2018 Edtion</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">crossbeam_channel</span>::<span class="ident">select</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_channel</span> <span class="kw">as</span> <span class="ident">channel</span>;
+ 
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
+ 
+<span class="kw">fn</span> <span class="ident">fibonacci</span>(<span class="ident">fib</span>: <span class="ident">channel</span>::<span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">quit</span>: <span class="ident">channel</span>::<span class="ident">Receiver</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) {
+    <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">x</span>, <span class="kw-2">mut</span> <span class="ident">y</span>) <span class="op">=</span> (<span class="number">0</span>, <span class="number">1</span>);
+    <span class="kw">loop</span> {
+        <span class="macro">select</span><span class="macro">!</span> {
+            <span class="ident">send</span>(<span class="ident">fib</span>, <span class="ident">x</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">x</span>;
+                <span class="ident">x</span> <span class="op">=</span> <span class="ident">y</span>;
+                <span class="ident">y</span> <span class="op">=</span> <span class="ident">tmp</span> <span class="op">+</span> <span class="ident">y</span>;
+            }
+            <span class="ident">recv</span>(<span class="ident">quit</span>) <span class="op">=&gt;</span> {
+                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;quit&quot;</span>);
+                <span class="kw">return</span>;
+            }
+        }
+    }
+}
+ 
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> (<span class="ident">fib_s</span>, <span class="ident">fib_r</span>) <span class="op">=</span> <span class="ident">channel</span>::<span class="ident">bounded</span>(<span class="number">0</span>);
+    <span class="kw">let</span> (<span class="ident">quit_s</span>, <span class="ident">quit_r</span>) <span class="op">=</span> <span class="ident">channel</span>::<span class="ident">bounded</span>(<span class="number">0</span>);
+ 
+    <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {
+            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">fib_r</span>.<span class="ident">recv</span>().<span class="ident">unwrap</span>());
+        }
+        <span class="ident">quit_s</span>.<span class="ident">send</span>(());
+    });
+ 
+    <span class="ident">fibonacci</span>(<span class="ident">fib_s</span>, <span class="ident">quit_r</span>);
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Ause%20crossbeam_channel%3A%3Aselect%3B%0Ause%20crossbeam_channel%20as%20channel%3B%0A%20%0Ause%20std%3A%3Athread%3B%0A%20%0Afn%20fibonacci(fib%3A%20channel%3A%3ASender%3Cu64%3E%2C%20quit%3A%20channel%3A%3AReceiver%3C()%3E)%20%7B%0A%20%20%20%20let%20(mut%20x%2C%20mut%20y)%20%3D%20(0%2C%201)%3B%0A%20%20%20%20loop%20%7B%0A%20%20%20%20%20%20%20%20select!%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20send(fib%2C%20x)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20tmp%20%3D%20x%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20x%20%3D%20y%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20y%20%3D%20tmp%20%2B%20y%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20recv(quit)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20println!(%22quit%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%20%0Afn%20main()%20%7B%0A%20%20%20%20let%20(fib_s%2C%20fib_r)%20%3D%20channel%3A%3Abounded(0)%3B%0A%20%20%20%20let%20(quit_s%2C%20quit_r)%20%3D%20channel%3A%3Abounded(0)%3B%0A%20%0A%20%20%20%20thread%3A%3Aspawn(move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20for%20_%20in%200..10%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20println!(%22%7B%7D%22%2C%20fib_r.recv().unwrap())%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20quit_s.send(())%3B%0A%20%20%20%20%7D)%3B%0A%20%0A%20%20%20%20fibonacci(fib_s%2C%20quit_r)%3B%0A%7D">Run</a></pre></div>
+<p>Basic usage: 使用crossbeam channel，通过引用共享</p>
+<p>请用 Rust 2018 Edtion</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">crossbeam</span>::<span class="ident">channel</span> <span class="kw">as</span> <span class="ident">channel</span>;
+<span class="kw">fn</span> <span class="ident">main</span>(){
+<span class="kw">let</span> (<span class="ident">s</span>, <span class="ident">r</span>) <span class="op">=</span> <span class="ident">channel</span>::<span class="ident">unbounded</span>();
+ 
+<span class="ident">crossbeam</span>::<span class="ident">scope</span>(<span class="op">|</span><span class="ident">scope</span><span class="op">|</span> {
+    <span class="comment">// Spawn a thread that sends one message and then receives one.</span>
+    <span class="ident">scope</span>.<span class="ident">spawn</span>(<span class="op">||</span> {
+        <span class="ident">s</span>.<span class="ident">send</span>(<span class="number">1</span>);
+        <span class="ident">r</span>.<span class="ident">recv</span>().<span class="ident">unwrap</span>();
+    });
+ 
+    <span class="comment">// Spawn another thread that does the same thing.</span>
+    <span class="ident">scope</span>.<span class="ident">spawn</span>(<span class="op">||</span> {
+        <span class="ident">s</span>.<span class="ident">send</span>(<span class="number">2</span>);
+        <span class="ident">r</span>.<span class="ident">recv</span>().<span class="ident">unwrap</span>();
+    });
+});
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Ause%20crossbeam%3A%3Achannel%20as%20channel%3B%0Afn%20main()%7B%0Alet%20(s%2C%20r)%20%3D%20channel%3A%3Aunbounded()%3B%0A%20%0Acrossbeam%3A%3Ascope(%7Cscope%7C%20%7B%0A%20%20%20%20%2F%2F%20Spawn%20a%20thread%20that%20sends%20one%20message%20and%20then%20receives%20one.%0A%20%20%20%20scope.spawn(%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20s.send(1)%3B%0A%20%20%20%20%20%20%20%20r.recv().unwrap()%3B%0A%20%20%20%20%7D)%3B%0A%20%0A%20%20%20%20%2F%2F%20Spawn%20another%20thread%20that%20does%20the%20same%20thing.%0A%20%20%20%20scope.spawn(%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20s.send(2)%3B%0A%20%20%20%20%20%20%20%20r.recv().unwrap()%3B%0A%20%20%20%20%7D)%3B%0A%7D)%3B%0A%7D">Run</a></pre></div>
+<p>Basic usage: 使用crossbeam channel，通过clone共享</p>
+<p>请用 Rust 2018 Edtion</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
+<span class="kw">use</span> <span class="ident">crossbeam</span>::<span class="ident">channel</span> <span class="kw">as</span> <span class="ident">channel</span>;
+ 
+<span class="kw">fn</span> <span class="ident">main</span>(){
+<span class="kw">let</span> (<span class="ident">s1</span>, <span class="ident">r1</span>) <span class="op">=</span> <span class="ident">channel</span>::<span class="ident">unbounded</span>();
+<span class="kw">let</span> (<span class="ident">s2</span>, <span class="ident">r2</span>) <span class="op">=</span> (<span class="ident">s1</span>.<span class="ident">clone</span>(), <span class="ident">r1</span>.<span class="ident">clone</span>());
+ 
+<span class="comment">// Spawn a thread that sends one message and then receives one.</span>
+<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+    <span class="ident">s1</span>.<span class="ident">send</span>(<span class="number">1</span>);
+    <span class="ident">r1</span>.<span class="ident">recv</span>().<span class="ident">unwrap</span>();
+});
+ 
+<span class="comment">// Spawn another thread that receives a message and then sends one.</span>
+<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+    <span class="ident">r2</span>.<span class="ident">recv</span>().<span class="ident">unwrap</span>();
+    <span class="ident">s2</span>.<span class="ident">send</span>(<span class="number">2</span>);
+});
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Ause%20std%3A%3Athread%3B%0Ause%20crossbeam%3A%3Achannel%20as%20channel%3B%0A%20%0Afn%20main()%7B%0Alet%20(s1%2C%20r1)%20%3D%20channel%3A%3Aunbounded()%3B%0Alet%20(s2%2C%20r2)%20%3D%20(s1.clone()%2C%20r1.clone())%3B%0A%20%0A%2F%2F%20Spawn%20a%20thread%20that%20sends%20one%20message%20and%20then%20receives%20one.%0Athread%3A%3Aspawn(move%20%7C%7C%20%7B%0A%20%20%20%20s1.send(1)%3B%0A%20%20%20%20r1.recv().unwrap()%3B%0A%7D)%3B%0A%20%0A%2F%2F%20Spawn%20another%20thread%20that%20receives%20a%20message%20and%20then%20sends%20one.%0Athread%3A%3Aspawn(move%20%7C%7C%20%7B%0A%20%20%20%20r2.recv().unwrap()%3B%0A%20%20%20%20s2.send(2)%3B%0A%7D)%3B%0A%7D">Run</a></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

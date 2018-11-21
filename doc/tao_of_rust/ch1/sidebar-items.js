@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["fly_dyn","零成本抽象 fly_dyn"],["fly_static","零成本抽象 fly_static"],["title","Examples"]],"struct":[["Duck",""],["Pig",""]],"trait":[["Fly",""]]});

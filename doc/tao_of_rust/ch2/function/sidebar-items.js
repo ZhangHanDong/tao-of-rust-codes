@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["closure","闭包"],["closure_math","闭包: 作为参数"],["fizz_buzz","函数定义"],["init_len","CTFE: const fn"],["lexical_scope","词法作用域"],["math","函数指针： 函数作为参数"],["true_maker","函数指针 : 函数作为返回值"],["two_times","闭包: 作为返回值（动态分发）"],["two_times_dyn","闭包: 作为返回值（动态分发）Rust 2018"],["two_times_impl","闭包: 作为返回值（静态分发）"]]});

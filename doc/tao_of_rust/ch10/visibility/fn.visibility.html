@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `visibility` fn in crate `tao_of_rust`."><meta name="keywords" content="rust, rustlang, rust-lang, visibility"><title>tao_of_rust::ch10::visibility::visibility - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc fn"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><div class="sidebar-elems"><p class='location'><a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch10</a>::<wbr><a href='index.html'>visibility</a></p><script>window.sidebarCurrent = {name: 'visibility', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/tao_of_rust/ch10/visibility.rs.html#110-112' title='goto source code'>[src]</a></span><span class='in-band'>Function <a href='../../index.html'>tao_of_rust</a>::<wbr><a href='../index.html'>ch10</a>::<wbr><a href='index.html'>visibility</a>::<wbr><a class="fn" href=''>visibility</a></span></h1><pre class='rust fn'>pub fn visibility()</pre><div class='docblock'><h1 id="模块" class="section-header"><a href="#模块">模块</a></h1>
+<p>本章相关包：</p>
+<ul>
+<li>static_hashmap</li>
+<li>static_hashmap_2015</li>
+<li>static_hashmap_2018</li>
+<li>csv_challenge</li>
+</ul>
+<p>请参考本书随书GitHub仓库相关源码</p>
+<p>Basic usage: 模块可见性 Rust 2015 Edtion</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">outer_mod</span> {
+    <span class="kw">pub</span>(<span class="self">self</span>) <span class="kw">fn</span> <span class="ident">outer_mod_fn</span>() {}
+    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">inner_mod</span> {
+        <span class="comment">// use outer_mod::outer_mod_fn;</span>
+        <span class="comment">// 对外层模块 `outer_mod` 可见</span>
+        <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident">outer_mod</span>) <span class="kw">fn</span> <span class="ident">outer_mod_visible_fn</span>() {}
+        <span class="comment">// 对整个crate可见</span>
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">crate_visible_fn</span>() {}
+        <span class="comment">// `outer_mod` 内部可见</span>
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">super_mod_visible_fn</span>() {
+            <span class="comment">// 访问同一模块的函数</span>
+            <span class="ident">inner_mod_visible_fn</span>();
+            <span class="comment">// 访问父模块的函数需要使用“::”前缀</span>
+            ::<span class="ident">outer_mod</span>::<span class="ident">outer_mod_fn</span>();
+        }
+        <span class="comment">// 仅在`inner_mod`可见</span>
+        <span class="kw">pub</span>(<span class="self">self</span>) <span class="kw">fn</span> <span class="ident">inner_mod_visible_fn</span>() {}
+    }
+     
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">foo</span>() {
+        <span class="ident">inner_mod</span>::<span class="ident">outer_mod_visible_fn</span>();
+        <span class="ident">inner_mod</span>::<span class="ident">crate_visible_fn</span>();
+        <span class="ident">inner_mod</span>::<span class="ident">super_mod_visible_fn</span>();
+     
+        <span class="comment">// 不能使用inner_mod 的私有函数</span>
+        <span class="comment">// inner_mod::inner_mod_visible_fn();</span>
+    }
+}
+<span class="kw">fn</span> <span class="ident">bar</span>() {
+    <span class="comment">// 该函数对整个crate可见</span>
+    <span class="ident">outer_mod</span>::<span class="ident">inner_mod</span>::<span class="ident">crate_visible_fn</span>();
+ 
+    <span class="comment">// 该函数只对outer_mod可见</span>
+    <span class="comment">// outer_mod::inner_mod::super_mod_visible_fn();</span>
+ 
+    <span class="comment">// 该函数只对outer_mod可见</span>
+    <span class="comment">// outer_mod::inner_mod::outer_mod_visible_fn();</span>
+     
+    <span class="comment">// 通过foo函数调用内部细节</span>
+    <span class="ident">outer_mod</span>::<span class="ident">foo</span>();
+}
+<span class="kw">fn</span> <span class="ident">main</span>() { <span class="ident">bar</span>() }<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Apub%20mod%20outer_mod%20%7B%0A%20%20%20%20pub(self)%20fn%20outer_mod_fn()%20%7B%7D%0A%20%20%20%20pub%20mod%20inner_mod%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20use%20outer_mod%3A%3Aouter_mod_fn%3B%0A%20%20%20%20%20%20%20%20%2F%2F%20%E5%AF%B9%E5%A4%96%E5%B1%82%E6%A8%A1%E5%9D%97%20%60outer_mod%60%20%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(in%20outer_mod)%20fn%20outer_mod_visible_fn()%20%7B%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20%E5%AF%B9%E6%95%B4%E4%B8%AAcrate%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(crate)%20fn%20crate_visible_fn()%20%7B%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20%60outer_mod%60%20%E5%86%85%E9%83%A8%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(super)%20fn%20super_mod_visible_fn()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20%E8%AE%BF%E9%97%AE%E5%90%8C%E4%B8%80%E6%A8%A1%E5%9D%97%E7%9A%84%E5%87%BD%E6%95%B0%0A%20%20%20%20%20%20%20%20%20%20%20%20inner_mod_visible_fn()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20%E8%AE%BF%E9%97%AE%E7%88%B6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%87%BD%E6%95%B0%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8%E2%80%9C%3A%3A%E2%80%9D%E5%89%8D%E7%BC%80%0A%20%20%20%20%20%20%20%20%20%20%20%20%3A%3Aouter_mod%3A%3Aouter_mod_fn()%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20%E4%BB%85%E5%9C%A8%60inner_mod%60%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(self)%20fn%20inner_mod_visible_fn()%20%7B%7D%0A%20%20%20%20%7D%0A%20%20%20%20%20%0A%20%20%20%20pub%20fn%20foo()%20%7B%0A%20%20%20%20%20%20%20%20inner_mod%3A%3Aouter_mod_visible_fn()%3B%0A%20%20%20%20%20%20%20%20inner_mod%3A%3Acrate_visible_fn()%3B%0A%20%20%20%20%20%20%20%20inner_mod%3A%3Asuper_mod_visible_fn()%3B%0A%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%2F%2F%20%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8inner_mod%20%E7%9A%84%E7%A7%81%E6%9C%89%E5%87%BD%E6%95%B0%0A%20%20%20%20%20%20%20%20%2F%2F%20inner_mod%3A%3Ainner_mod_visible_fn()%3B%0A%20%20%20%20%7D%0A%7D%0Afn%20bar()%20%7B%0A%20%20%20%20%2F%2F%20%E8%AF%A5%E5%87%BD%E6%95%B0%E5%AF%B9%E6%95%B4%E4%B8%AAcrate%E5%8F%AF%E8%A7%81%0A%20%20%20%20outer_mod%3A%3Ainner_mod%3A%3Acrate_visible_fn()%3B%0A%20%0A%20%20%20%20%2F%2F%20%E8%AF%A5%E5%87%BD%E6%95%B0%E5%8F%AA%E5%AF%B9outer_mod%E5%8F%AF%E8%A7%81%0A%20%20%20%20%2F%2F%20outer_mod%3A%3Ainner_mod%3A%3Asuper_mod_visible_fn()%3B%0A%20%0A%20%20%20%20%2F%2F%20%E8%AF%A5%E5%87%BD%E6%95%B0%E5%8F%AA%E5%AF%B9outer_mod%E5%8F%AF%E8%A7%81%0A%20%20%20%20%2F%2F%20outer_mod%3A%3Ainner_mod%3A%3Aouter_mod_visible_fn()%3B%0A%20%20%20%20%20%0A%20%20%20%20%2F%2F%20%E9%80%9A%E8%BF%87foo%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%86%85%E9%83%A8%E7%BB%86%E8%8A%82%0A%20%20%20%20outer_mod%3A%3Afoo()%3B%0A%7D%0Afn%20main()%20%7B%20bar()%20%7D">Run</a></pre></div>
+<p>Basic usage: 模块可见性 Rust 2018 Edtion</p>
+<p>请在Play手动选择Rust edition运行</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">outer_mod</span> {
+    <span class="kw">pub</span>(<span class="self">self</span>) <span class="kw">fn</span> <span class="ident">outer_mod_fn</span>() {}
+     
+    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">inner_mod</span> {
+        <span class="comment">// 在Rust 2018 edtion 模块系统必须使用use导入</span>
+        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">outer_mod</span>::<span class="ident">outer_mod_fn</span>;
+        <span class="comment">// 对外层模块 `outer_mod` 可见</span>
+        <span class="kw">pub</span>(<span class="kw">in</span> <span class="kw">crate</span>::<span class="ident">outer_mod</span>)  <span class="kw">fn</span> <span class="ident">outer_mod_visible_fn</span>() {}
+        <span class="comment">// 对整个crate可见</span>
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">crate_visible_fn</span>() {}
+        <span class="comment">// `outer_mod` 内部可见</span>
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">super_mod_visible_fn</span>() {
+            <span class="comment">// 访问同一模块的函数</span>
+            <span class="ident">inner_mod_visible_fn</span>();
+            <span class="comment">// 使用use导入了outer_mod</span>
+            <span class="ident">outer_mod_fn</span>();
+        }
+        <span class="comment">// 仅在`inner_mod`可见</span>
+        <span class="kw">pub</span>(<span class="self">self</span>) <span class="kw">fn</span> <span class="ident">inner_mod_visible_fn</span>() {}
+    }
+     
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">foo</span>() {
+        <span class="ident">inner_mod</span>::<span class="ident">outer_mod_visible_fn</span>();
+        <span class="ident">inner_mod</span>::<span class="ident">crate_visible_fn</span>();
+        <span class="ident">inner_mod</span>::<span class="ident">super_mod_visible_fn</span>();
+     
+        <span class="comment">// 不能使用inner_mod 的私有函数</span>
+        <span class="comment">// inner_mod::inner_mod_visible_fn();</span>
+    }
+}
+<span class="kw">fn</span> <span class="ident">bar</span>() {
+    <span class="comment">// 该函数对整个crate可见</span>
+    <span class="ident">outer_mod</span>::<span class="ident">inner_mod</span>::<span class="ident">crate_visible_fn</span>();
+ 
+    <span class="comment">// 该函数只对outer_mod可见</span>
+    <span class="comment">// outer_mod::inner_mod::super_mod_visible_fn();</span>
+ 
+    <span class="comment">// 该函数只对outer_mod可见</span>
+    <span class="comment">// outer_mod::inner_mod::outer_mod_visible_fn();</span>
+     
+    <span class="comment">// 通过foo函数调用内部细节</span>
+    <span class="ident">outer_mod</span>::<span class="ident">foo</span>();
+}
+<span class="kw">fn</span> <span class="ident">main</span>() { <span class="ident">bar</span>() }<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Apub%20mod%20outer_mod%20%7B%0A%20%20%20%20pub(self)%20fn%20outer_mod_fn()%20%7B%7D%0A%20%20%20%20%20%0A%20%20%20%20pub%20mod%20inner_mod%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20%E5%9C%A8Rust%202018%20edtion%20%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F%E5%BF%85%E9%A1%BB%E4%BD%BF%E7%94%A8use%E5%AF%BC%E5%85%A5%0A%20%20%20%20%20%20%20%20use%20crate%3A%3Aouter_mod%3A%3Aouter_mod_fn%3B%0A%20%20%20%20%20%20%20%20%2F%2F%20%E5%AF%B9%E5%A4%96%E5%B1%82%E6%A8%A1%E5%9D%97%20%60outer_mod%60%20%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(in%20crate%3A%3Aouter_mod)%20%20fn%20outer_mod_visible_fn()%20%7B%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20%E5%AF%B9%E6%95%B4%E4%B8%AAcrate%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(crate)%20fn%20crate_visible_fn()%20%7B%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20%60outer_mod%60%20%E5%86%85%E9%83%A8%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(super)%20fn%20super_mod_visible_fn()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20%E8%AE%BF%E9%97%AE%E5%90%8C%E4%B8%80%E6%A8%A1%E5%9D%97%E7%9A%84%E5%87%BD%E6%95%B0%0A%20%20%20%20%20%20%20%20%20%20%20%20inner_mod_visible_fn()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20%E4%BD%BF%E7%94%A8use%E5%AF%BC%E5%85%A5%E4%BA%86outer_mod%0A%20%20%20%20%20%20%20%20%20%20%20%20outer_mod_fn()%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20%E4%BB%85%E5%9C%A8%60inner_mod%60%E5%8F%AF%E8%A7%81%0A%20%20%20%20%20%20%20%20pub(self)%20fn%20inner_mod_visible_fn()%20%7B%7D%0A%20%20%20%20%7D%0A%20%20%20%20%20%0A%20%20%20%20pub%20fn%20foo()%20%7B%0A%20%20%20%20%20%20%20%20inner_mod%3A%3Aouter_mod_visible_fn()%3B%0A%20%20%20%20%20%20%20%20inner_mod%3A%3Acrate_visible_fn()%3B%0A%20%20%20%20%20%20%20%20inner_mod%3A%3Asuper_mod_visible_fn()%3B%0A%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%2F%2F%20%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8inner_mod%20%E7%9A%84%E7%A7%81%E6%9C%89%E5%87%BD%E6%95%B0%0A%20%20%20%20%20%20%20%20%2F%2F%20inner_mod%3A%3Ainner_mod_visible_fn()%3B%0A%20%20%20%20%7D%0A%7D%0Afn%20bar()%20%7B%0A%20%20%20%20%2F%2F%20%E8%AF%A5%E5%87%BD%E6%95%B0%E5%AF%B9%E6%95%B4%E4%B8%AAcrate%E5%8F%AF%E8%A7%81%0A%20%20%20%20outer_mod%3A%3Ainner_mod%3A%3Acrate_visible_fn()%3B%0A%20%0A%20%20%20%20%2F%2F%20%E8%AF%A5%E5%87%BD%E6%95%B0%E5%8F%AA%E5%AF%B9outer_mod%E5%8F%AF%E8%A7%81%0A%20%20%20%20%2F%2F%20outer_mod%3A%3Ainner_mod%3A%3Asuper_mod_visible_fn()%3B%0A%20%0A%20%20%20%20%2F%2F%20%E8%AF%A5%E5%87%BD%E6%95%B0%E5%8F%AA%E5%AF%B9outer_mod%E5%8F%AF%E8%A7%81%0A%20%20%20%20%2F%2F%20outer_mod%3A%3Ainner_mod%3A%3Aouter_mod_visible_fn()%3B%0A%20%20%20%20%20%0A%20%20%20%20%2F%2F%20%E9%80%9A%E8%BF%87foo%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%86%85%E9%83%A8%E7%BB%86%E8%8A%82%0A%20%20%20%20outer_mod%3A%3Afoo()%3B%0A%7D%0Afn%20main()%20%7B%20bar()%20%7D">Run</a></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

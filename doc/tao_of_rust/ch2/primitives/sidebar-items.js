@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["array_type","基本数据类型：array类型"],["bool_type","基本数据类型：布尔值"],["char_type","基本数据类型：char类型"],["nerver","基本数据类型：nerver类型"],["number_type","基本数据类型：数字类型"],["range_type","基本数据类型：range类型"],["raw_pointer","基本数据类型：原始指针类型"],["slice_type","基本数据类型：slice类型"],["str_type","基本数据类型：str字符串类型"],["tuple_type","基本数据类型：元组类型"]]});

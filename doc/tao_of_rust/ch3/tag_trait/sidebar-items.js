@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["impl_clone","用作标签的trait：Copy"],["sync_send_trait","用作标签的trait：Sync / Send"],["test_copy_trait","用作标签的trait：Copy"]]});

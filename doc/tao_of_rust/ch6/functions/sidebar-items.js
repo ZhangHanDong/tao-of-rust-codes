@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["function_pattern_match","函数：函数参数模式匹配"],["function_return","函数：函数返回值"],["function_shadow","函数：函数定义"],["generic_function","函数：泛型函数"],["higher_kind_function","函数：高阶函数"],["method_and_function","方法与函数"],["mut_params","函数：参数传递"]]});
