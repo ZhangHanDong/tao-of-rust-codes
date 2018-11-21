@@ -36,10 +36,13 @@ $ cargo doc
 $ open target/doc/tao_of_rust/index.html
 ```
 
-或者
+在线阅读：
 
+- [在线GitHub Page在线文档](https://ruststudy.github.io/tao_of_rust_docs/tao_of_rust/)
 
-在线阅读[docs.rs/tao-of-rust](https://docs.rs/crate/tao-of-rust/)
+or：
+
+- 在线阅读[docs.rs/tao-of-rust](https://docs.rs/crate/tao-of-rust/)
 
 （注意，因为doc.rs还不支持Rust 2018 edition，导致build失败，文档还无法在线查看）
 
