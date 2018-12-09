@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["immutable_and_mutable","不变与可变"],["ownership","所有权"],["reference","引用"],["temp","临时值"]]});

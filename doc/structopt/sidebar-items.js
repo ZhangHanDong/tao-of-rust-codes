@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["clap","Re-export of clap"]],"trait":[["StructOpt","A struct that is converted from command line arguments."]]});

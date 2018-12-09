@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["title","Examples"]],"mod":[["borrow",""],["lifetime",""],["nll",""],["semantic",""],["share_mutable",""],["smart_pointer",""]]});

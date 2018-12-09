@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["gat","trait局限: GAT（Generic Associated Type） 或 ATC（Associated type constructor）"],["trait_limit","trait局限"],["trait_special","trait: 特化（specialization）"]]});

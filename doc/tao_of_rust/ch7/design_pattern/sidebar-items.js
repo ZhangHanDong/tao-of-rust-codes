@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["design_patterns","设计模式"]]});

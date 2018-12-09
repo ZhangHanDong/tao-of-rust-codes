@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["title","Examples"]],"mod":[["design_pattern",""],["structs",""]]});

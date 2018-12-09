@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["associated_type","trait: 关联类型"],["generics_trait","trait: 泛型trait"],["override_op","trait 一致性"],["string_add","trait: 关联类型String用法"],["trait_bound","trait bound 泛型约束"],["trait_inherit","trait继承"]]});

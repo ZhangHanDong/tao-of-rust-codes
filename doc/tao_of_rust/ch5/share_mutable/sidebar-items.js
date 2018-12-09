@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["immut_and_mut","可变与不可变"],["lexical_scope","词法作用域和生命周期"]]});
