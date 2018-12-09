@@ -1,8 +1,6 @@
 // #![feature(custom_attribute)]
 // #![feature(proc_macro_non_items)]
-// 过程宏-bang宏还无法用于表达式位置
-// 相关issues：https://github.com/rust-lang/rust/issues/54727
-// https://github.com/rust-lang/blog.rust-lang.org/issues/285
+
 #![feature(proc_macro_hygiene)]
 
 
@@ -30,6 +28,9 @@ fn test_foo() {
 }
 
 // 测试Bang宏
+// 过程宏-bang宏还无法用于表达式位置，所以下面测试暂时会报错，等支持的时候应该就会通过
+// 相关issues：https://github.com/rust-lang/rust/issues/54727
+// https://github.com/rust-lang/blog.rust-lang.org/issues/285
 #[test]
 fn test_hashmap() {
     let hm = hashmap!{ "a" => 1,"b" => 2,"c" => 3};
