@@ -111,7 +111,7 @@ pub fn true_maker() -> fn() -> bool { is_true }
 /// Basic usage:
 ///
 /// ```
-/// #![feature(const_fn)]
+/// // #![feature(const_fn)]
 /// const fn init_len() -> usize {
 ///     return 5;
 /// }

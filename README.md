@@ -18,8 +18,8 @@ _注意：本书代码的平台是Linux或macOS_
 
 ### Rust版本依赖：
 
-- `Rust stable 1.28 + `
-- `Rust Nightly 1.30 +`
+- `Rust stable 1.31.0 + `
+- `Rust Nightly 1.31.0 +`
 
 输出文档时指定target目录：
 

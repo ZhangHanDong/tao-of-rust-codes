@@ -45,10 +45,10 @@ pub fn immutable_and_mutable() {
 ///     //   ^ 位置上下文  ^  值上下文
 ///     let place2 = "hello".to_string();
 ///     let other = place1;    // Copy
-///                  ^^ 位置表达式出现在了值上下文中
+///                  // ^^ 位置表达式出现在了值上下文中
 ///     println!("{:?}", place1);  // place1还可以继续使用
 ///     let other = place2;    // Move
-///                  ^^ 位置表达式出现在了值上下文中
+///                  // ^^ 位置表达式出现在了值上下文中
 ///     println!("{:?}", place2); // place2不能再被使用，编译出错
 /// }
 /// ownership();
