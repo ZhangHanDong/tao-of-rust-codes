@@ -45,6 +45,8 @@ pub fn lifetime_demo(){
 /// fn foo<'a>(x: &'a str, y: &'a str) -> &'a str {
 ///     let result = String::from("really long string");
 ///     // error[E0597]: `result` does not live long enough
+///     // 上面的错误提示在Rust 2018 edtion下又有了更精准的描述：
+///     // error[E0515]: cannot return value referencing local variable `result`
 ///     result.as_str()
 /// }
 /// fn main() {

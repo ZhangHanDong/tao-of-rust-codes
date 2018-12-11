@@ -230,7 +230,7 @@ pub fn custom_closures(){
 ///     c();  // "hello"
 ///     c.call_mut(());  // "hello"
 ///     c.call_once(());  // "hello"
-///     // c(); // error: use of moved value: `c`
+///     c(); // "hello" 这里没有被转移所有权是因为生成的FnOnce自动实现的Copy
 ///     println!("{:?}", s);  // "hello"
 /// }
 /// ```
