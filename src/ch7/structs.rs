@@ -38,25 +38,24 @@
 ///    println!("{:?}",book2);
 /// }
 /// ```
-pub fn structs_intro(){
-    #[derive(Debug,Copy,Clone)]
+pub fn structs_intro() {
+    #[derive(Debug, Copy, Clone)]
     struct Book<'a> {
         name: &'a str,
         isbn: i32,
         version: i32,
     }
-    fn main(){
+    fn main() {
         let book = Book {
-            name: "Rust编程之道" , isbn: 20181212, version: 1
+            name: "Rust编程之道",
+            isbn: 20181212,
+            version: 1,
         };
-        let book2 = Book { version: 2, ..book};
-        println!("{:?}",book);
-        println!("{:?}",book2);
+        let book2 = Book { version: 2, ..book };
+        println!("{:?}", book);
+        println!("{:?}", book2);
     }
-
 }
-
-
 
 /// # 结构体: 面向对象示例
 ///
@@ -334,7 +333,7 @@ pub fn structs_intro(){
 ///     println!("{}", yellow);
 /// }
 /// ```
-pub fn color_terminal(){
+pub fn color_terminal() {
     unimplemented!();
 }
 
@@ -478,6 +477,6 @@ pub fn color_terminal(){
 ///     };
 /// }
 /// ```
-pub fn drop_order(){
+pub fn drop_order() {
     unimplemented!();
 }
