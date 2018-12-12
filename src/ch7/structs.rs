@@ -343,6 +343,12 @@ pub fn color_terminal(){
 /// Base usage: 本地变量
 ///
 /// ```rust
+/// struct PrintDrop(&'static str);
+///     impl Drop for PrintDrop {
+///         fn drop(&mut self) {
+///             println!("Dropping {}", self.0)
+///     }
+/// }
 /// fn main() {
 ///     let x = PrintDrop("x");
 ///     let y = PrintDrop("y");
@@ -352,6 +358,12 @@ pub fn color_terminal(){
 /// Base usage: 元组
 ///
 /// ```rust
+/// struct PrintDrop(&'static str);
+///     impl Drop for PrintDrop {
+///         fn drop(&mut self) {
+///             println!("Dropping {}", self.0)
+///     }
+/// }
 /// fn main() {
 ///     let tup1 = (PrintDrop("a"), PrintDrop("b"), PrintDrop("c"));
 ///     let tup2 = (PrintDrop("x"), PrintDrop("y"), PrintDrop("z"));
@@ -361,6 +373,12 @@ pub fn color_terminal(){
 /// Base usage: 元组，携带`panic!`的元素
 ///
 /// ```rust
+/// struct PrintDrop(&'static str);
+///     impl Drop for PrintDrop {
+///         fn drop(&mut self) {
+///             println!("Dropping {}", self.0)
+///     }
+/// }
 /// fn main() {
 ///     let tup1 = (PrintDrop("a"), PrintDrop("b"), PrintDrop("c"));
 ///     let tup2 = (PrintDrop("x"), PrintDrop("y"), panic!());
@@ -370,6 +388,12 @@ pub fn color_terminal(){
 /// Base usage: 闭包捕获变量
 ///
 /// ```rust
+/// struct PrintDrop(&'static str);
+///     impl Drop for PrintDrop {
+///         fn drop(&mut self) {
+///             println!("Dropping {}", self.0)
+///     }
+/// }
 /// fn main() {
 ///     let z = PrintDrop("z");
 ///     let x = PrintDrop("x");
@@ -381,6 +405,12 @@ pub fn color_terminal(){
 /// Base usage: 闭包捕获变量，包含内部作用域
 ///
 /// ```rust
+/// struct PrintDrop(&'static str);
+///     impl Drop for PrintDrop {
+///         fn drop(&mut self) {
+///             println!("Dropping {}", self.0)
+///     }
+/// }
 /// fn main() {
 ///     let y = PrintDrop("y");
 ///     let x = PrintDrop("x");
@@ -392,7 +422,7 @@ pub fn color_terminal(){
 /// }
 /// ```
 ///
-/// Base usage: 结构体和枚举析构顺序
+/// Base usage: 结构体析构顺序
 ///
 /// ```rust
 /// struct PrintDrop(&'static str);
@@ -418,6 +448,33 @@ pub fn color_terminal(){
 ///     let foo = Foo {
 ///         bar: PrintDrop("bar"),
 ///         baz: PrintDrop("baz"),
+///     };
+/// }
+/// ```
+///
+/// Base usage: 结构体和枚举析构顺序
+///
+/// ```rust
+/// struct PrintDrop(&'static str);
+/// impl Drop for PrintDrop {
+///     fn drop(&mut self) {
+///         println!("Dropping {}", self.0)
+///     }
+/// }
+/// enum E {
+///     Foo(PrintDrop, PrintDrop),
+/// }
+/// struct Foo {
+///     x: PrintDrop,
+///     y: PrintDrop,
+///     z: PrintDrop,
+/// }
+/// fn main() {
+///     let e = E::Foo(PrintDrop("a"), PrintDrop("b"));
+///     let f = Foo {
+///         x: PrintDrop("x"),
+///         y: PrintDrop("y"),
+///         z: PrintDrop("z"),
 ///     };
 /// }
 /// ```
