@@ -1,13 +1,13 @@
 /// # 使用Unsafe进行安全抽象
 ///
 /// 安全抽象的时候需要注意什么？
-/// 
+///
 /// ---
-/// 
+///
 /// Basic usage:  Vec<T>的insert方法源码示意
 ///
 /// 正因为存在下面那两个判断条件，才保证了该方法的安全性
-/// 
+///
 /// ```rust
 /// pub fn insert(&mut self, index: usize, element: T) {
 ///     let len = self.len();
@@ -27,16 +27,15 @@
 ///    }
 /// }
 /// ```
-pub fn contract(){
+pub fn contract() {
     unimplemented!();
 }
 
-
 /// # 子类型和型变（variance）
 ///
-/// 
+///
 /// PhantomData<T>规则：
-/// 
+///
 /// PhantomData<T>，在T上是协变。
 /// PhantomData<&'a T>，在'a 和T上是协变。
 /// PhantomData<&'a mut T>，在'a上是协变，在T上是不变。
@@ -46,14 +45,14 @@ pub fn contract(){
 /// PhantomData<fn() -> T>，在T上是协变。
 /// PhantomData<fn(T) -> T>，在T上是不变。
 /// PhantomData<Cell<&'a ()>>，在'a上是不变。
-/// 
+///
 /// 请配合书本中解释理解
-/// 
+///
 /// Basic usage:  未合理使用型变将会引起未定义行为
 ///
 /// 虽然可以正常工作，但这里存在未定义行为的风险
 /// 原因是协变改变了生命周期，「忽悠」了借用检查
-/// 
+///
 /// ```rust
 /// // 协变类型
 /// struct MyCell<T> {
@@ -73,13 +72,13 @@ pub fn contract(){
 ///        }
 ///    }
 /// }
-/// 
+///
 /// fn step1<'a>(r_c1: &MyCell<&'a i32>) {
 ///     let val: i32 = 13;
 ///     step2(&val, r_c1); // step2函数执行完再回到step1
 ///     println!("step1 value: {}", r_c1.value);
 /// } // step1调用完，栈帧将被清理，val将不复存在，&val将成为悬垂指针
-/// 
+///
 /// fn step2<'b>(r_val: &'b i32, r_c2: &MyCell<&'b i32>) {
 ///     r_c2.set(r_val);
 /// }
@@ -90,9 +89,9 @@ pub fn contract(){
 ///    println!("  end value: {}", cell.value); //此处 cell.value的值将无法预期，UB风险
 /// }
 /// ```
-/// 
+///
 /// Basic usage:  修改MyCell<T> 类型为不变
-/// 
+///
 /// 解决上面示例UB的问题，编译将报错，因为安全检查生效了，成功阻止了UB风险
 ///
 /// ```rust
@@ -113,14 +112,14 @@ pub fn contract(){
 ///        unsafe {
 ///            ptr::write(&self.value as *const _ as *mut _, value);
 ///        }
-///    } 
+///    }
 /// }
 /// fn step1<'a>(r_c1: &MyCell<&'a i32>) {
 ///     let val: i32 = 13;
 ///     step2(&val, r_c1); // error[E0597]: `val` does not live long enough
 ///     println!("step1 value: {}", r_c1.value);
 /// } // step1调用完，栈帧将被清理，val将不复存在，&val将成为悬垂指针
-/// 
+///
 /// fn step2<'b>(r_val: &'b i32, r_c2: &MyCell<&'b i32>) {
 ///     r_c2.set(r_val);
 /// }
@@ -128,16 +127,16 @@ pub fn contract(){
 /// fn main() {
 ///    let cell = MyCell::new(&X);
 ///    step1(&cell);
-///    println!("  end value: {}", cell.value); 
+///    println!("  end value: {}", cell.value);
 /// }
 /// ````
-/// 
+///
 /// Basic usage:  fn(T)逆变示意
-/// 
+///
 /// Rust中仅存在函数指针fn(T)的逆变情况
-/// 
+///
 /// 请配合书本解释理解
-/// 
+///
 /// ```rust
 /// trait A {
 ///     fn foo(&self, s: &'static str);
@@ -159,15 +158,15 @@ pub fn contract(){
 ///   // B.foo2(&s)
 /// }
 /// ```
-/// 
-/// 
+///
+///
 /// Basic usage: 另一个fn(T)逆变示意
-/// 
+///
 /// Rust中仅存在函数指针fn(T)的逆变情况
-/// 
+///
 /// 请配合书本解释理解
-/// 
-/// 
+///
+///
 /// ```rust
 /// fn foo(input: &str)  {
 ///     println!("{:?}", input);               
@@ -180,18 +179,17 @@ pub fn contract(){
 ///     bar(foo, v);
 /// }
 /// ```
-pub fn variances(){
+pub fn variances() {
     unimplemented!();
 }
-
 
 /// # 未绑定生命周期（Unbound Lifetime）
 ///
 /// 未绑定生命周期（Unbound Lifetime），即可以被随意推断的生命周期，
 /// 在Unsafe中很容易产生，导致跳过Rust借用检查，而产生UB风险。
-/// 
+///
 /// Basic usage:  产生未绑定生命周期的情况
-/// 
+///
 /// 在Debug模式下正常，但是在Release下会产生UB
 ///
 /// ```rust
@@ -209,11 +207,11 @@ pub fn variances(){
 ///    println!("hello: {}", x);
 /// }
 /// ```
-/// 
+///
 /// Basic usage:  另一种产生未绑定生命周期的情况
-/// 
+///
 /// 在Debug模式下正常，但是在Release下会产生UB
-/// 
+///
 /// ```rust
 /// use std::mem::transmute;
 /// fn main() {
@@ -226,16 +224,16 @@ pub fn variances(){
 ///     println!("hello {}", x);
 /// }
 /// ```
-pub fn unbound_lifetime(){
+pub fn unbound_lifetime() {
     unimplemented!();
 }
 
 /// # Drop检查
 ///
 /// 使用不当的话，Drop检查会引起UB
-/// 
+///
 /// Basic usage:  声明元组变量测试dropck
-/// 
+///
 /// 在Safe Rust中由dropck引起的问题，借用检查会安全识别，从而引起错误阻止程序编译
 ///
 /// ```rust
@@ -277,14 +275,14 @@ pub fn unbound_lifetime(){
 ///	   f1();
 ///	}
 /// ```
-/// 
-/// 
+///
+///
 /// Basic usage:  `dropck` - V1
-/// 
+///
 /// 会因为安全检查而报错，修改变量声明顺序修复问题
-/// 
+///
 /// ```rust
-/// #![feature(allocator_api)]
+/// #![feature(alloc_layout_extra)]
 /// #![feature(allocator_api, dropck_eyepatch)]
 /// use std::alloc::{GlobalAlloc, System, Layout};
 /// use std::ptr;
@@ -323,7 +321,7 @@ pub fn unbound_lifetime(){
 ///    // error[E0597]: `x` does not live long enough
 ///	   y = WrapBox::new(Hello::new("y", &x));
 ///	}
-/// 
+///
 /// struct MyBox<T> {
 ///     v: *const T,
 /// }
@@ -337,17 +335,17 @@ pub fn unbound_lifetime(){
 ///        }
 ///    }
 /// }
-/// 
+///
 /// impl<T> Drop for MyBox<T> {
 ///    fn drop(&mut self) {
 ///        unsafe {
 ///            let p = self.v as *mut _;
-///            System.dealloc(p, 
+///            System.dealloc(p,
 ///                Layout::array::<T>(mem::align_of::<T>()).unwrap());       
 ///        }
 ///    }
 /// }
-/// 
+///
 /// fn f2() {
 ///    {
 ///        let (x1, y1);
@@ -360,19 +358,20 @@ pub fn unbound_lifetime(){
 ///        y2 = MyBox::new(Hello::new("y2", &x2));
 ///    }
 /// }
-/// 
+///
 ///	fn main() {
 ///	   // f1();
 ///    f2();
 ///	}
 /// ```
-/// 
-/// 
+///
+///
 /// Basic usage:  `#[may_dangle]` 属性与`dropck` - V2
-/// 
+///
 /// 通过 `#[may_dangle]`修复问题
-/// 
+///
 /// ```rust
+/// #![feature(alloc_layout_extra)]
 /// #![feature(allocator_api, dropck_eyepatch)]
 /// use std::alloc::{GlobalAlloc, System, Layout};
 /// use std::ptr;
@@ -409,7 +408,7 @@ pub fn unbound_lifetime(){
 ///	   x = Hello::new("x", 13);
 ///	   y = WrapBox::new(Hello::new("y", &x));
 ///	}
-/// 
+///
 /// struct MyBox<T> {
 ///     v: *const T,
 /// }
@@ -423,19 +422,19 @@ pub fn unbound_lifetime(){
 ///        }
 ///    }
 /// }
-/// 
+///
 /// // 使用#[may_dangle]来修复问题
 ///  unsafe impl<#[may_dangle] T> Drop for MyBox<T> {
 ///     fn drop(&mut self) {
 ///         unsafe {
 ///             let p = self.v as *mut _;
-///             System.dealloc(p, 
+///             System.dealloc(p,
 ///                 Layout::array::<T>(mem::align_of::<T>()).unwrap());
 ///         }
 ///    }
 /// }
-/// 
-/// 
+///
+///
 /// fn f2() {
 ///    {
 ///        let (x1, y1);
@@ -448,20 +447,21 @@ pub fn unbound_lifetime(){
 ///        y2 = MyBox::new(Hello::new("y2", &x2));
 ///    }
 /// }
-/// 
-/// 
+///
+///
 ///	fn main() {
 ///	   // f1();
 ///    f2();
 ///	}
 /// ```
-/// 
-/// 
+///
+///
 /// Basic usage:  `#[may_dangle]` 属性与`dropck` - V3
-/// 
+///
 /// 通过 `#[may_dangle]`修复问题，但如果在drop中使用了T，则会产生悬垂指针
-/// 
+///
 /// ```rust
+/// #![feature(alloc_layout_extra)]
 /// #![feature(allocator_api, dropck_eyepatch)]
 /// use std::alloc::{GlobalAlloc, System, Layout};
 /// use std::ptr;
@@ -494,11 +494,11 @@ pub fn unbound_lifetime(){
 ///	    }
 ///	}
 ///	fn f1() {
-///	   let x; let y; 
+///	   let x; let y;
 ///	   x = Hello::new("x", 13);
 ///	   y = WrapBox::new(Hello::new("y", &x));
 ///	}
-/// 
+///
 /// struct MyBox<T> {
 ///     v: *const T,
 /// }
@@ -512,21 +512,21 @@ pub fn unbound_lifetime(){
 ///        }
 ///    }
 /// }
-/// 
+///
 /// // 使用#[may_dangle]来修复问题
 /// unsafe impl<#[may_dangle] T> Drop for MyBox<T> {
 ///     fn drop(&mut self) {
 /// 	    unsafe {
 /// 	        ptr::read(self.v); // 此处新增
 /// 	        let p = self.v as *mut _;
-/// 	        System.dealloc(p, 
+/// 	        System.dealloc(p,
 /// 	            Layout::array::<T>(mem::align_of::<T>()).unwrap());
 /// 	    }
 ///     }
 /// }
 /// fn f2() {
 ///    {
-///        let (x1, y1); 
+///        let (x1, y1);
 ///        x1 = Hello::new("x1", 13);
 ///        y1 = MyBox::new(Hello::new("y1", &x1));
 ///    }
@@ -536,33 +536,34 @@ pub fn unbound_lifetime(){
 ///        y2 = MyBox::new(Hello::new("y2", &x2));
 ///    }
 /// }
-/// 
+///
 ///	fn main() {
 ///	   // f1();
 ///    f2();
 ///	}
 /// ```
-/// 
-/// 
-/// 
+///
+///
+///
 /// Basic usage:  `#[may_dangle]`属性 与`dropck` - V4
-/// 
+///
 /// 使用`PhantomData<T>`配合`#[may_dangle]`来得到更严格的drop检查
-/// 
+///
 /// 标准库中Vec<T>和LinkedList<T>源码中也有相关的实践
-/// 
+///
 /// ```rust
+/// #![feature(alloc_layout_extra)]
 /// #![feature(allocator_api, dropck_eyepatch)]
 /// use std::alloc::{GlobalAlloc, System, Layout};
 /// use std::ptr;
 /// use std::mem;
 /// use std::fmt;
 ///	use std::marker::PhantomData;
-/// 
+///
 ///	#[derive(Copy, Clone, Debug)]
-/// 
+///
 ///	enum State { InValid, Valid }
-/// 
+///
 ///	#[derive(Debug)]
 ///	struct Hello<T: fmt::Debug>(&'static str, T, State);
 ///	impl<T: fmt::Debug> Hello<T> {
@@ -588,11 +589,11 @@ pub fn unbound_lifetime(){
 ///	    }
 ///	}
 ///	fn f1() {
-///	   let x; let y; 
+///	   let x; let y;
 ///	   x = Hello::new("x", 13);
 ///	   y = WrapBox::new(Hello::new("y", &x));
 ///	}
-/// 
+///
 /// struct MyBox<T> {
 ///     v: *const T,
 /// }
@@ -606,21 +607,21 @@ pub fn unbound_lifetime(){
 ///        }
 ///    }
 /// }
-/// 
+///
 /// // 使用#[may_dangle]来修复问题
 /// unsafe impl<#[may_dangle] T> Drop for MyBox<T> {
 ///     fn drop(&mut self) {
 /// 	    unsafe {
 /// 	        ptr::read(self.v); // 此处新增
 /// 	        let p = self.v as *mut _;
-/// 	        System.dealloc(p, 
+/// 	        System.dealloc(p,
 /// 	            Layout::array::<T>(mem::align_of::<T>()).unwrap());
 /// 	    }
 ///     }
 /// }
 /// fn f2() {
 ///    {
-///        let (x1, y1); 
+///        let (x1, y1);
 ///        x1 = Hello::new("x1", 13);
 ///        y1 = MyBox::new(Hello::new("y1", &x1));
 ///    }
@@ -630,10 +631,10 @@ pub fn unbound_lifetime(){
 ///        y2 = MyBox::new(Hello::new("y2", &x2));
 ///    }
 /// }
-/// 
+///
 ///	struct MyBox2<T> {
 ///	    v: *const T,
-///	    _pd: PhantomData<T>, 
+///	    _pd: PhantomData<T>,
 ///	}
 ///	impl<T> MyBox2<T> {
 ///	    fn new(t: T) -> Self {
@@ -663,23 +664,23 @@ pub fn unbound_lifetime(){
 ///	   y = MyBox2::new(Hello::new("y", &x));
 ///	}
 ///
-/// 
+///
 ///	fn main() {
 ///	   // f1();
 ///    // f2();
 ///    f3();
 ///	}
 /// ```
-pub fn drop_ck_test(){
+pub fn drop_ck_test() {
     unimplemented!();
 }
 
 /// # 使用`std::mem::forget`跳过Drop
 ///
-/// 
+///
 /// Basic usage: 转移结构体中字段所有权 - V1
-/// 
-/// 
+///
+///
 /// ```rust
 ///	struct A;
 ///	struct B;
@@ -690,24 +691,24 @@ pub fn drop_ck_test(){
 ///	impl Foo {
 ///	    fn take(self) -> (A, B) {
 ///         // error[E0509]: cannot move out of type `Foo`, which implements the `Drop` trait
-///	        (self.a, self.b) 
+///	        (self.a, self.b)
 ///	   }
 ///	}
 /// impl Drop for Foo {
 ///     fn drop(&mut self) {
-///         // do something 
+///         // do something
 ///     }
 /// }
-/// 
+///
 ///	fn main(){}
 /// ```
-/// 
+///
 ///  
 /// Basic usage: 转移结构体中字段所有权 - V2
-/// 
+///
 /// 如果必须要转移结构体所有权，则可以使用std::mem::uninitialized和std::mem::forget
-/// 
-/// 
+///
+///
 /// ```rust
 ///	struct A;
 ///	struct B;
@@ -734,27 +735,27 @@ pub fn drop_ck_test(){
 ///	}
 /// impl Drop for Foo {
 ///     fn drop(&mut self) {
-///         // do something 
+///         // do something
 ///     }
 /// }
-/// 
+///
 ///	fn main(){}
 /// ```
-pub fn forget_drop(){
+pub fn forget_drop() {
     unimplemented!();
 }
 
 /// # 使用`std::mem:ManuallyDrop`手工Drop
 ///
-/// 
+///
 /// `ManuallyDrop<T>`是一个联合体，Rust不会为联合体自动实现Drop。
 /// 因为联合体是所有字段共用内存，不能随便被析构，否则会引起未定义行为。
-/// 
+///
 /// `std::mem::forget<T>`函数的实现就是用了ManuallyDrop::new方法
-/// 
+///
 /// Basic usage: `ManuallyDrop`示例
-/// 
-/// 
+///
+///
 /// ```rust
 /// use std::mem::ManuallyDrop;
 /// struct Peach;
@@ -762,7 +763,7 @@ pub fn forget_drop(){
 /// struct Melon;
 /// struct FruitBox {
 ///     peach: ManuallyDrop<Peach>,
-///     melon: Melon, 
+///     melon: Melon,
 ///     banana: ManuallyDrop<Banana>,
 /// }
 /// impl Drop for FruitBox {
@@ -775,6 +776,6 @@ pub fn forget_drop(){
 /// }
 /// fn main(){}
 /// ```
-pub fn manually_drop(){
+pub fn manually_drop() {
     unimplemented!();
 }
