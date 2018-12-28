@@ -1,5 +1,12 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
+### 购买地址：
+
+- [电子工业出版社京东店](https://item.jd.com/12479415.html)
+- [作者签名版 - 混沌小店购买](https://weidian.com/?userid=1165436513&wfr=c&ifr=shopdetail&source=shop&sfr=app)
+
+---
+
 ![img3](images/rustbook.jpg)
 
 # 《Rust编程之道》随书源码
