@@ -7,7 +7,7 @@
 
 ---
 
-![img3](images/rustbook.jpg)
+![img4](images/rustbook.jpg)
 
 # 《Rust编程之道》随书源码
 
