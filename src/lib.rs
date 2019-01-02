@@ -33,18 +33,18 @@
        test(attr(allow(dead_code, deprecated, unused_variables, unused_mut)))
 )]
 
-pub mod ch1;
+pub mod ch01;
+pub mod ch02;
+pub mod ch03;
+pub mod ch04;
+pub mod ch05;
+pub mod ch06;
+pub mod ch07;
+pub mod ch08;
+pub mod ch09;
 pub mod ch10;
 pub mod ch11;
 pub mod ch12;
 pub mod ch13;
-pub mod ch2;
-pub mod ch3;
-pub mod ch4;
-pub mod ch5;
-pub mod ch6;
-pub mod ch7;
-pub mod ch8;
-pub mod ch9;
 
 pub mod appendix;
