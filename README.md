@@ -1,5 +1,11 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
+### 豆瓣书评
+
+希望大家看完之后，可以给个评价。
+
+[《Rust编程之道》豆瓣书评](https://book.douban.com/subject/30418895/) 
+
 ### 购买地址：
 
 - [电子工业出版社京东店](https://item.jd.com/12479415.html)
