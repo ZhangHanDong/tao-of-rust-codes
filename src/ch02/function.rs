@@ -161,7 +161,7 @@ pub fn closure(){
 /// Basic usage:
 ///
 /// ```
-/// pub fn closure_math<F: Fn() -> i32>(op: F) -> i32 {
+/// pub fn math<F: Fn() -> i32>(op: F) -> i32 {
 ///     op()
 /// }
 /// let a = 2;
