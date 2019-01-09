@@ -1,5 +1,6 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[crates.io]: (https://crates.io/crates/tao-of-rust)
+[![crates.io](https://meritbadge.herokuapp.com/tao-of-rust)](https://crates.io/crates/tao-of-rust)
+[![Released API docs](https://docs.rs/tao-of-rust/badge.svg)](https://docs.rs/tao-of-rust)
 
 ### 豆瓣书评
 
