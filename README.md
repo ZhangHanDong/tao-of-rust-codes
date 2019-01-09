@@ -1,4 +1,5 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[crates.io]: (https://crates.io/crates/tao-of-rust)
 
 ### 豆瓣书评
 
