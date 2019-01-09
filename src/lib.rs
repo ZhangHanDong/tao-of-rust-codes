@@ -10,7 +10,7 @@
 //!  
 //!  [源码仓库 : ZhangHanDong/tao-of-rust-codes](https://github.com/ZhangHanDong/tao-of-rust-codes)
 //! <div>
-//! <img src="../../../images/rustbook.jpg" height="300" width="220" />
+//! <img src="https://wx3.sinaimg.cn/mw690/71684decly1fymj6metsoj20gf0lm44e.jpg" height="300" width="220" />
 //! </div>
 //! <hr/>
 //!
