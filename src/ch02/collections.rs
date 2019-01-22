@@ -21,12 +21,12 @@
 /// }
 /// vec_example();
 /// ```
-pub fn vec_example(){
+pub fn vec_example() {
     let mut v1 = vec![];
     v1.push(1);
     v1.push(2);
     v1.push(3);
-    assert_eq!(v1, [1,2,3]);
+    assert_eq!(v1, [1, 2, 3]);
     assert_eq!(v1[1], 2);
     let mut v2 = vec![0; 10];
     let mut v3 = Vec::new();
@@ -34,7 +34,6 @@ pub fn vec_example(){
     v3.push(5);
     v3.push(6);
 }
-
 
 /// # 线性序列：双端队列（VecDeque）
 ///
@@ -60,7 +59,7 @@ pub fn vec_example(){
 /// }
 /// vec_deque();
 /// ```
-pub  fn vec_deque() {
+pub fn vec_deque() {
     use std::collections::VecDeque;
     let mut buf = VecDeque::new();
 
@@ -77,8 +76,6 @@ pub  fn vec_deque() {
     assert_eq!(buf.get(3), Some(&4));
     assert_eq!(buf.get(4), Some(&5));
 }
-
-
 
 /// # 线性序列：链表（LinkedList）
 ///
@@ -134,8 +131,6 @@ pub fn linked_list() {
     println!("{:?}", list2); // ['f']
 }
 
-
-
 /// # Key-Value映射表: HashMap和BTreeMap
 ///
 /// Basic usage:
@@ -166,7 +161,7 @@ pub fn linked_list() {
 /// }
 /// map_demo();
 /// ```
-fn map_demo() {
+pub fn map_demo() {
     use std::collections::BTreeMap;
     use std::collections::HashMap;
     let mut hmap = HashMap::new();
@@ -181,12 +176,11 @@ fn map_demo() {
     bmap.insert(1, "a");
     bmap.insert(5, "e");
     bmap.insert(4, "d");
-     // 输出结果为：{1: "a", 2: "b", 3: "c", 5: "e", 4: "d"}，但key的顺序是随机的，因为HashMap是无序的
+    // 输出结果为：{1: "a", 2: "b", 3: "c", 5: "e", 4: "d"}，但key的顺序是随机的，因为HashMap是无序的
     println!("{:?}", hmap);
     // 输出结果永远都是 {1: "a", 2: "b", 3: "c", 4: "d", 5: "e"}，因为BTreeMap是有序的
     println!("{:?}", bmap);
 }
-
 
 /// # 集合: HashSet和BTreeSet
 ///
@@ -221,8 +215,8 @@ fn map_demo() {
 /// hashset_btreeset();
 /// ```
 pub fn hashset_btreeset() {
-    use std::collections::HashSet;
     use std::collections::BTreeSet;
+    use std::collections::HashSet;
     let mut hbooks = HashSet::new();
     let mut bbooks = BTreeSet::new();
     // 插入数据
@@ -231,8 +225,10 @@ pub fn hashset_btreeset() {
     hbooks.insert("The Odyssey");
     // 判断元素是否存在，contains方法和HashMap中的一样
     if !hbooks.contains("The Emerald City") {
-        println!("We have {} books, but The Emerald City ain't one.",
-                 hbooks.len());
+        println!(
+            "We have {} books, but The Emerald City ain't one.",
+            hbooks.len()
+        );
     }
     println!("{:?}", hbooks);
     bbooks.insert("A Song of Ice and Fire");
@@ -282,5 +278,5 @@ pub fn binary_heap() {
     heap.push(35);
     heap.push(45);
     assert_eq!(heap.peek(), Some(&93));
-    println!("{:?}", heap);  // [93, 80, 48, 53, 72, 30, 18, 36, 15, 35, 45]
+    println!("{:?}", heap); // [93, 80, 48, 53, 72, 30, 18, 36, 15, 35, 45]
 }
