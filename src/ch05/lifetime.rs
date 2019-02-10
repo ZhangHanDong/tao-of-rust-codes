@@ -12,7 +12,7 @@
 ///     println!("r: {}", r); //           │ 必然会造成悬垂指针，所以报错
 /// }// ───────────────────────────────────┘
 /// ```
-pub fn lifetime_demo(){
+pub fn lifetime_demo() {
     fn main() {
         // let r; // 'a ──────────────────────┐
         // {                       //         │
@@ -20,8 +20,7 @@ pub fn lifetime_demo(){
         //     r = &x;    //            │     │
         // }  // ───────────────────────┘     │
         // println!("r: {}", r); //           │
-    }// ──────────────────────────────---─────┘
-
+    } // ──────────────────────────────---─────┘
 }
 
 /// # 生命周期参数
@@ -31,7 +30,7 @@ pub fn lifetime_demo(){
 /// fn return_str<'a>() -> &'a str {
 ///     let mut s = "Rust".to_string();
 ///     for i in 0..3 {
-///         s.push_str("Good ");
+///         s.push_str(" Good");
 ///     }
 ///     &s[..]                   //"Rust Good Good Good"
 /// }
@@ -230,7 +229,7 @@ pub fn lifetime_demo(){
 /// }
 /// fn main(){}
 /// ```
-pub fn lifetime_params(){
+pub fn lifetime_params() {
     // fn return_str<'a>() -> &'a str {
     //     let mut s = "Rust".to_string();
     //     for i in 0..3 {
@@ -241,5 +240,4 @@ pub fn lifetime_params(){
     fn main() {
         // let x = return_str();
     }
-
 }
