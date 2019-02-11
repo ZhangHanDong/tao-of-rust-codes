@@ -748,7 +748,7 @@ pub fn forget_drop() {
 /// # 使用`std::mem:ManuallyDrop`手工Drop
 ///
 ///
-/// `ManuallyDrop<T>`是一个联合体，Rust不会为联合体自动实现Drop。
+/// `ManuallyDrop<T>`是一个联合体(注意，Rust 1.32 stable已经改为结构体和Lang Item实现)，Rust不会为联合体自动实现Drop。
 /// 因为联合体是所有字段共用内存，不能随便被析构，否则会引起未定义行为。
 ///
 /// `std::mem::forget<T>`函数的实现就是用了ManuallyDrop::new方法
