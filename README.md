@@ -2,16 +2,20 @@
 [![crates.io](https://meritbadge.herokuapp.com/tao-of-rust)](https://crates.io/crates/tao-of-rust)
 [![Released API docs](https://docs.rs/tao-of-rust/badge.svg)](https://docs.rs/tao-of-rust)
 
+### English version Catalogue 
+
+[The Tao of Rust: Catalogue](./tao_of_rust_english.md)
+
 ### 豆瓣书评
 
 希望大家看完之后，可以给个评价。
 
 [《Rust编程之道》豆瓣书评](https://book.douban.com/subject/30418895/) 
 
-### 购买地址：
+### 购买地址：各大电商平台
 
 - [电子工业出版社京东店](https://item.jd.com/12479415.html)
-- [作者签名版 - 混沌小店购买](https://weidian.com/?userid=1165436513&wfr=c&ifr=shopdetail&source=shop&sfr=app)
+<!-- - [作者签名版 - 混沌小店购买](https://weidian.com/?userid=1165436513&wfr=c&ifr=shopdetail&source=shop&sfr=app) -->
 
 ---
 
