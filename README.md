@@ -2,9 +2,9 @@
 [![crates.io](https://meritbadge.herokuapp.com/tao-of-rust)](https://crates.io/crates/tao-of-rust)
 [![Released API docs](https://docs.rs/tao-of-rust/badge.svg)](https://docs.rs/tao-of-rust)
 
-### English version Catalogue 
+### English Version 
 
-[The Tao of Rust: Catalogue](./tao_of_rust_english.md)
+[The Tao of Rust:  Table of Contents](./tao_of_rust_english.md)
 
 ### 豆瓣书评
 

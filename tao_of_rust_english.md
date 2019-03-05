@@ -1,7 +1,7 @@
 # The Tao of Rust
 《Rust编程之道》
 
-## Chapter 1:  Language of the New Age
+## Chapter 1:  Language For the New Age
 
 ### 1.1 Origins
 
