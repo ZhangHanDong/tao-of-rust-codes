@@ -59,7 +59,7 @@ pub fn ownership() {
     let other = place1;
     println!("{:?}", other);
     let other = place2;
-    println!("{:?}", other); // other value used here after move
+    println!("{:?}", place2); // place2 value used here after move
 }
 
 /// # 引用
