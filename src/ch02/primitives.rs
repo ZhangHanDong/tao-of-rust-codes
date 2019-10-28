@@ -16,8 +16,8 @@
 pub fn bool_type() {
     let x = true;
     let y: bool = false;
-    let x = 5;
-    if x > 1 { println!( "x is bigger than 1")};
+    let i = 5;
+    if i > 1 { println!( "i is bigger than 1")};
     assert_eq!(x as i32, 1);
     assert_eq!(y as i32, 0);
 }
