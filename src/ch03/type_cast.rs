@@ -59,7 +59,7 @@ pub fn auto_deref(){
 ///
 /// ```
 ///     let x = "hello".to_string();
-///     match &x {
+///     match &*x {
 ///         "hello" => {println!("hello")},
 ///         _ => {}
 ///     }
