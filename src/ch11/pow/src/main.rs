@@ -26,7 +26,7 @@ fn find(
     sender: mpsc::Sender<Solution>, 
     is_solution_found: Arc<AtomicBool>
 ) {
-    for number in (start_at..).step(THREADS) {
+    for number in (start_at..).step_by(THREADS) {
         if is_solution_found.load(Ordering::Relaxed) { return; }
         if let Some(solution) = verify(number) {
             is_solution_found.store(true, Ordering::Relaxed);
