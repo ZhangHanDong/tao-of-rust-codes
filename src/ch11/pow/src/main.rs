@@ -1,9 +1,8 @@
 
 use itertools::Itertools;
-use crypto::{
-    digest::Digest,
-    sha2::Sha256,
-};
+use sha256::digest;
+
+
 use std::{
     thread,
     sync::{mpsc, Arc},
@@ -16,9 +15,7 @@ static DIFFICULTY: &'static str = "00000";
 struct Solution(usize, String);
 
 fn verify(number: usize) -> Option<Solution> {
-    let mut hasher = Sha256::new();
-    hasher.input_str(&(number * BASE).to_string());
-    let hash: String = hasher.result_str();
+    let hash = digest((number * BASE).to_string());
     if hash.starts_with(DIFFICULTY) { 
         Some(Solution(number, hash))
     } else { None }
